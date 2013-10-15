@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magic="http://schemas.android.com/apk/res/magic.yuyong"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/twitter_item_bg"
+    android:padding="5dip">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <magic.yuyong.view.Avatar
+            android:id="@+id/user_avatar"
+            android:layout_width="@dimen/avatar"
+            android:layout_height="@dimen/avatar"/>
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Wanyuyong"
+                android:textColor="#FF000000"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="2012-12-22 AM 08:38:43"
+                android:textColor="@color/theme_color"
+                android:textSize="13sp"/>
+
+            <magic.yuyong.view.TwitterContent
+                android:id="@+id/text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                magic:textColor="#FF666666"
+                magic:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<magic.yuyong.view.MagicLinear xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFFFF"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:orientation="horizontal" >
+        
+        <EditText android:id="@+id/search_text"
+            android:layout_width="1dip"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dip"
+            android:paddingRight="8dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:background="@drawable/search_input"
+            android:gravity="center_vertical"
+            android:hint="@string/text_search_hint"
+            android:maxLines="1"
+            android:minLines="1"
+            android:textColor="#FF666666"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="#FFCCCCCC"
+        android:dividerHeight="1px"
+        android:cacheColorHint="@android:color/transparent" 
+        android:listSelector="@android:color/transparent" 
+        android:fadingEdge="none" >
+    </ListView>
+
+</magic.yuyong.view.MagicLinear>

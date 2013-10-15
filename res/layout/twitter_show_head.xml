@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:magic="http://schemas.android.com/apk/res/magic.yuyong"
+              android:id="@+id/main_content"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/twitter_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:orientation="horizontal">
+
+        <magic.yuyong.view.Avatar
+            android:id="@+id/twitter_user_avatar"
+            android:layout_width="@dimen/avatar"
+            android:layout_height="@dimen/avatar"
+            android:src="@drawable/avatar"/>
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/twitter_user_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Wanyuyong"
+                android:textColor="#FF000000"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/twitter_time"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="2012-12-22 AM 08:38:43"
+                android:textColor="@color/theme_color"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/twitter_from"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="come from i Co"
+                android:textColor="@color/theme_color"
+                android:textSize="13sp"/>
+
+            <magic.yuyong.view.TwitterContent
+                android:id="@+id/twitter_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                magic:textColor="#FF333333"
+                magic:textSize="16sp"/>
+
+            <magic.yuyong.view.TwitterImageView
+                android:id="@+id/twitter_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:background="@drawable/shadow"
+                android:scaleType="fitXY"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/origin_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <magic.yuyong.view.Avatar
+            android:id="@+id/origin_user_avatar"
+            android:layout_width="@dimen/avatar"
+            android:layout_height="@dimen/avatar"
+            android:src="@drawable/avatar"/>
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/origin_user_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Unkown"
+                android:textColor="#FF000000"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/origin_time"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Unkown"
+                android:textColor="@color/theme_color"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/origin_from"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="come from i Co"
+                android:textColor="@color/theme_color"
+                android:textSize="13sp"/>
+
+            <magic.yuyong.view.TwitterContent
+                android:id="@+id/origin_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                magic:textColor="#FF333333"
+                magic:textSize="16sp"/>
+
+            <magic.yuyong.view.TwitterImageView
+                android:id="@+id/origin_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:scaleType="fitXY"
+                android:background="@drawable/shadow"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFEEEEEE"
+        >
+
+        <TextView
+            android:id="@+id/comment_but"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comments"
+            android:textColor="@color/theme_color"
+            android:textSize="15sp"
+            android:padding="5dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/repost_but"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reposts"
+            android:textColor="#FFCCCCCC"
+            android:textSize="15sp"
+            android:padding="5dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            ></TextView>
+    </RelativeLayout>
+
+</LinearLayout>
+

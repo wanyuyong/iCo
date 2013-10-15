@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dip"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dip"
+    android:background="@drawable/round_rect_but_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="5dip" >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:gravity="center"
+        android:text="Wanyuyong"
+        android:textColor="#FF555555"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:textColor="#FF666666"
+        android:textSize="14sp"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_marginTop="10dip"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dip" >
+    </LinearLayout>
+
+</LinearLayout>

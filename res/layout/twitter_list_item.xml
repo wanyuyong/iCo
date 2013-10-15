@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magic="http://schemas.android.com/apk/res/magic.yuyong"
+    android:id="@+id/container"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="5dip"
+    android:paddingRight="5dip"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip" 
+    android:background="@drawable/twitter_item_bg">
+
+    <magic.yuyong.view.Avatar
+        android:id="@+id/user_avatar"
+        android:layout_width="@dimen/avatar"
+        android:layout_height="@dimen/avatar"
+        android:src="@drawable/avatar" />
+
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dip"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="5dip">
+        
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Wanyuyong"
+            android:textColor="#FF333333"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="2012-12-22 AM 08:38:43"
+            android:textColor="@color/theme_color"
+            android:textSize="15sp"/>
+
+        <magic.yuyong.view.TwitterContent
+            android:id="@+id/content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            magic:textColor="#FF666666"
+            magic:textGap="1sp"
+            magic:textSize="14sp"/>
+
+        <magic.yuyong.view.AsyncImageView
+            android:id="@+id/pic"
+            android:layout_marginTop="5dip"
+            style="@style/ThumbnailPic"/>
+
+        <magic.yuyong.view.DashedLineView
+            android:id="@+id/divider"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_marginBottom="6dip"
+            android:layout_marginTop="8dip"/>
+
+        <TextView
+            android:id="@+id/origin_user_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Unkown"
+            android:textColor="#FF333333"
+            android:textSize="14sp"/>
+
+        <magic.yuyong.view.TwitterContent
+            android:id="@+id/origin_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dip"
+            magic:textColor="#FF999999"
+            magic:textGap="1sp"
+            magic:textSize="13sp"/>
+
+        <magic.yuyong.view.AsyncImageView
+            android:id="@+id/origin_pic"
+            android:layout_marginTop="5dip"
+            style="@style/ThumbnailPic"/>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip" >
+
+            <TextView
+                android:id="@+id/from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="from iCo"
+                android:textColor="@color/theme_color"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/repost_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="20R"
+                android:textColor="@color/theme_color"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/comment_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dip"
+                android:layout_toLeftOf="@id/repost_num"
+                android:text="15C"
+                android:textColor="@color/theme_color"
+                android:textSize="13sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

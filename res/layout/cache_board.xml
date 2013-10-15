@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/theme_color" >
+
+    <magic.yuyong.view.FlipBoardBg
+        android:id="@+id/flip_board_bg"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <magic.yuyong.view.FlipBoard
+        android:id="@+id/flip_board"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <TextView
+        android:id="@+id/start_but"
+        style="@style/start"
+        android:layout_gravity="top|left"
+        android:layout_margin="20dip" />
+
+</FrameLayout>

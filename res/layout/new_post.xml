@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_content"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFFFF"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_margin="5dip"
+        android:layout_weight="1" >
+
+        <EditText
+            android:id="@+id/post_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="top|left"
+            android:hint="@string/text_post_hint"
+            android:lineSpacingExtra="3dip"
+            android:maxLength="140"
+            android:textColor="#FF666666"
+            android:textCursorDrawable="@null"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/avatar"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="5dip"
+            android:gravity="center_vertical" >
+
+            <magic.yuyong.view.Avatar
+                android:id="@+id/pic"
+                android:layout_width="@dimen/avatar"
+                android:layout_height="@dimen/avatar" 
+                android:visibility="gone"/>
+
+            <CheckBox
+                android:id="@+id/check_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:visibility="gone"
+                android:text="@string/text_also_comment"
+                android:textColor="#FF888888" />
+
+            <View
+                android:layout_width="0dip"
+                android:layout_height="1dip"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/text_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#59333333"
+                android:paddingBottom="3dip"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:paddingTop="3dip"
+                android:text="0X"
+                android:textColor="#FFFFFFFF"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <magic.yuyong.view.FaceView
+        android:id="@+id/face_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:columnWidth="50dip"
+        android:listSelector="@drawable/face_item_bg"
+        android:numColumns="auto_fit"
+        android:padding="5dip"
+        android:stretchMode="columnWidth"
+        android:visibility="gone" >
+    </magic.yuyong.view.FaceView>
+
+</LinearLayout>

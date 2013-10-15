@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFFFFFFF">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dip">
+
+        <TextView
+            android:id="@+id/attention_but"
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:background="@drawable/round_rect_but_bg"
+            android:gravity="center_vertical"
+            android:text="@string/but_attention_me"
+            android:textColor="#FF555555"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/search_but"
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:layout_marginTop="10dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:background="@drawable/round_rect_but_bg"
+            android:gravity="center_vertical"
+            android:text="@string/but_search"
+            android:textColor="#FF555555"
+            android:textSize="15sp"/>
+
+        <LinearLayout
+            android:id="@+id/time_line_but"
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/round_rect_but_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip">
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/but_timeline_mode"
+                android:textColor="#FF555555"
+                android:textSize="15sp"/>
+
+            <CheckBox
+                android:id="@+id/timeline_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/notification_but"
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/round_rect_but_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip">
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/but_notification"
+                android:textColor="#FF555555"
+                android:textSize="15sp"/>
+
+            <CheckBox
+                android:id="@+id/notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/donate_but"
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/round_rect_but_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:text="@string/but_donate"
+            android:textColor="#FF555555"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/about_but"
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/round_rect_but_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:text="@string/but_about"
+            android:textColor="#FF555555"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/feedback_but"
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/round_rect_but_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:text="@string/but_feedback"
+            android:textColor="#FF555555"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/exit_but"
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/round_rect_but_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:text="@string/but_logout"
+            android:textColor="#FF555555"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+</ScrollView>

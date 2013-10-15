@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">i Co</string>
+    <string name="version">version : 2.3</string>
+
+    <string-array name="type_name">
+        <item>Entertainment</item>
+        <item>Funny</item>
+        <item>Beauty</item>
+        <item>Video</item>
+        <item>Constellation</item>
+        <item>Meng</item>
+        <item>Fashion</item>
+        <item>Cars</item>
+        <item>Food</item>
+        <item>Music</item>
+    </string-array>
+
+    <!-- Button -->
+    <string name="but_login">Login</string>
+    <string name="but_exit">Exit</string>
+    <string name="but_logout">Logout</string>
+    <string name="but_cache">Cache</string>
+    <string name="but_help">Help</string>
+    <string name="but_cancel">Cancel</string>
+    <string name="but_ok">OK</string>
+    <string name="but_clean">Clean</string>
+    <string name="but_clean_cache">Clean Cache</string>
+    <string name="but_channel">Channel</string>
+    <string name="but_back">Back</string>
+    <string name="but_back_scroll">Head</string>
+    <string name="but_timeline">TimeLine</string>
+    <string name="but_all">All</string>
+    <string name="but_original">Original</string>
+    <string name="but_attentions">Attentions</string>
+    <string name="but_stranger">Stranger</string>
+    <string name="but_refresh">Refresh</string>
+    <string name="but_edit">Edit</string>
+    <string name="but_change">Change</string>
+    <string name="but_save">Save</string>
+    <string name="but_share">Share</string>
+    <string name="but_to_beauty">Beauty</string>
+    <string name="but_myico">My iCo</string>
+    <string name="but_more">More</string>
+    <string name="but_setting">Setting</string>
+    <string name="but_friends">Friends</string>
+    <string name="but_my">My</string>
+    <string name="but_about">About</string>
+    <string name="but_start">Start</string>
+    <string name="but_random">Random</string>
+    <string name="but_clear_smallpic">ClearSmallpic</string>
+    <string name="but_feedback">Feedback</string>
+    <string name="but_submit">Submit</string>
+    <string name="but_comment">Comment</string>
+    <string name="but_reply_comment">Reply</string>
+    <string name="but_show">Show</string>
+    <string name="but_copy">Copy</string>
+    <string name="but_topic">Topic</string>
+    <string name="but_repost">Repost</string>
+    <string name="but_favorite">Favorite</string>
+    <string name="but_send">Send</string>
+    <string name="but_del">Delete</string>
+    <string name="but_profile">Profile</string>
+    <string name="but_follow">Follow</string>
+    <string name="but_at_ta">\@Ta</string>
+    <string name="but_unfollow">UnFollow</string>
+    <string name="but_search">Search</string>
+    <string name="but_see_original">Show Original</string>
+    <string name="but_attention_me">Author</string>
+    <string name="but_suitable_size">Suitable Size</string>
+    <string name="but_timeline_mode">Only TimeLine Mode</string>
+    <string name="but_notification">Receive Notification</string>
+    <string name="but_donate">Donate</string>
+
+    <!-- Title -->
+    <string name="title_channels">Channels</string>
+    <string name="title_about">About</string>
+    <string name="title_help">Help</string>
+    <string name="title_exit">Exit</string>
+    <string name="title_clean">Clean</string>
+    <string name="title_my_feedback">My Feedback</string>
+    <string name="title_feedback_question">Question</string>
+    <string name="title_del_img">Delete Pic</string>
+    <string name="title_comment_me">Comment Me</string>
+    <string name="title_get_friends">Choose Friends</string>
+    <string name="title_friends">Friends</string>
+    <string name="title_del_twitter">Delete Twitter</string>
+    <string name="title_save_twitter">Save Twitter</string>
+    <string name="title_notification">i Co Notification</string>
+    <string name="title_repost">Repost</string>
+    <string name="title_new_post">NewPost</string>
+    <string name="title_comment">Comment</string>
+    <string name="title_reply_comment">Reply Comment</string>
+    <string name="title_search">Search</string>
+    <string name="title_save_pic">Save Pic</string>
+    <string name="title_show_twitter">Twitter Info</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_setting">Setting</string>
+    <string name="title_follow">Follow</string>
+    <string name="title_unfollow">UnFollow</string>
+    <string name="title_prepare_pic">Prepare Pic</string>
+    <string name="title_show_pic">Show Pic</string>
+
+    <!-- Label -->
+    <string name="label_following">Following</string>
+    <string name="label_weibo">Weibo</string>
+    <string name="label_follower">Follower</string>
+    <string name="label_favourit">Favourit</string>
+    <string name="label_comment">Comment</string>
+    <string name="label_repost">Repost</string>
+    <string name="label_at_me">\@Me</string>
+    <string name="label_home">Home</string>
+    <string name="label_bilateral">Bilateral</string>
+    <string name="label_my">My</string>
+
+    <!-- Text -->
+    <string name="text_clean_cache_success">Clean Success.</string>
+    <string name="text_login_out_success">Login Out Success.</string>
+    <string name="text_token_expired">Token expired, please relogin.</string>
+    <string name="text_network_exception">Network connection exception.</string>
+    <string name="text_load_more">Loading more</string>
+    <string name="text_no_data">Has no data.</string>
+    <string name="text_nomore_data">Has no more data.</string>
+    <string name="text_sure_to_eixt">Are you sure to exit?</string>
+    <string name="text_sure_to_logout">Are you sure to logout?</string>
+    <string name="text_sure_to_clean">Are you sure to clean the cache?</string>
+    <string name="text_request_error">Request error.</string>
+    <string name="text_comment_hint">Please enter your comment</string>
+    <string name="text_post_hint">Please enter your post</string>
+    <string name="text_pic_to_big">The image size must &lt; 5M</string>
+    <string name="text_pic_size_incorrect">The image size is incorrect.</string>
+    <string name="text_del_img">Are you sure to remove the image?</string>
+    <string name="text_pull_up">More...</string>
+    <string name="text_leave_get_more">Leave to get more</string>
+    <string name="text_loading">Loading...</string>
+    <string name="text_post_success">Post success.</string>
+    <string name="text_post_faild">Post faild.</string>
+    <string name="text_del_twitter">Are you sure to delete this twitter?</string>
+    <string name="text_del_twitter_success">Delete twitter success.</string>
+    <string name="text_del_twitter_fail">Delete twitter fail.</string>
+    <string name="text_save_twitter">Are you sure to save this twitter?You can see them in the Cache.</string>
+    <string name="text_save_twitter_success">Save twitter success.</string>
+    <string name="text_save_twitter_fail">Save twitter fail, Maybe the image is too long.</string>
+    <string name="text_source">From:</string>
+    <string name="text_follow">Are you sure to follow?</string>
+    <string name="text_unfollow">Are you sure to unfollow?</string>
+    <string name="text_follow_succeed">Follow succed.</string>
+    <string name="text_follow_fail">Follow fail.</string>
+    <string name="text_unfollow_succeed">UnFollow succed.</string>
+    <string name="text_unfollow_fail">UnFollow fail.</string>
+    <string name="text_fav_succeed">Favorite success.</string>
+    <string name="text_fav_cancel_succeed">Remove favorite success.</string>
+    <string name="text_new_follower">new follower</string>
+    <string name="text_new_comment">new comment</string>
+    <string name="text_new_mention_status">twitter mention you</string>
+    <string name="text_trial_dialog">Hello, your i Co at present for Trial version, trial version has advertisement, if
+        you like this app, please buy official version, thank you for your support.
+    </string>
+    <string name="text_search_hint">Search</string>
+    <string name="text_search_prompt">Authorized limit, can only provide simple search.</string>
+    <string name="text_search_no_data">Search ability is limited, no data for just search.</string>
+    <string name="text_pic_save_success">Pic save success.</string>
+    <string name="text_pic_save_faild">Pic save faild.</string>
+    <string name="text_sure_to_save_pic">Are you sure to save this pic？</string>
+    <string name="text_copy_success">The text has been copied to the clipboard.</string>
+    <string name="text_also_repost">Also repost</string>
+    <string name="text_also_comment">Also comment</string>
+    <string name="text_feedback_topic">#iCo Feedback#</string>
+
+    <!-- Other -->
+    <string name="img_content_description">Image</string>
+    <!-- About -->
+    <string name="about">iCo is one of the most lightweight, most fresh, most personalized Sina microblog client.
+        This is the first time I tried, alone, from design to development and go to complete a feelings thing.
+        Because of busy work and energy limited, I will not operation and maintenance of the users offline, only update
+        regularly.
+        Welcome to deride, Thank you for your use and support. \n\n
+        The developers: Radish \n
+        The the feedback QQ: 116395208 \n
+    </string>
+
+</resources>

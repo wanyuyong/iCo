@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/post"
+          android:icon="@drawable/content_edit"
+          android:title="@string/but_edit"
+          android:showAsAction="always"/>
+    <item android:id="@+id/refresh"
+          android:icon="@drawable/navigation_refresh"
+          android:showAsAction="always"
+          android:title="@string/but_refresh" />
+    <item android:id="@+id/profile"
+          android:icon="@drawable/social_person"
+          android:showAsAction="always"
+          android:title="@string/but_my" />
+    <item android:id="@+id/sort"
+          android:icon="@drawable/sort_by"
+          android:showAsAction="always"
+          android:title="Sort">
+        <menu/>
+    </item>
+</menu>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_at_me"
+          android:icon="@drawable/ico_at_press"
+          android:title="\@我的"
+          android:showAsAction="always"/>
+    <item android:id="@+id/action_pmsg"
+          android:icon="@drawable/ico_letter"
+          android:showAsAction="always"
+          android:title="私信" />
+    <item android:id="@+id/action_redstar"
+          android:icon="@drawable/ico_like"
+          android:showAsAction="always"
+          android:title="小红心" />
+</menu>

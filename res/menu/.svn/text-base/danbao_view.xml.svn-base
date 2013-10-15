@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_collect"
+          android:icon="@drawable/btn_footer_magazine_selector"
+          android:title="收进杂志"
+          android:showAsAction="always"/>
+    <item android:id="@+id/action_me_like"
+          android:icon="@drawable/btn_footer_like_selector"
+          android:showAsAction="always"
+          android:title="喜欢" />
+    <item android:id="@+id/action_share"
+          android:icon="@drawable/btn_footer_share_selector"
+          android:showAsAction="always"
+          android:title="分享" />
+    <item android:id="@+id/action_comment"
+          android:icon="@drawable/btn_footer_comment_selector"
+          android:showAsAction="ifRoom"
+          android:title="评论" />
+    <item android:id="@+id/action_delete"
+          android:icon="@drawable/btn_footer_delete_selector"
+          android:showAsAction="ifRoom"
+          android:title="删除" />
+</menu>

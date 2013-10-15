@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="magic.yuyong"
+    android:versionCode="18"
+    android:versionName="2.3" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="15" />
+
+    <application
+        android:name=".app.MagicApplication"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:theme="@style/Theme.Magic_style" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.TwitterShowActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_show_twitter"
+            android:theme="@style/Theme.Magic_style"
+            android:uiOptions="splitActionBarWhenNarrow" />
+        <activity
+            android:name=".activity.GetFriendsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_get_friends"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:theme="@style/Theme.Magic_style" />
+        <activity
+            android:name=".activity.NewPostActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/Theme.Magic_style"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
+        <activity
+            android:name=".activity.TwitterBoardActivity"
+            android:screenOrientation="portrait"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:theme="@style/Theme.Magic_style"/>
+        <activity
+            android:name=".activity.TimeLineModeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/Theme.Magic_style"
+            android:uiOptions="splitActionBarWhenNarrow" />
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_profile"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:theme="@style/Theme.Magic_style" />
+        <activity
+            android:name=".activity.AboutActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:label="@string/title_about"
+            android:theme="@style/Theme.Magic_style" />
+        <activity
+            android:name=".activity.ShowFriendsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:label="@string/title_friends"
+            android:theme="@style/Theme.Magic_style" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:label="@string/title_setting"
+            android:theme="@style/Theme.Magic_style" />
+        <activity
+            android:name=".activity.PreparePicActivity"
+            android:label="@string/title_prepare_pic"
+            android:theme="@style/Theme.Magic_style"
+            android:uiOptions="splitActionBarWhenNarrow" />
+        <activity
+            android:name=".activity.ShowPic"
+            android:label="@string/title_show_pic"
+            android:theme="@style/Theme.Magic_style"
+            android:uiOptions="splitActionBarWhenNarrow" />
+        <activity
+            android:name=".activity.ShowGif"
+            android:label="@string/title_show_pic"
+            android:theme="@style/Theme.Magic_style"
+            android:uiOptions="splitActionBarWhenNarrow" />
+
+        <service android:name=".service.NotificationService" />
+
+        <receiver android:name=".service.MagicReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- umeng -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5018cea05270156dd800000d" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="magic" />
+
+        <service
+            android:name="com.umeng.common.net.DownloadingService"
+            android:exported="true"
+            android:process=":DownloadingService" >
+        </service>
+    </application>
+
+</manifest>

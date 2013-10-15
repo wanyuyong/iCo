@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <color name="theme_color">#FF33b5e5</color>
+
+    <color name="twitter_item_bg_unpressed">#FFFFFFFF</color>
+    <color name="twitter_item_bg_pressed">#FFDDDDDD</color>
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="10dip"
+    android:paddingLeft="10dip"
+    android:paddingTop="15dip"
+    android:paddingBottom="15dip">
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:text="Wanyuyong"
+        android:textSize="15sp"
+        android:textColor="#FF333333"/>
+    
+    <TextView
+        android:id="@+id/followers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:text="Wanyuyong"
+        android:textSize="12sp"
+        android:textColor="@color/theme_color"/>
+    
+</RelativeLayout>

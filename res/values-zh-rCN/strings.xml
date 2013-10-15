@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">i Co</string>
+    <string name="version">version : 2.3</string>
+
+    <string-array name="type_name">
+        <item>娱乐</item>
+        <item>搞笑</item>
+        <item>美女</item>
+        <item>视频</item>
+        <item>星座</item>
+        <item>卖萌</item>
+        <item>时尚</item>
+        <item>汽车</item>
+        <item>食物</item>
+        <item>音乐</item>
+    </string-array>
+
+    <!-- Button -->
+    <string name="but_login">登录</string>
+    <string name="but_exit">退出</string>
+    <string name="but_logout">注销</string>
+    <string name="but_cache">缓存</string>
+    <string name="but_help">帮助</string>
+    <string name="but_cancel">取消</string>
+    <string name="but_ok">确定</string>
+    <string name="but_clean">清理</string>
+    <string name="but_clean_cache">清理缓存</string>
+    <string name="but_channel">频道</string>
+    <string name="but_back">后退</string>
+    <string name="but_back_scroll">回滚</string>
+    <string name="but_timeline">时间线</string>
+    <string name="but_all">全部</string>
+    <string name="but_original">原创</string>
+    <string name="but_attentions">我关注的</string>
+    <string name="but_stranger">陌生人</string>
+    <string name="but_refresh">刷新</string>
+    <string name="but_edit">新微博</string>
+    <string name="but_change">更换</string>
+    <string name="but_save">保存</string>
+    <string name="but_share">分享</string>
+    <string name="but_to_beauty">美女</string>
+    <string name="but_myico">我的iCo</string>
+    <string name="but_more">更多</string>
+    <string name="but_setting">设置</string>
+    <string name="but_friends">朋友</string>
+    <string name="but_my">我的</string>
+    <string name="but_about">关于</string>
+    <string name="but_start">Start</string>
+    <string name="but_random">随机</string>
+    <string name="but_clear_smallpic">ClearSmallpic</string>
+    <string name="but_feedback">反馈</string>
+    <string name="but_submit">提交</string>
+    <string name="but_comment">评论</string>
+    <string name="but_reply_comment">回复</string>
+    <string name="but_show">查看</string>
+    <string name="but_copy">复制</string>
+    <string name="but_topic">话题</string>
+    <string name="but_repost">转发</string>
+    <string name="but_favorite">收藏</string>
+    <string name="but_send">发送</string>
+    <string name="but_del">删除</string>
+    <string name="but_profile">个人</string>
+    <string name="but_follow">关注</string>
+    <string name="but_at_ta">\@Ta</string>
+    <string name="but_unfollow">解除</string>
+    <string name="but_search">搜索</string>
+    <string name="but_see_original">查看原始图</string>
+    <string name="but_attention_me">关注作者</string>
+    <string name="but_suitable_size">合适大小</string>
+    <string name="but_timeline_mode">启动后直接进入TimeLine</string>
+    <string name="but_notification">接收通知</string>
+    <string name="but_donate">支持与捐赠</string>
+    <string name="but_camera">相机</string>
+    <string name="but_img">图库</string>
+    <string name="but_face">表情</string>
+    <string name="but_at">\@</string>
+
+    <!-- Label -->
+    <string name="label_following">关注</string>
+    <string name="label_weibo">微博</string>
+    <string name="label_follower">粉丝</string>
+    <string name="label_favourit">收藏</string>
+    <string name="label_comment">评论</string>
+    <string name="label_repost">转发</string>
+    <string name="label_at_me">\@我</string>
+    <string name="label_home">首页</string>
+    <string name="label_bilateral">互相关注</string>
+    <string name="label_my">我的</string>
+
+    <!-- Title -->
+    <string name="title_channels">频道</string>
+    <string name="title_about">关于</string>
+    <string name="title_help">帮助</string>
+    <string name="title_exit">退出</string>
+    <string name="title_clean">清理</string>
+    <string name="title_my_feedback">我的反馈</string>
+    <string name="title_feedback_question">问题</string>
+    <string name="title_del_img">删除图片</string>
+    <string name="title_comment_me">回复我的</string>
+    <string name="title_get_friends">选择朋友</string>
+    <string name="title_friends">朋友</string>
+    <string name="title_del_twitter">删除微博</string>
+    <string name="title_save_twitter">保存微博</string>
+    <string name="title_notification">i Co 通知</string>
+    <string name="title_repost">转发</string>
+    <string name="title_new_post">新微博</string>
+    <string name="title_comment">评论</string>
+    <string name="title_reply_comment">回复评论</string>
+    <string name="title_search">搜索</string>
+    <string name="title_save_pic">保存图片</string>
+    <string name="title_show_twitter">微博详情</string>
+    <string name="title_profile">个人详情</string>
+    <string name="title_setting">设置</string>
+    <string name="title_follow">关注</string>
+    <string name="title_unfollow">解除关注</string>
+    <string name="title_prepare_pic">准备图片</string>
+    <string name="title_show_pic">查看图片</string>
+
+    <!-- Text -->
+    <string name="text_clean_cache_success">清理成功.</string>
+    <string name="text_login_out_success">登出成功.</string>
+    <string name="text_token_expired">Token 过期, 请重新登录.</string>
+    <string name="text_network_exception">网络连接异常.</string>
+    <string name="text_load_more">加载更多</string>
+    <string name="text_no_data">没有数据.</string>
+    <string name="text_nomore_data">没有更多数据</string>
+    <string name="text_sure_to_eixt">你确定要退出吗?</string>
+    <string name="text_sure_to_logout">你确定要注销当前用户吗?</string>
+    <string name="text_sure_to_clean">你确定要清理缓存吗?</string>
+    <string name="text_request_error">请求失败.</string>
+    <string name="text_comment_hint">请输入您的评论</string>
+    <string name="text_post_hint">请输入您要发送的内容</string>
+    <string name="text_pic_to_big">图片的大小必需 &lt; 5M</string>
+    <string name="text_pic_size_incorrect">图片尺寸不合要求</string>
+    <string name="text_del_img">你确定删除这张图片吗?</string>
+    <string name="text_pull_up">更多...</string>
+    <string name="text_leave_get_more">松开获得更多</string>
+    <string name="text_loading">加载中...</string>
+    <string name="text_post_success">发送成功.</string>
+    <string name="text_post_faild">发送失败.</string>
+    <string name="text_del_twitter">你确定要删除这篇微博吗?</string>
+    <string name="text_del_twitter_success">删除微博成功.</string>
+    <string name="text_del_twitter_fail">删除微博失败.</string>
+    <string name="text_save_twitter">保存的微博可以在缓存里查看，你确定要保存这篇微博吗?</string>
+    <string name="text_save_twitter_success">保存微博成功.</string>
+    <string name="text_save_twitter_fail">保存微博失败，可能是因为图片过长.</string>
+    <string name="text_source">来自:</string>
+    <string name="text_follow">你确定要关注该用户吗?</string>
+    <string name="text_unfollow">你确定要解除关注吗?</string>
+    <string name="text_follow_succeed">关注成功</string>
+    <string name="text_follow_fail">关注失败</string>
+    <string name="text_unfollow_succeed">解除关注成功</string>
+    <string name="text_unfollow_fail">解除关注失败</string>
+    <string name="text_fav_succeed">收藏成功.</string>
+    <string name="text_fav_cancel_succeed">取消收藏成功.</string>
+    <string name="text_new_follower">个新粉丝</string>
+    <string name="text_new_comment">个新评论</string>
+    <string name="text_new_mention_status">条微博提到你</string>
+    <string name="text_trial_dialog">您好，你使用的iCo目前为试用版本，试用版会有广告，如果要去掉广告，请购买正式版，多谢支持。</string>
+    <string name="text_search_hint">搜索</string>
+    <string name="text_search_prompt">受权限限止，只能提供简单搜索。</string>
+    <string name="text_search_no_data">Sorry,搜索能力有限，没有搜索到数据。</string>
+    <string name="text_pic_save_success">图片保存成功。</string>
+    <string name="text_pic_save_faild">图片保存失败。</string>
+    <string name="text_sure_to_save_pic">您要保存这张图片吗？</string>
+    <string name="text_copy_success">文字已复制到剪切板。</string>
+    <string name="text_also_repost">同时转发</string>
+    <string name="text_also_comment">同时评论</string>
+    <string name="text_feedback_topic">#iCo微博 反馈#</string>
+
+    <!-- Other -->
+    <string name="img_content_description">图片</string>
+    <!-- About -->
+    <string name="about">
+        iCo是一款最轻量级，最清新，最个性的新浪微博客户端。
+        这是我头一次尝试，独自一人从设计到开发完整的去干一件有情怀的事儿。
+        由于平时工作忙，精力有限，就不在线下运营维护用户群了，只做定期更新。
+        哇咔咔，欢迎大家吐槽,感谢您的使用与支持。\n\n
+        开发者：萝卜同学\n
+        反馈QQ:116395208\n
+    </string>
+</resources>

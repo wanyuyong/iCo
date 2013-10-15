@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/refresh"
+          android:icon="@drawable/navigation_refresh"
+          android:title="@string/but_refresh"
+          android:showAsAction="always"/>
+    <item android:id="@+id/suitable"
+          android:showAsAction="always"
+          android:icon="@drawable/return_from_full_screen"
+          android:title="@string/but_suitable_size" />
+    <item android:id="@+id/save"
+          android:showAsAction="always"
+          android:icon="@drawable/content_save"
+          android:title="@string/but_save" />
+    <item android:id="@+id/see_original"
+          android:showAsAction="never"
+          android:title="@string/but_see_original" />
+</menu>

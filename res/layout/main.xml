@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/theme_color" >
+
+    <ImageView
+        android:id="@+id/clouds_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="-5dip"
+        android:src="@drawable/intro_clouds_top" />
+
+    <ImageView
+        android:id="@+id/clouds_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/intro_clouds_bottom" />
+
+    <TextView
+        android:id="@+id/appname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="#FFFFFFFF"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:shadowColor="#88888888"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="2"
+        android:text="@string/app_name" />
+
+    <Button
+        android:id="@+id/login_but"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appname"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:paddingLeft="30dip"
+        android:paddingRight="30dip"
+        android:text="@string/but_login"
+        android:textColor="#FFFFFFFF"
+        android:background="@drawable/old_switch_thumb_disabled_holo_light"/>
+
+</RelativeLayout>

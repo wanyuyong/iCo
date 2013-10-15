@@ -1,0 +1,150 @@
+# view res/layout/show_friends.xml #generated:22
+# view res/layout/timeline_mode.xml #generated:2
+-keep class android.support.v4.view.ViewPager { <init>(...); }
+
+# view AndroidManifest.xml #generated:117
+-keep class com.umeng.common.net.DownloadingService { <init>(...); }
+
+# view AndroidManifest.xml #generated:66
+-keep class magic.yuyong.activity.AboutActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:38
+-keep class magic.yuyong.activity.GetFriendsActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:22
+-keep class magic.yuyong.activity.MainActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:44
+-keep class magic.yuyong.activity.NewPostActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:84
+-keep class magic.yuyong.activity.PreparePicActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:60
+-keep class magic.yuyong.activity.ProfileActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:78
+-keep class magic.yuyong.activity.SettingActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:72
+-keep class magic.yuyong.activity.ShowFriendsActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:94
+-keep class magic.yuyong.activity.ShowGif { <init>(...); }
+
+# view AndroidManifest.xml #generated:89
+-keep class magic.yuyong.activity.ShowPic { <init>(...); }
+
+# view AndroidManifest.xml #generated:55
+-keep class magic.yuyong.activity.TimeLineModeActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:50
+-keep class magic.yuyong.activity.TwitterBoardActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:32
+-keep class magic.yuyong.activity.TwitterShowActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:18
+-keep class magic.yuyong.app.MagicApplication { <init>(...); }
+
+# view res/layout/show_gif.xml #generated:7
+-keep class magic.yuyong.gif.GifView { <init>(...); }
+
+# view AndroidManifest.xml #generated:102
+-keep class magic.yuyong.service.MagicReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:100
+-keep class magic.yuyong.service.NotificationService { <init>(...); }
+
+# view res/layout/twitter_list_item.xml #generated:52
+# view res/layout/twitter_list_item.xml #generated:81
+-keep class magic.yuyong.view.AsyncImageView { <init>(...); }
+
+# view res/layout/comment_item.xml #generated:15
+# view res/layout/comment_me_item.xml #generated:10
+# view res/layout/friend_item.xml #generated:7
+# view res/layout/new_post.xml #generated:35
+# view res/layout/nnew_post.xml #generated:61
+# view res/layout/profile_head.xml #generated:7
+# view res/layout/tile.xml #generated:15
+# view res/layout/twitter_list_item.xml #generated:14
+# view res/layout/twitter_show_head.xml #generated:16
+# view res/layout/twitter_show_head.xml #generated:80
+-keep class magic.yuyong.view.Avatar { <init>(...); }
+
+# view res/layout/comment_me_item.xml #generated:48
+# view res/layout/twitter_list_item.xml #generated:57
+-keep class magic.yuyong.view.DashedLineView { <init>(...); }
+
+# view res/layout/channel.xml #generated:13
+-keep class magic.yuyong.view.DeskView { <init>(...); }
+
+# view res/layout/twitter_board.xml #generated:61
+-keep class magic.yuyong.view.DivideView { <init>(...); }
+
+# view res/layout/new_post.xml #generated:70
+# view res/layout/nnew_post.xml #generated:126
+-keep class magic.yuyong.view.FaceView { <init>(...); }
+
+# view res/layout/cache_board.xml #generated:12
+-keep class magic.yuyong.view.FlipBoard { <init>(...); }
+
+# view res/layout/cache_board.xml #generated:7
+-keep class magic.yuyong.view.FlipBoardBg { <init>(...); }
+
+# view res/layout/channel.xml #generated:19
+-keep class magic.yuyong.view.IndicatorView { <init>(...); }
+
+# view res/layout/twitter_board.xml #generated:8
+# view res/layout/weibowall.xml #generated:18
+-keep class magic.yuyong.view.LeftSlideView { <init>(...); }
+
+# view res/layout/channel.xml #generated:2
+# view res/layout/search.xml #generated:2
+# view res/layout/weibowall.xml #generated:23
+-keep class magic.yuyong.view.MagicLinear { <init>(...); }
+
+# view res/layout/random_cache.xml #generated:8
+-keep class magic.yuyong.view.MyRotateView { <init>(...); }
+
+# view res/layout/weibowall.xml #generated:56
+-keep class magic.yuyong.view.PhotoScrollView { <init>(...); }
+
+# view res/layout/friends.xml #generated:2
+# view res/layout/profile.xml #generated:2
+# view res/layout/timeline_list.xml #generated:2
+# view res/layout/weibowall.xml #generated:51
+-keep class magic.yuyong.view.RefreshView { <init>(...); }
+
+# view res/layout/show_pic.xml #generated:7
+-keep class magic.yuyong.view.ScaleImageView { <init>(...); }
+
+# view res/layout/tile.xml #generated:31
+-keep class magic.yuyong.view.TileTextView { <init>(...); }
+
+# view res/layout/show_friends.xml #generated:8
+-keep class magic.yuyong.view.TitlePageIndicator { <init>(...); }
+
+# view res/layout/twitter_board.xml #generated:30
+-keep class magic.yuyong.view.TwitterBoard { <init>(...); }
+
+# view res/layout/twitter_board.xml #generated:24
+-keep class magic.yuyong.view.TwitterBoardScrollView { <init>(...); }
+
+# view res/layout/comment_item.xml #generated:43
+# view res/layout/comment_me_item.xml #generated:39
+# view res/layout/comment_me_item.xml #generated:55
+# view res/layout/twitter_list_item.xml #generated:44
+# view res/layout/twitter_list_item.xml #generated:72
+# view res/layout/twitter_show_head.xml #generated:118
+# view res/layout/twitter_show_head.xml #generated:54
+-keep class magic.yuyong.view.TwitterContent { <init>(...); }
+
+# view res/layout/twitter_show_head.xml #generated:125
+# view res/layout/twitter_show_head.xml #generated:61
+-keep class magic.yuyong.view.TwitterImageView { <init>(...); }
+
+# view res/layout/timeline_comments.xml #generated:2
+# view res/layout/timeline_list.xml #generated:8
+-keep class magic.yuyong.view.TwitterListView { <init>(...); }
+

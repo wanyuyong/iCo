@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/comment"
+          android:icon="@drawable/social_chat"
+          android:showAsAction="always"
+          android:title="@string/but_comment" />
+    <item android:id="@+id/forward"
+          android:icon="@drawable/social_forward"
+          android:showAsAction="always"
+          android:title="@string/but_repost" />
+    <item android:id="@+id/favorite"
+          android:icon="@drawable/rating_not_important"
+          android:showAsAction="ifRoom"
+          android:title="@string/but_favorite" />
+    <item android:id="@+id/copy"
+          android:icon="@drawable/content_copy"
+          android:showAsAction="never"
+          android:title="@string/but_copy"/>
+    <item android:id="@+id/share"
+          android:icon="@drawable/social_share"
+          android:showAsAction="never"
+          android:title="@string/but_share"
+          android:actionProviderClass="android.widget.ShareActionProvider"/>
+</menu>

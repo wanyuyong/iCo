@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_back"
+          android:icon="@drawable/detail_bottom_left_selector"
+          android:title="后退"
+          android:showAsAction="always"/>
+    <item android:id="@+id/action_forward"
+          android:icon="@drawable/detail_bottom_right_selector"
+          android:showAsAction="always"
+          android:title="前进" />
+    <item android:id="@+id/action_refresh"
+          android:icon="@drawable/detail_bottom_refresh_selector"
+          android:showAsAction="always"
+          android:title="刷新" />
+</menu>

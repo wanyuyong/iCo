@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/center_buttons"
+    android:layout_width="fill_parent"
+    android:layout_height="80dip"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/home"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:contentDescription="@string/img_content_description"
+        android:scaleType="center"
+        android:src="@drawable/home" />
+
+    <ImageView
+        android:id="@+id/new_post"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:contentDescription="@string/img_content_description"
+        android:scaleType="center"
+        android:src="@drawable/edit" />
+
+    <RelativeLayout
+        android:id="@+id/at"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/at_ico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/img_content_description"
+            android:scaleType="center"
+            android:src="@drawable/at" />
+
+        <TextView
+            android:id="@+id/unread_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/at_ico"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/notification_num_bg"
+            android:gravity="center"
+            android:textColor="#FFFFFFFF"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/comment"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/comment_ico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/img_content_description"
+            android:scaleType="center"
+            android:src="@drawable/comment" />
+
+        <TextView
+            android:id="@+id/unread_cmt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/comment_ico"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/notification_num_bg"
+            android:gravity="center"
+            android:textColor="#FFFFFFFF"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/profile"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:contentDescription="@string/img_content_description"
+        android:scaleType="center"
+        android:src="@drawable/profile" />
+
+</LinearLayout>

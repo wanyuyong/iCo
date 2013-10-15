@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <include layout="@layout/twitter_boad_right_bar" />
+
+    <magic.yuyong.view.LeftSlideView
+        android:id="@+id/slide_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FF000000" >
+
+            <FrameLayout
+                android:id="@+id/content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" 
+                android:background="@drawable/windowsbg">
+
+                <magic.yuyong.view.TwitterBoardScrollView
+                    android:id="@+id/twitter_board_scrollview"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                     >
+
+                    <magic.yuyong.view.TwitterBoard
+                        android:id="@+id/twitter_board"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent" />
+                </magic.yuyong.view.TwitterBoardScrollView>
+
+                <TextView
+                    android:id="@+id/start_but"
+                    style="@style/start"
+                    android:layout_gravity="top|left"
+                    android:layout_marginLeft="20dip"
+                    android:layout_marginTop="5dip" />
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    style="@style/progressbar"
+                    android:layout_gravity="top|right"
+                    android:layout_marginRight="10dip"
+                    android:layout_marginTop="10dip"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/more_but"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:paddingBottom="5dip"
+                    android:paddingRight="5dip"
+                    android:src="@drawable/more" />
+            </FrameLayout>
+
+            <magic.yuyong.view.DivideView
+                android:id="@+id/divide_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#FF000000"
+                android:visibility="invisible" />
+        </FrameLayout>
+    </magic.yuyong.view.LeftSlideView>
+
+</FrameLayout>
