@@ -48,6 +48,6 @@
         android:paddingRight="30dip"
         android:text="@string/but_login"
         android:textColor="#FFFFFFFF"
-        android:background="@drawable/old_switch_thumb_disabled_holo_light"/>
+        android:background="@null"/>
 
 </RelativeLayout>

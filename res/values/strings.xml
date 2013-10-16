@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">i Co</string>
-    <string name="version">version : 2.3</string>
+    <string name="version">version : 2.4</string>
 
     <string-array name="type_name">
         <item>Entertainment</item>
