@@ -72,6 +72,10 @@
     <string name="but_timeline_mode">Only TimeLine Mode</string>
     <string name="but_notification">Receive Notification</string>
     <string name="but_donate">Donate</string>
+    <string name="but_camera">Camera</string>
+    <string name="but_img">Album</string>
+    <string name="but_face">Face</string>
+    <string name="but_at">\@Friend</string>
 
     <!-- Title -->
     <string name="title_channels">Channels</string>

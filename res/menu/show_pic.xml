@@ -13,6 +13,6 @@
           android:icon="@drawable/content_save"
           android:title="@string/but_save" />
     <item android:id="@+id/see_original"
-          android:showAsAction="never"
+          android:showAsAction="ifRoom"
           android:title="@string/but_see_original" />
 </menu>

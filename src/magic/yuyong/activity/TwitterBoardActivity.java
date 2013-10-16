@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.Field;
 
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.*;
 
@@ -51,6 +52,7 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
     private TwitterBoard board;
     private TwitterBoardScrollView scrollView;
     private LeftSlideView slideView;
+    private View appName;
     private View rightBar;
     private LinearLayout groupLay;
     private TextView all;
@@ -141,6 +143,7 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
         scrollView.setTwitterBoardScrollListener(board);
         board.setScrollView(scrollView);
         pb.setVisibility(View.VISIBLE);
+        appName = findViewById(R.id.app_name);
         more = findViewById(R.id.more_but);
         more.setOnClickListener(this);
         start = (TextView) findViewById(R.id.start_but);
@@ -399,12 +402,19 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
         animaiont.setDuration(LeftSlideView.DURATION/2);
         rightBar.startAnimation(animaiont);
     }
+    
+    private void pandaAnimation(){
+    	Animation a = new AlphaAnimation(0, 1);
+    	a.setDuration(1000);
+    	appName.startAnimation(a);
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.more_but:
                 slideView.slide();
+                pandaAnimation();
                 if (!gettingGroup && groups.size() == 0) {
                     getGroup();
                 }

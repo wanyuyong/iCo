@@ -18,11 +18,11 @@
           android:title="@string/but_favorite" />
     <item android:id="@+id/share"
           android:icon="@drawable/social_share"
-          android:showAsAction="never"
+          android:showAsAction="ifRoom"
           android:title="@string/but_share"
           android:actionProviderClass="android.widget.ShareActionProvider"/>
     <item android:id="@+id/delete"
           android:icon="@drawable/content_discard"
-          android:showAsAction="never"
+          android:showAsAction="ifRoom"
           android:title="@string/but_del" />
 </menu>

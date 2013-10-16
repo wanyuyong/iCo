@@ -75,7 +75,7 @@
     <string name="but_camera">相机</string>
     <string name="but_img">图库</string>
     <string name="but_face">表情</string>
-    <string name="but_at">\@</string>
+    <string name="but_at">\@好友</string>
 
     <!-- Label -->
     <string name="label_following">关注</string>
