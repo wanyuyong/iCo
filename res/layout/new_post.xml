@@ -74,7 +74,6 @@
         android:columnWidth="50dip"
         android:listSelector="@drawable/face_item_bg"
         android:numColumns="auto_fit"
-        android:padding="5dip"
         android:stretchMode="columnWidth"
         android:visibility="gone" >
     </magic.yuyong.view.FaceView>

@@ -7,6 +7,8 @@ import java.lang.reflect.Field;
 
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.*;
 
 import com.umeng.update.UmengUpdateAgent;
