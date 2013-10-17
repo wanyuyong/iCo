@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="5dip">
+    android:padding="8dip">
 
     <magic.yuyong.view.Avatar
         android:id="@+id/user_avatar"
@@ -20,7 +20,7 @@
         android:layout_toRightOf="@id/user_avatar"
         android:layout_marginLeft="10dip"
         android:text="Wanyuyong"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textColor="#FF333333"/>
     
     <CheckBox android:id="@+id/is_choose"
@@ -29,6 +29,7 @@
         android:button="@drawable/checkbox_bg"
         android:clickable="false"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>

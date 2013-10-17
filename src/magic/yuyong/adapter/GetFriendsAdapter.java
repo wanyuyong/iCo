@@ -68,6 +68,7 @@ public class GetFriendsAdapter extends BaseAdapter{
 			holder.user_avatar.setDefaultImageResource(R.drawable.avatar);
 			holder.user_name = (TextView)convertView.findViewById(R.id.user_name);
 			holder.checkBox = (CheckBox)convertView.findViewById(R.id.is_choose);
+			holder.checkBox.setVisibility(View.VISIBLE);
 			convertView.setTag(holder);
 		}else{
 			holder = (ViewHolder) convertView.getTag();

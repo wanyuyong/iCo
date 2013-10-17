@@ -18,6 +18,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,20 +33,66 @@ import com.weibo.sdk.android.net.RequestListener;
 public class MainActivity extends BaseActivity implements OnClickListener,
 		WeiboAuthListener {
 	private TextView login_but;
+	private View content;
+	private View clouds_1, clouds_2, clouds_3, clouds_4, clouds_5;
 	private boolean has_check_update = false;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		actionBar.hide();
 		actionBar.setSplitBackgroundDrawable(getResources().getDrawable(R.color.theme_color));
 		setContentView(R.layout.main);
+		content = findViewById(R.id.content);
 		login_but = (TextView) this.findViewById(R.id.login_but);
 		login_but.setOnClickListener(this);
+		clouds_1 = findViewById(R.id.clouds_1);
+		clouds_2 = findViewById(R.id.clouds_2);
+		clouds_3 = findViewById(R.id.clouds_3);
+		clouds_4 = findViewById(R.id.clouds_4);
+		clouds_5 = findViewById(R.id.clouds_5);
 
 		Debug.v("token == null ? "
 				+ (MagicApplication.getInstance().getAccessToken() == null));
 		checkToken();
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		cloudsFlutter();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		cloudsStop();
+	}
+	
+	private Animation getAnimation(int duration){
+		Animation a = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -0.95f, 
+				Animation.RELATIVE_TO_PARENT, 1, 
+				Animation.RELATIVE_TO_SELF, 0, 
+				Animation.RELATIVE_TO_SELF, 0);
+		a.setDuration(duration);
+		a.setRepeatCount(Integer.MAX_VALUE);
+		return a;
+	}
+
+	private void cloudsFlutter(){
+		clouds_1.startAnimation(getAnimation(20000));
+		clouds_2.startAnimation(getAnimation(37000));
+		clouds_3.startAnimation(getAnimation(15000));
+		clouds_4.startAnimation(getAnimation(18000));
+		clouds_5.startAnimation(getAnimation(30000));
+	}
+	
+	private void cloudsStop(){
+		clouds_1.clearAnimation();
+		clouds_2.clearAnimation();
+		clouds_3.clearAnimation();
+		clouds_4.clearAnimation();
+		clouds_5.clearAnimation();
 	}
 
 	private void checkToken() {

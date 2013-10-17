@@ -2,6 +2,8 @@
 <resources>
     
     <color name="theme_color">#FF33b5e5</color>
+    <color name="theme_color_translucence">#8033b5e5</color>
+    <color name="theme_color_75">#C033b5e5</color>
 
     <color name="twitter_item_bg_unpressed">#FFFFFFFF</color>
     <color name="twitter_item_bg_pressed">#FFDDDDDD</color>

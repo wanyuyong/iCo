@@ -1,25 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/theme_color" >
 
     <ImageView
-        android:id="@+id/clouds_top"
+        android:id="@+id/clouds_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="-5dip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-10dip"
         android:src="@drawable/intro_clouds_top" />
-
+    
     <ImageView
-        android:id="@+id/clouds_bottom"
+        android:id="@+id/clouds_2"
+        android:layout_width="230dip"
+        android:layout_height="125dip"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dip"
+        android:src="@drawable/intro_clouds_bottom" />
+    
+    <ImageView
+        android:id="@+id/clouds_3"
+        android:layout_width="115dip"
+        android:layout_height="62dip"
+        android:layout_below="@+id/clouds_1"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/intro_clouds_bottom" />
+
+    
+    <ImageView
+        android:id="@+id/clouds_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/intro_clouds_bottom" />
+    
+    <ImageView
+        android:id="@+id/clouds_4"
+        android:layout_width="94dip"
+        android:layout_height="52dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dip"
+        android:src="@drawable/intro_clouds_top" />
+    
 
     <TextView
         android:id="@+id/appname"

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="12dip">
+    android:padding="15dip">
 
     <TextView
         android:id="@+id/user_name"
@@ -12,7 +12,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dip"
         android:text="Wanyuyong"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textColor="#FF333333"/>
     
     <TextView
@@ -23,7 +23,7 @@
         android:layout_marginLeft="10dip"
         android:layout_toRightOf="@id/user_name"
         android:text="Wanyuyong"
-        android:textSize="13sp"
+        android:textSize="15sp"
         android:textColor="@color/theme_color"/>
     
 </RelativeLayout>
