@@ -96,6 +96,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	}
 
 	private void checkToken() {
+		Debug.e("token == null ? "+(MagicApplication.getInstance().getAccessToken() == null));
 		if (MagicApplication.getInstance().getAccessToken() != null
 				&& MagicApplication.getInstance().getAccessToken()
 						.isSessionValid()) {

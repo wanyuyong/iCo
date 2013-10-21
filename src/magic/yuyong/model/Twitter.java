@@ -9,7 +9,6 @@ import magic.yuyong.util.Debug;
 import magic.yuyong.util.JsonUtil;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Parcel;
@@ -28,6 +27,7 @@ public class Twitter implements android.os.Parcelable {
 	private static final String FAVORITED = "favorited";
 	private static final String SOURCE = "source";
 	private static final String DELETED = "deleted";
+	private static final String PIC_URLS = "pic_urls";
 
 	private Long id;
 	private String text;
@@ -36,6 +36,8 @@ public class Twitter implements android.os.Parcelable {
 	private String thumbnail_pic;
 	private String bmiddle_pic;
 	private String original_pic;
+	private int pic_num = 0;
+	private String[] pic_urls = new String[pic_num];
 	private int pwidth;
 	private int pheight;
 	private String created_at;
@@ -77,6 +79,23 @@ public class Twitter implements android.os.Parcelable {
 
 	public void setReposts_count(int reposts_count) {
 		this.reposts_count = reposts_count;
+	}
+
+
+	public int getPic_num() {
+		return pic_num;
+	}
+
+	public void setPic_num(int pic_num) {
+		this.pic_num = pic_num;
+	}
+
+	public String[] getPic_urls() {
+		return pic_urls;
+	}
+
+	public void setPic_urls(String[] pic_urls) {
+		this.pic_urls = pic_urls;
 	}
 
 	public String getThumbnail_pic() {
@@ -200,6 +219,17 @@ public class Twitter implements android.os.Parcelable {
 		twitter.setReposts_count(JsonUtil.getInt(jsonObj, REPOSTS_COUNT));
 		String source = JsonUtil.getString(jsonObj, SOURCE);
 		twitter.setSource(getSourceText(source));
+		JSONArray array = JsonUtil.getJSONArray(jsonObj, PIC_URLS);
+		if (array != null) {
+			twitter.pic_num = array.length();
+			twitter.pic_urls = new String[twitter.pic_num];
+			for (int i = 0; i < array.length(); i++) {
+				try {
+					JSONObject o = array.getJSONObject(i);
+					twitter.pic_urls[i] = o.getString(THUMBNAIL_PIC);
+				} catch (Exception e) {}
+			}
+		}
 		twitter.setThumbnail_pic(JsonUtil.getString(jsonObj, THUMBNAIL_PIC));
 		twitter.setBmiddle_pic(JsonUtil.getString(jsonObj, BMIDDLE_PIC));
 		twitter.setOriginal_pic(JsonUtil.getString(jsonObj, ORIGINAL_PIC));
@@ -231,7 +261,7 @@ public class Twitter implements android.os.Parcelable {
 		}
 		return list;
 	}
-	
+
 	public static List<Twitter> parseFavorites(String json) {
 		List<Twitter> list = new ArrayList<Twitter>();
 		try {
@@ -240,7 +270,8 @@ public class Twitter implements android.os.Parcelable {
 			if (jsonArray != null && jsonArray.length() != 0) {
 				for (int i = 0; i < jsonArray.length(); i++) {
 					jsonObj = ((JSONObject) jsonArray.opt(i));
-					Twitter twitter = parseTwitter(jsonObj.getJSONObject("status"));
+					Twitter twitter = parseTwitter(jsonObj
+							.getJSONObject("status"));
 					if (twitter != null)
 						list.add(twitter);
 				}
@@ -266,6 +297,9 @@ public class Twitter implements android.os.Parcelable {
 				twitter.created_at = source.readString();
 				twitter.favorited = Boolean.valueOf(source.readString());
 				twitter.source = source.readString();
+				twitter.pic_num = source.readInt();
+				twitter.pic_urls = new String[twitter.pic_num];
+				source.readStringArray(twitter.pic_urls);
 				twitter.thumbnail_pic = source.readString();
 				twitter.bmiddle_pic = source.readString();
 				twitter.original_pic = source.readString();
@@ -306,6 +340,8 @@ public class Twitter implements android.os.Parcelable {
 			dest.writeString(created_at);
 			dest.writeString(String.valueOf(favorited));
 			dest.writeString(source);
+			dest.writeInt(pic_num);
+			dest.writeStringArray(pic_urls);
 			dest.writeString(thumbnail_pic);
 			dest.writeString(bmiddle_pic);
 			dest.writeString(original_pic);

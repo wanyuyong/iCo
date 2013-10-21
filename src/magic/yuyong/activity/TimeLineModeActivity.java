@@ -20,7 +20,6 @@ import magic.yuyong.model.Group;
 import magic.yuyong.model.Twitter;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
-import magic.yuyong.util.Debug;
 import magic.yuyong.view.RefreshView;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
