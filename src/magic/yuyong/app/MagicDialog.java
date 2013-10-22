@@ -50,7 +50,7 @@ public class MagicDialog extends Dialog{
 			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0,
 					LinearLayout.LayoutParams.MATCH_PARENT);
             lp.weight = 1;
-			int margin = DisplayUtil.dip2px(10, getContext().getResources().getDisplayMetrics().density);
+			int margin = (int) DisplayUtil.dpToPx(getContext().getResources(), 10);
 			lp.leftMargin = margin;
 			lp.rightMargin = margin;
 			button.setText(info.text);

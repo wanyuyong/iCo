@@ -139,8 +139,7 @@ public class FaceView extends GridView {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				ImageView view = new ImageView(getContext());
-				int size = DisplayUtil.dip2px(50, getResources()
-						.getDisplayMetrics().density);
+				int size = (int) DisplayUtil.dpToPx(getResources(), 50);
 				view.setLayoutParams(new LayoutParams(size, size));
 				view.setScaleType(ScaleType.CENTER);
 				convertView = view;

@@ -42,8 +42,7 @@ public class TwitterListView extends ListView {
 	private void init() {
 		timeLinePaint = new Paint();
 		timeLinePaint.setColor(PAINT_COLOR);
-		timeLineWidth = DisplayUtil.dip2px(timeLineWidth, getResources()
-				.getDisplayMetrics().density);
+		timeLineWidth = (int) DisplayUtil.dpToPx(getResources(), timeLineWidth);
 		timeLinePaint.setStrokeWidth(timeLineWidth);
 		timeLinePaint.setStyle(Style.STROKE);
 		timeLinePaint.setAntiAlias(true);

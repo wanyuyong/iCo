@@ -52,7 +52,7 @@ import com.weibo.sdk.android.net.RequestListener;
 
 public class TwitterShowActivity extends BaseActivity implements
 		OnClickListener {
-	
+
 	private View header, footer;
 	private ListView listView;
 	private TextView comment_but, repost_but;
@@ -404,7 +404,8 @@ public class TwitterShowActivity extends BaseActivity implements
 			if (!StringUtil.isEmpty(bmiddle_pic_url)) {
 				twitter_img.setVisibility(View.VISIBLE);
 				twitter_img.setUrl(bmiddle_pic_url);
-				setImgOnClickListener(twitter_img, twitter);
+				setImgOnClickListener(twitter_img, twitter,
+						twitter.getPic_urls());
 			}
 		}
 		if (twitter.getOrigin() != null) {
@@ -435,7 +436,8 @@ public class TwitterShowActivity extends BaseActivity implements
 				if (!StringUtil.isEmpty(origin_bmiddle_pic_url)) {
 					origin_img.setVisibility(View.VISIBLE);
 					origin_img.setUrl(origin_bmiddle_pic_url);
-					setImgOnClickListener(origin_img, origin);
+					setImgOnClickListener(origin_img, origin,
+							origin.getPic_urls());
 				}
 			}
 		}
@@ -461,29 +463,23 @@ public class TwitterShowActivity extends BaseActivity implements
 	}
 
 	private void setImgOnClickListener(final ImageView imageView,
-			final Twitter t) {
+			final Twitter t, final String[] pics) {
 		imageView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				String url = t.getBmiddle_pic();
 				String originalUrl = t.getOriginal_pic();
-				if (url.endsWith(".gif")) {
-					Intent showGif = new Intent(getApplicationContext(),
-							ShowGif.class);
-					showGif.putExtra("url", url);
-					startActivity(showGif);
-				} else {
-					 Intent showPic = new Intent(getApplicationContext(),
-					 ShowPic.class);
-					 showPic.putExtra("url", url);
-					 showPic.putExtra("originalUrl", originalUrl);
-					 startActivity(showPic);
-				}
+				Intent showPic = new Intent(getApplicationContext(),
+						ShowPics.class);
+				showPic.putExtra("url", url);
+				showPic.putExtra("originalUrl", originalUrl);
+				showPic.putExtra("pics", pics);
+				startActivity(showPic);
 			}
 		});
 	}
-	
+
 	private void getData(boolean refresh, final RequestState requestState) {
 		if (!requestState.isRequest) {
 			if (refresh || !requestState.isBottom) {

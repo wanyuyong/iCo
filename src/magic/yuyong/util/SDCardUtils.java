@@ -216,7 +216,7 @@ public class SDCardUtils {
 		saveBitmapByPath(picPath, bitmap);
 	}
 
-	private static String createFilePath(String url) {
+	public static String createFilePath(String url) {
 		String filename = MD5.toMd5(url.getBytes());
 		String path = SDCARD_DIR + filename;
 		return path;

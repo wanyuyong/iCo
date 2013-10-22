@@ -87,12 +87,7 @@
             android:theme="@style/Theme.Magic_style"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
-            android:name=".activity.ShowPic"
-            android:label="@string/title_show_pic"
-            android:theme="@style/Theme.Magic_style"
-            android:uiOptions="splitActionBarWhenNarrow" />
-        <activity
-            android:name=".activity.ShowGif"
+            android:name=".activity.ShowPics"
             android:label="@string/title_show_pic"
             android:theme="@style/Theme.Magic_style"
             android:uiOptions="splitActionBarWhenNarrow" />

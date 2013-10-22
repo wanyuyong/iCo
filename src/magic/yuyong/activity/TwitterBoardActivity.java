@@ -51,458 +51,462 @@ import com.weibo.sdk.android.api.WeiboAPI;
 import com.weibo.sdk.android.net.RequestListener;
 
 public class TwitterBoardActivity extends GetTwitterActivity implements
-        OnClickListener, TwitterBoard.BoundaryListener {
-    private TwitterBoard board;
-    private TwitterBoardScrollView scrollView;
-    private LeftSlideView slideView;
-    private View appName;
-    private View rightBar;
-    private LinearLayout groupLay;
-    private TextView all;
-    private View timeline, refresh, setting;
-    private ProgressBar pb;
-    private TextView start;
-    private View more;
-    private DivideView divide_view;
-    private View content;
-    private View innerButtonLay;
+		OnClickListener, TwitterBoard.BoundaryListener {
+	private TwitterBoard board;
+	private TwitterBoardScrollView scrollView;
+	private LeftSlideView slideView;
+	private View appName;
+	private View rightBar;
+	private LinearLayout groupLay;
+	private TextView all;
+	private View timeline, refresh, setting;
+	private ProgressBar pb;
+	private TextView start;
+	private View more;
+	private DivideView divide_view;
+	private View content;
+	private View innerButtonLay;
 
-    private List<Group> groups = new ArrayList<Group>();
-    private Long list_id;
-    private boolean gettingGroup;
+	private List<Group> groups = new ArrayList<Group>();
+	private Long list_id;
+	private boolean gettingGroup;
 
-    private static final int STATE_HOME = 0;
-    private static final int STATE_AT_ME = 1;
-    private static final int STATE_GROUP = 2;
-    private RequestState current;
+	private static final int STATE_HOME = 0;
+	private static final int STATE_AT_ME = 1;
+	private static final int STATE_GROUP = 2;
+	private RequestState current;
 
-    private RequestState homeState, atMeState, groupState;
+	private RequestState homeState, atMeState, groupState;
 
-    private BroadcastReceiver unReadReceiver = new BroadcastReceiver() {
+	private BroadcastReceiver unReadReceiver = new BroadcastReceiver() {
 
-        @Override
-        public void onReceive(Context arg0, Intent arg1) {
-            checkUnRead();
-        }
-    };
+		@Override
+		public void onReceive(Context arg0, Intent arg1) {
+			checkUnRead();
+		}
+	};
 
-    private Handler mHandler = new Handler() {
+	private Handler mHandler = new Handler() {
 
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case AppConstant.MSG_UPDATA_GROUP:
-                    for (final Group group : groups) {
-                        TextView textView = (TextView) getLayoutInflater().inflate(
-                                R.layout.group_but, null);
-                        int margin = DisplayUtil.dip2px(2, getResources().getDisplayMetrics().density);
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case AppConstant.MSG_UPDATA_GROUP:
+				for (final Group group : groups) {
+					TextView textView = (TextView) getLayoutInflater().inflate(
+							R.layout.group_but, null);
+					int margin = (int) DisplayUtil.dpToPx(getResources(), 2);
 
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        lp.setMargins(margin, margin, margin, margin);
-                        textView.setLayoutParams(lp);
-                        textView.setText(group.getName());
+					LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+							LinearLayout.LayoutParams.MATCH_PARENT,
+							LinearLayout.LayoutParams.WRAP_CONTENT);
+					lp.setMargins(margin, margin, margin, margin);
+					textView.setLayoutParams(lp);
+					textView.setText(group.getName());
 
-                        groupLay.addView(textView, 0);
-                        textView.setOnClickListener(new OnClickListener() {
+					groupLay.addView(textView, 0);
+					textView.setOnClickListener(new OnClickListener() {
 
-                            @Override
-                            public void onClick(View v) {
-                                if (list_id == null || list_id != group.getId()) {
-                                    list_id = group.getId();
-                                    current = groupState;
-                                    getTwitter(true);
-                                }
-                                slideView.slide();
-                            }
-                        });
-                    }
-                    break;
-            }
-        }
-    };
+						@Override
+						public void onClick(View v) {
+							if (list_id == null || list_id != group.getId()) {
+								list_id = group.getId();
+								current = groupState;
+								getTwitter(true);
+							}
+							slideView.slide();
+						}
+					});
+				}
+				break;
+			}
+		}
+	};
 
-    private void checkUpdate(){
-        boolean checkUpdate = getIntent().getBooleanExtra("check_update", false);
-        if(checkUpdate){
-            UmengUpdateAgent.update(this);
-        }
-    }
+	private void checkUpdate() {
+		boolean checkUpdate = getIntent()
+				.getBooleanExtra("check_update", false);
+		if (checkUpdate) {
+			UmengUpdateAgent.update(this);
+		}
+	}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-    	fullScreen();
-        super.onCreate(savedInstanceState);
-        
-        checkUpdate();
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		fullScreen();
+		super.onCreate(savedInstanceState);
 
-        registerReceiver(unReadReceiver, new IntentFilter(
-                AppConstant.ACTION_UNREAD_STATE_CHANGE_BROADCAST));
-        setContentView(R.layout.twitter_board);
-        board = (TwitterBoard) findViewById(R.id.twitter_board);
-        pb = (ProgressBar) findViewById(R.id.progress);
-        board.setBoundaryListener(this);
-        scrollView = (TwitterBoardScrollView) findViewById(R.id.twitter_board_scrollview);
-        scrollView.setTwitterBoardScrollListener(board);
-        board.setScrollView(scrollView);
-        pb.setVisibility(View.VISIBLE);
-        appName = findViewById(R.id.app_name);
-        more = findViewById(R.id.more_but);
-        more.setOnClickListener(this);
-        start = (TextView) findViewById(R.id.start_but);
-        start.setOnClickListener(this);
-        divide_view = (DivideView) findViewById(R.id.divide_view);
-        content = findViewById(R.id.content);
-        slideView = (LeftSlideView) findViewById(R.id.slide_view);
-        slideView.setGesture(false);
-        slideView.setListener(new LeftSlideView.Listener() {
-            @Override
-            public void onStateChange(boolean onRight) {
-                doAnimation(onRight);
-            }
-        });
-        rightBar = findViewById(R.id.right_bar);
-        groupLay = (LinearLayout) rightBar.findViewById(R.id.group_lay);
-        all = (TextView) rightBar.findViewById(R.id.all_but);
-        all.setOnClickListener(this);
-        refresh = rightBar.findViewById(R.id.refresh_but);
-        refresh.setOnClickListener(this);
-        setting = rightBar.findViewById(R.id.setting_but);
-        setting.setOnClickListener(this);
-        timeline = rightBar.findViewById(R.id.timeline_but);
-        timeline.setOnClickListener(this);
+		checkUpdate();
 
-        homeState = new RequestState(STATE_HOME);
-        atMeState = new RequestState(STATE_AT_ME);
-        groupState = new RequestState(STATE_GROUP);
-        current = homeState;
-        getTwitter(false);
+		registerReceiver(unReadReceiver, new IntentFilter(
+				AppConstant.ACTION_UNREAD_STATE_CHANGE_BROADCAST));
+		setContentView(R.layout.twitter_board);
+		board = (TwitterBoard) findViewById(R.id.twitter_board);
+		pb = (ProgressBar) findViewById(R.id.progress);
+		board.setBoundaryListener(this);
+		scrollView = (TwitterBoardScrollView) findViewById(R.id.twitter_board_scrollview);
+		scrollView.setTwitterBoardScrollListener(board);
+		board.setScrollView(scrollView);
+		pb.setVisibility(View.VISIBLE);
+		appName = findViewById(R.id.app_name);
+		more = findViewById(R.id.more_but);
+		more.setOnClickListener(this);
+		start = (TextView) findViewById(R.id.start_but);
+		start.setOnClickListener(this);
+		divide_view = (DivideView) findViewById(R.id.divide_view);
+		content = findViewById(R.id.content);
+		slideView = (LeftSlideView) findViewById(R.id.slide_view);
+		slideView.setGesture(false);
+		slideView.setListener(new LeftSlideView.Listener() {
+			@Override
+			public void onStateChange(boolean onRight) {
+				doAnimation(onRight);
+			}
+		});
+		rightBar = findViewById(R.id.right_bar);
+		groupLay = (LinearLayout) rightBar.findViewById(R.id.group_lay);
+		all = (TextView) rightBar.findViewById(R.id.all_but);
+		all.setOnClickListener(this);
+		refresh = rightBar.findViewById(R.id.refresh_but);
+		refresh.setOnClickListener(this);
+		setting = rightBar.findViewById(R.id.setting_but);
+		setting.setOnClickListener(this);
+		timeline = rightBar.findViewById(R.id.timeline_but);
+		timeline.setOnClickListener(this);
 
-        initInnerButtons();
-        checkUnRead();
+		homeState = new RequestState(STATE_HOME);
+		atMeState = new RequestState(STATE_AT_ME);
+		groupState = new RequestState(STATE_GROUP);
+		current = homeState;
+		getTwitter(false);
 
-        getGroup();
-    }
-    
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(unReadReceiver);
-    }
+		initInnerButtons();
+		checkUnRead();
 
-    private void checkUnRead() {
-        int follower = Persistence.getFollower(getApplicationContext());
-        int cmt = Persistence.getCmt(getApplicationContext());
-        int mention_status = Persistence
-                .getMention_status(getApplicationContext());
-        int mention_cmt = Persistence.getMention_cmt(getApplicationContext());
+		getGroup();
+	}
 
-        TextView view = (TextView) innerButtonLay.findViewById(R.id.unread_at);
-        if (mention_status != 0) {
-            view.setText(String.valueOf(mention_status));
-            view.setVisibility(View.VISIBLE);
-        } else {
-            view.setVisibility(View.GONE);
-        }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(unReadReceiver);
+	}
 
-        view = (TextView) innerButtonLay.findViewById(R.id.unread_cmt);
-        if (cmt != 0) {
-            view.setText(String.valueOf(cmt));
-            view.setVisibility(View.VISIBLE);
-        } else {
-            view.setVisibility(View.GONE);
-        }
-    }
+	private void checkUnRead() {
+		int follower = Persistence.getFollower(getApplicationContext());
+		int cmt = Persistence.getCmt(getApplicationContext());
+		int mention_status = Persistence
+				.getMention_status(getApplicationContext());
+		int mention_cmt = Persistence.getMention_cmt(getApplicationContext());
 
-    private void initInnerButtons() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        innerButtonLay = inflater.inflate(R.layout.inner_buttons, null);
-        innerButtonLay.setBackgroundDrawable(new Diagonal());
-        View homeButton = innerButtonLay.findViewById(R.id.home);
-        homeButton.setOnClickListener(this);
-        View postButton = innerButtonLay.findViewById(R.id.new_post);
-        postButton.setOnClickListener(this);
-        View atButton = innerButtonLay.findViewById(R.id.at);
-        atButton.setOnClickListener(this);
-        View commentButton = innerButtonLay.findViewById(R.id.comment);
-        commentButton.setOnClickListener(this);
-        View profileButton = innerButtonLay.findViewById(R.id.profile);
-        profileButton.setOnClickListener(this);
-    }
+		TextView view = (TextView) innerButtonLay.findViewById(R.id.unread_at);
+		if (mention_status != 0) {
+			view.setText(String.valueOf(mention_status));
+			view.setVisibility(View.VISIBLE);
+		} else {
+			view.setVisibility(View.GONE);
+		}
 
-    @Override
-    public void toTheEnd() {
-        getTwitter(false);
-    }
+		view = (TextView) innerButtonLay.findViewById(R.id.unread_cmt);
+		if (cmt != 0) {
+			view.setText(String.valueOf(cmt));
+			view.setVisibility(View.VISIBLE);
+		} else {
+			view.setVisibility(View.GONE);
+		}
+	}
 
-    @Override
-    public void toTheBeginning() {
+	private void initInnerButtons() {
+		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		innerButtonLay = inflater.inflate(R.layout.inner_buttons, null);
+		innerButtonLay.setBackgroundDrawable(new Diagonal());
+		View homeButton = innerButtonLay.findViewById(R.id.home);
+		homeButton.setOnClickListener(this);
+		View postButton = innerButtonLay.findViewById(R.id.new_post);
+		postButton.setOnClickListener(this);
+		View atButton = innerButtonLay.findViewById(R.id.at);
+		atButton.setOnClickListener(this);
+		View commentButton = innerButtonLay.findViewById(R.id.comment);
+		commentButton.setOnClickListener(this);
+		View profileButton = innerButtonLay.findViewById(R.id.profile);
+		profileButton.setOnClickListener(this);
+	}
 
-    }
+	@Override
+	public void toTheEnd() {
+		getTwitter(false);
+	}
 
-    @Override
-    protected void onUpdate(RequestState requestState) {
-        if (current == requestState) {
-            pb.setVisibility(View.GONE);
-            if (requestState.isRefresh) {
-                board.refresh();
-            }
-            List<Twitter> twitters = Twitter
-                    .parseTwitter(requestState.response);
-            if (twitters.size() == 0) {
-                requestState.isBottom = true;
-                Toast.makeText(getApplicationContext(),
-                        getResources().getText(R.string.text_nomore_data),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                board.addData(twitters);
-                if (requestState.maxId == 0) {
-                    requestState.maxId = twitters.get(0).getId();
-                }
-                requestState.page++;
-            }
-        }
-    }
+	@Override
+	public void toTheBeginning() {
 
-    @Override
-    protected void onError(RequestState requestState) {
-        if (current == requestState) {
-            pb.setVisibility(View.GONE);
-        }
-    }
+	}
 
-    private void getTwitter(boolean refresh) {
-        final RequestState requestState = current;
-        if (!requestState.isRequest) {
-            if (refresh || !requestState.isBottom) {
-                requestState.isRequest = true;
-                requestState.isRefresh = refresh;
-                if (refresh) {
-                    requestState.isBottom = false;
-                    requestState.maxId = 0;
-                    requestState.page = 1;
-                }
-                pb.setVisibility(View.VISIBLE);
+	@Override
+	protected void onUpdate(RequestState requestState) {
+		if (current == requestState) {
+			pb.setVisibility(View.GONE);
+			if (requestState.isRefresh) {
+				board.refresh();
+			}
+			List<Twitter> twitters = Twitter
+					.parseTwitter(requestState.response);
+			if (twitters.size() == 0) {
+				requestState.isBottom = true;
+				Toast.makeText(getApplicationContext(),
+						getResources().getText(R.string.text_nomore_data),
+						Toast.LENGTH_SHORT).show();
+			} else {
+				board.addData(twitters);
+				if (requestState.maxId == 0) {
+					requestState.maxId = twitters.get(0).getId();
+				}
+				requestState.page++;
+			}
+		}
+	}
 
-                switch (requestState.requestType) {
-                    case STATE_HOME:
-                        StatusesAPI homeAPI = new StatusesAPI(MagicApplication
-                                .getInstance().getAccessToken());
-                        homeAPI.homeTimeline(0, requestState.maxId,
-                                AppConstant.PAGE_NUM, requestState.page, false,
-                                WeiboAPI.FEATURE.ALL, false,
-                                new TwitterRequestListener(requestState));
-                        break;
+	@Override
+	protected void onError(RequestState requestState) {
+		if (current == requestState) {
+			pb.setVisibility(View.GONE);
+		}
+	}
 
-                    case STATE_AT_ME:
-                        StatusesAPI atMeAPI = new StatusesAPI(MagicApplication
-                                .getInstance().getAccessToken());
-                        atMeAPI.mentions(0, requestState.maxId,
-                                AppConstant.PAGE_NUM, requestState.page,
-                                WeiboAPI.AUTHOR_FILTER.ALL,
-                                WeiboAPI.SRC_FILTER.ALL, WeiboAPI.TYPE_FILTER.ALL,
-                                false, new TwitterRequestListener(requestState));
-                        break;
+	private void getTwitter(boolean refresh) {
+		final RequestState requestState = current;
+		if (!requestState.isRequest) {
+			if (refresh || !requestState.isBottom) {
+				requestState.isRequest = true;
+				requestState.isRefresh = refresh;
+				if (refresh) {
+					requestState.isBottom = false;
+					requestState.maxId = 0;
+					requestState.page = 1;
+				}
+				pb.setVisibility(View.VISIBLE);
 
-                    case STATE_GROUP:
-                        FriendshipsAPI_E friendshipsApi = new FriendshipsAPI_E(
-                                MagicApplication.getInstance().getAccessToken());
-                        friendshipsApi.groupTimeline(list_id, 0,
-                                requestState.maxId, AppConstant.PAGE_NUM,
-                                requestState.page, false, WeiboAPI.FEATURE.ALL,
-                                new TwitterRequestListener(requestState));
-                        break;
-                }
-            }
-        }
-    }
+				switch (requestState.requestType) {
+				case STATE_HOME:
+					StatusesAPI homeAPI = new StatusesAPI(MagicApplication
+							.getInstance().getAccessToken());
+					homeAPI.homeTimeline(0, requestState.maxId,
+							AppConstant.PAGE_NUM, requestState.page, false,
+							WeiboAPI.FEATURE.ALL, false,
+							new TwitterRequestListener(requestState));
+					break;
 
-    private void getGroup() {
-        gettingGroup = true;
-        FriendshipsAPI_E friendshipsApi = new FriendshipsAPI_E(MagicApplication
-                .getInstance().getAccessToken());
-        friendshipsApi.group(new RequestListener() {
+				case STATE_AT_ME:
+					StatusesAPI atMeAPI = new StatusesAPI(MagicApplication
+							.getInstance().getAccessToken());
+					atMeAPI.mentions(0, requestState.maxId,
+							AppConstant.PAGE_NUM, requestState.page,
+							WeiboAPI.AUTHOR_FILTER.ALL,
+							WeiboAPI.SRC_FILTER.ALL, WeiboAPI.TYPE_FILTER.ALL,
+							false, new TwitterRequestListener(requestState));
+					break;
 
-            @Override
-            public void onIOException(IOException arg0) {
-                gettingGroup = false;
-            }
+				case STATE_GROUP:
+					FriendshipsAPI_E friendshipsApi = new FriendshipsAPI_E(
+							MagicApplication.getInstance().getAccessToken());
+					friendshipsApi.groupTimeline(list_id, 0,
+							requestState.maxId, AppConstant.PAGE_NUM,
+							requestState.page, false, WeiboAPI.FEATURE.ALL,
+							new TwitterRequestListener(requestState));
+					break;
+				}
+			}
+		}
+	}
 
-            @Override
-            public void onError(WeiboException arg0) {
-                gettingGroup = false;
-            }
+	private void getGroup() {
+		gettingGroup = true;
+		FriendshipsAPI_E friendshipsApi = new FriendshipsAPI_E(MagicApplication
+				.getInstance().getAccessToken());
+		friendshipsApi.group(new RequestListener() {
 
-            @Override
-            public void onComplete(String response) {
-                gettingGroup = false;
-                groups.addAll(Group.parseGroup(response));
-                mHandler.sendEmptyMessage(AppConstant.MSG_UPDATA_GROUP);
-            }
-        });
-    }
+			@Override
+			public void onIOException(IOException arg0) {
+				gettingGroup = false;
+			}
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        Rect outRect = new Rect();
-        rightBar.getGlobalVisibleRect(outRect);
-        if (slideView.isOpen()
-                && !outRect.contains((int) ev.getX(), (int) ev.getY())) {
-            slideView.slide();
-            return true;
-        }
-        return super.dispatchTouchEvent(ev);
-    }
+			@Override
+			public void onError(WeiboException arg0) {
+				gettingGroup = false;
+			}
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && slideView.isOpen()) {
-            slideView.slide();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+			@Override
+			public void onComplete(String response) {
+				gettingGroup = false;
+				groups.addAll(Group.parseGroup(response));
+				mHandler.sendEmptyMessage(AppConstant.MSG_UPDATA_GROUP);
+			}
+		});
+	}
 
-    private void stopScroll() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
-            return;
-        }
-        Class<?> classType = HorizontalScrollView.class;
-        try {
-            Field field = classType.getDeclaredField("mScroller");
-            field.setAccessible(true);
-            OverScroller scroller = (OverScroller) field.get(scrollView);
-            scroller.abortAnimation();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		Rect outRect = new Rect();
+		rightBar.getGlobalVisibleRect(outRect);
+		if (slideView.isOpen()
+				&& !outRect.contains((int) ev.getX(), (int) ev.getY())) {
+			slideView.slide();
+			return true;
+		}
+		return super.dispatchTouchEvent(ev);
+	}
 
-    private void doAnimation(boolean open) {
-        float fromDegrees = 0;
-        float toDegrees = 0;
-        float fromX = 0;
-        float toX = 0;
-        float fromAlpha = 0;
-        float toAlpha = 0;
-        if (open) {
-            fromDegrees = 10;
-            toDegrees = 0;
-            fromX = rightBar.getWidth() / 3;
-            toX = 0;
-            fromAlpha = .3f;
-            toAlpha = 1;
-        } else {
-            fromDegrees = 0;
-            toDegrees = 10;
-            fromX = 0;
-            toX = rightBar.getWidth() / 3;
-            fromAlpha = 1;
-            toAlpha = .3f;
-        }
-        Animation animaiont = new Rotate3dAnimation(fromDegrees, toDegrees, fromX, toX, 0, 0, fromAlpha, toAlpha,
-                0, rightBar.getHeight() / 2);
-        animaiont.setDuration(LeftSlideView.DURATION/2);
-        rightBar.startAnimation(animaiont);
-    }
-    
-    private void pandaAnimation(){
-    	Animation a = new AlphaAnimation(0, 1);
-    	a.setDuration(1000);
-    	appName.startAnimation(a);
-    }
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && slideView.isOpen()) {
+			slideView.slide();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.more_but:
-                slideView.slide();
-                pandaAnimation();
-                if (!gettingGroup && groups.size() == 0) {
-                    getGroup();
-                }
-                break;
-            case R.id.refresh_but:
-                getTwitter(true);
-                slideView.slide();
-                break;
-            case R.id.setting_but:
-                Intent settingIntent = new Intent(getApplicationContext(), SettingActivity.class);
-                startActivity(settingIntent);
-                break;
-            case R.id.start_but:
-                stopScroll();
-                divide_view.setVisibility(View.VISIBLE);
-                divide_view.divide(
-                        0,
-                        start.getHeight()
-                                + start.getTop()
-                                + DisplayUtil.dip2px(5, getResources()
-                                .getDisplayMetrics().density), content,
-                        innerButtonLay);
-                break;
-            case R.id.home:
-                divide_view.close();
-                current = homeState;
-                getTwitter(true);
-                break;
-            case R.id.new_post:
-                Intent newPostIntent = new Intent(getApplicationContext(),
-                        NewPostActivity.class);
-                startActivity(newPostIntent);
-                break;
-            case R.id.at:
-                divide_view.close();
-                current = atMeState;
-                getTwitter(true);
-                if (Persistence.getMention_status(getApplicationContext()) != 0) {
-                    UnReadAPI unReadAPI = new UnReadAPI(MagicApplication.getInstance().getAccessToken());
-                    unReadAPI.clear(new RequestListener() {
+	private void stopScroll() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
+			return;
+		}
+		Class<?> classType = HorizontalScrollView.class;
+		try {
+			Field field = classType.getDeclaredField("mScroller");
+			field.setAccessible(true);
+			OverScroller scroller = (OverScroller) field.get(scrollView);
+			scroller.abortAnimation();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-                        @Override
-                        public void onIOException(IOException arg0) {
-                        }
+	private void doAnimation(boolean open) {
+		float fromDegrees = 0;
+		float toDegrees = 0;
+		float fromX = 0;
+		float toX = 0;
+		float fromAlpha = 0;
+		float toAlpha = 0;
+		if (open) {
+			fromDegrees = 10;
+			toDegrees = 0;
+			fromX = rightBar.getWidth() / 3;
+			toX = 0;
+			fromAlpha = .3f;
+			toAlpha = 1;
+		} else {
+			fromDegrees = 0;
+			toDegrees = 10;
+			fromX = 0;
+			toX = rightBar.getWidth() / 3;
+			fromAlpha = 1;
+			toAlpha = .3f;
+		}
+		Animation animaiont = new Rotate3dAnimation(fromDegrees, toDegrees,
+				fromX, toX, 0, 0, fromAlpha, toAlpha, 0,
+				rightBar.getHeight() / 2);
+		animaiont.setDuration(LeftSlideView.DURATION / 2);
+		rightBar.startAnimation(animaiont);
+	}
 
-                        @Override
-                        public void onError(WeiboException arg0) {
-                        }
+	private void pandaAnimation() {
+		Animation a = new AlphaAnimation(0, 1);
+		a.setDuration(1000);
+		appName.startAnimation(a);
+	}
 
-                        @Override
-                        public void onComplete(String arg0) {
-                            Persistence.setMention_status(getApplicationContext(), 0);
-                            sendBroadcast(new Intent(AppConstant.ACTION_UNREAD_STATE_CHANGE_BROADCAST));
-                        }
-                    }, UnReadAPI.TYPE_MENTION_STATUS);
-                }
-                break;
-            case R.id.comment:
-                Intent commentActivity = new Intent(getApplicationContext(),
-                        TimeLineModeActivity.class);
-                commentActivity.putExtra("pos", TimeLineModeActivity.VIEW_COMMENT);
-                startActivity(commentActivity);
-                break;
-            case R.id.timeline_but:
-                Intent timeLineIntent = new Intent(getApplicationContext(),
-                        TimeLineModeActivity.class);
-                startActivity(timeLineIntent);
-                break;
-            case R.id.all_but:
-                if (current != homeState) {
-                    current = homeState;
-                    getTwitter(true);
-                }
-                slideView.slide();
-                break;
-            case R.id.profile:
-                Intent profileIntent = new Intent(getApplicationContext(),
-                        ProfileActivity.class);
-                profileIntent.putExtra("uid",
-                        Persistence.getUID(getApplicationContext()));
-                startActivity(profileIntent);
-                break;
-            default:
-                break;
-        }
-    }
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.more_but:
+			slideView.slide();
+			pandaAnimation();
+			if (!gettingGroup && groups.size() == 0) {
+				getGroup();
+			}
+			break;
+		case R.id.refresh_but:
+			getTwitter(true);
+			slideView.slide();
+			break;
+		case R.id.setting_but:
+			Intent settingIntent = new Intent(getApplicationContext(),
+					SettingActivity.class);
+			startActivity(settingIntent);
+			break;
+		case R.id.start_but:
+			stopScroll();
+			divide_view.setVisibility(View.VISIBLE);
+			divide_view.divide(0, start.getHeight() + start.getTop()
+					+ (int) DisplayUtil.dpToPx(getResources(), 5), content,
+					innerButtonLay);
+			break;
+		case R.id.home:
+			divide_view.close();
+			current = homeState;
+			getTwitter(true);
+			break;
+		case R.id.new_post:
+			Intent newPostIntent = new Intent(getApplicationContext(),
+					NewPostActivity.class);
+			startActivity(newPostIntent);
+			break;
+		case R.id.at:
+			divide_view.close();
+			current = atMeState;
+			getTwitter(true);
+			if (Persistence.getMention_status(getApplicationContext()) != 0) {
+				UnReadAPI unReadAPI = new UnReadAPI(MagicApplication
+						.getInstance().getAccessToken());
+				unReadAPI.clear(new RequestListener() {
+
+					@Override
+					public void onIOException(IOException arg0) {
+					}
+
+					@Override
+					public void onError(WeiboException arg0) {
+					}
+
+					@Override
+					public void onComplete(String arg0) {
+						Persistence.setMention_status(getApplicationContext(),
+								0);
+						sendBroadcast(new Intent(
+								AppConstant.ACTION_UNREAD_STATE_CHANGE_BROADCAST));
+					}
+				}, UnReadAPI.TYPE_MENTION_STATUS);
+			}
+			break;
+		case R.id.comment:
+			Intent commentActivity = new Intent(getApplicationContext(),
+					TimeLineModeActivity.class);
+			commentActivity.putExtra("pos", TimeLineModeActivity.VIEW_COMMENT);
+			startActivity(commentActivity);
+			break;
+		case R.id.timeline_but:
+			Intent timeLineIntent = new Intent(getApplicationContext(),
+					TimeLineModeActivity.class);
+			startActivity(timeLineIntent);
+			break;
+		case R.id.all_but:
+			if (current != homeState) {
+				current = homeState;
+				getTwitter(true);
+			}
+			slideView.slide();
+			break;
+		case R.id.profile:
+			Intent profileIntent = new Intent(getApplicationContext(),
+					ProfileActivity.class);
+			profileIntent.putExtra("uid",
+					Persistence.getUID(getApplicationContext()));
+			startActivity(profileIntent);
+			break;
+		default:
+			break;
+		}
+	}
 
 }

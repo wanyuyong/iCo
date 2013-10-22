@@ -3,10 +3,10 @@ package magic.yuyong.adapter;
 import java.util.List;
 
 import magic.yuyong.R;
-import magic.yuyong.activity.ShowGif;
-import magic.yuyong.activity.ShowPic;
 import magic.yuyong.activity.ProfileActivity;
+import magic.yuyong.activity.ShowPics;
 import magic.yuyong.model.Twitter;
+import magic.yuyong.util.Debug;
 import magic.yuyong.util.StringUtil;
 import magic.yuyong.view.AsyncImageView;
 import magic.yuyong.view.TwitterContent;
@@ -24,8 +24,8 @@ public class TwitterListAdapter extends BaseAdapter {
 	private Context mContext;
 	private LayoutInflater inflater;
 
-    public static final int INVALID_POSTION = -1;
-    private int selectedPostion = INVALID_POSTION;
+	public static final int INVALID_POSTION = -1;
+	private int selectedPostion = INVALID_POSTION;
 
 	public TwitterListAdapter(Context content) {
 		super();
@@ -34,10 +34,10 @@ public class TwitterListAdapter extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-    public void setItemOnSelected(int postion){
-        selectedPostion = postion;
-        notifyDataSetChanged();
-    }
+	public void setItemOnSelected(int postion) {
+		selectedPostion = postion;
+		notifyDataSetChanged();
+	}
 
 	public void setData(List<Twitter> twitters) {
 		this.twitters = twitters;
@@ -69,7 +69,7 @@ public class TwitterListAdapter extends BaseAdapter {
 	}
 
 	public static class ViewHolder {
-        public View container;
+		public View container;
 		public AsyncImageView user_avatar;
 		public TextView user_name;
 		public TextView time;
@@ -92,7 +92,7 @@ public class TwitterListAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.twitter_list_item, null);
 			holder = new ViewHolder();
-            holder.container = convertView.findViewById(R.id.container);
+			holder.container = convertView.findViewById(R.id.container);
 			holder.user_avatar = (AsyncImageView) convertView
 					.findViewById(R.id.user_avatar);
 			holder.user_avatar.setDefaultImageResource(R.drawable.avatar);
@@ -119,11 +119,12 @@ public class TwitterListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		holder.twitter = twitter;
-        if(selectedPostion == position){
-            holder.container.setBackgroundResource(R.color.twitter_item_bg_pressed);
-        }else{
-            holder.container.setBackgroundResource(R.drawable.twitter_item_bg);
-        }
+		if (selectedPostion == position) {
+			holder.container
+					.setBackgroundResource(R.color.twitter_item_bg_pressed);
+		} else {
+			holder.container.setBackgroundResource(R.drawable.twitter_item_bg);
+		}
 
 		String avatar_url = twitter.getUser().getProfile_image_url();
 		holder.user_avatar.setUrl(avatar_url);
@@ -147,7 +148,8 @@ public class TwitterListAdapter extends BaseAdapter {
 
 				@Override
 				public void onClick(View view) {
-					showPic(twitter.getBmiddle_pic(), twitter.getOriginal_pic());
+					showPic(twitter.getBmiddle_pic(),
+							twitter.getOriginal_pic(), twitter.getPic_urls());
 				}
 			});
 			holder.pic.setUrl(pic_url);
@@ -177,7 +179,8 @@ public class TwitterListAdapter extends BaseAdapter {
 					@Override
 					public void onClick(View view) {
 						showPic(twitter.getOrigin().getBmiddle_pic(), twitter
-								.getOrigin().getOriginal_pic());
+								.getOrigin().getOriginal_pic(), twitter
+								.getOrigin().getPic_urls());
 					}
 				});
 				holder.origin_pic.setUrl(origin_pic_url);
@@ -194,17 +197,12 @@ public class TwitterListAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private void showPic(String url, String originalUrl) {
-		if (url.endsWith(".gif")) {
-			Intent showGif = new Intent(mContext, ShowGif.class);
-			showGif.putExtra("url", url);
-			mContext.startActivity(showGif);
-		} else {
-			Intent showPic = new Intent(mContext, ShowPic.class);
-			showPic.putExtra("url", url);
-			showPic.putExtra("originalUrl", originalUrl);
-			mContext.startActivity(showPic);
-		}
+	private void showPic(String url, String originalUrl, String[] pics) {
+		Intent showPic = new Intent(mContext, ShowPics.class);
+		showPic.putExtra("url", url);
+		showPic.putExtra("originalUrl", originalUrl);
+		showPic.putExtra("pics", pics);
+		mContext.startActivity(showPic);
 	}
 
 }

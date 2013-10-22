@@ -119,7 +119,7 @@ public class LeftSlideView extends ViewGroup {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawable.setBounds(getWidth(), 0, getWidth() + DisplayUtil.dip2px(3, getResources().getDisplayMetrics().density), getHeight());
+        drawable.setBounds(getWidth(), 0, getWidth() + (int)DisplayUtil.dpToPx(getResources(), 3), getHeight());
         drawable.draw(canvas);
     }
 

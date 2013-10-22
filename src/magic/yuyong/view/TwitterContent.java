@@ -63,10 +63,8 @@ public class TwitterContent extends View implements OnGestureListener {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		int defaut_text_size = DisplayUtil.sp2px(DEFAUT_TEXT_SIZE,
-				getResources().getDisplayMetrics().scaledDensity);
-		int defaut_text_gap = DisplayUtil.sp2px(DEFAUT_GAP, getResources()
-				.getDisplayMetrics().scaledDensity);
+		int defaut_text_size = (int) DisplayUtil.spToPx(getResources(), DEFAUT_TEXT_SIZE);
+		int defaut_text_gap = (int) DisplayUtil.spToPx(getResources(), DEFAUT_GAP);
 		mGesture = new GestureDetector(this);
 		if (attrs != null) {
 			TypedArray a = context.obtainStyledAttributes(attrs,

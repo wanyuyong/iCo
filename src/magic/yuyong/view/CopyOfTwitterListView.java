@@ -49,8 +49,7 @@ public class CopyOfTwitterListView extends ListView {
 	private void init() {
 		paint = new Paint();
 		paint.setColor(PAINT_COLOR);
-		paintRealWidth = DisplayUtil.dip2px(PAINT_WIDTH, getResources()
-				.getDisplayMetrics().density);
+		paintRealWidth = (int) DisplayUtil.dpToPx(getResources(), PAINT_WIDTH);
 		paint.setStrokeWidth(paintRealWidth);
 		paint.setStyle(Style.STROKE);
 		paint.setAntiAlias(true);

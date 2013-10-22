@@ -48,8 +48,8 @@ public class DivideView extends ViewGroup implements
 
 	private void init() {
 		mGestureDetector = new GestureDetector(this);
-		divideH = DisplayUtil.dip2px(divideH, getResources().getDisplayMetrics().density);
-        shadow_h = DisplayUtil.dip2px(shadow_h, getResources().getDisplayMetrics().density);
+		divideH = (int) DisplayUtil.dpToPx(getResources(), divideH);
+        shadow_h = (int) DisplayUtil.dpToPx(getResources(), shadow_h);
 	}
 
 	@Override

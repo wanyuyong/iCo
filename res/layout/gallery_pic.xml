@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFFFF" >
+    android:layout_height="match_parent" >
 
-    <magic.yuyong.gif.GifView
+    <magic.yuyong.view.AsyncSubsamplingScaleImageView
         android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+    
+    <pl.droidsonroids.gif.AsyncGifImageView
+        android:id="@+id/gif_image"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:visibility="gone"/>
 
     <ProgressBar
         android:id="@+id/progress"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dip"
+        android:layout_gravity="center"
         android:max="100"
         android:visibility="gone" />
 

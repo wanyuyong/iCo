@@ -85,7 +85,7 @@ public class RefreshView extends ViewGroup implements OnGestureListener {
 		shadow_BT = new GradientDrawable(
 				GradientDrawable.Orientation.BOTTOM_TOP, colors);
 		shadow_BT.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-		shadowH = DisplayUtil.dip2px(shadowH, getResources().getDisplayMetrics().density);
+		shadowH = (int) DisplayUtil.dpToPx(getResources(), shadowH);
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class RefreshView extends ViewGroup implements OnGestureListener {
 		}
 		if (state == WILL_REFRESH) {
 			state = REFRESHING;
-			int dy = progressBarTop.getTop() - distanceY - DisplayUtil.dip2px(15, getResources().getDisplayMetrics().density);
+			int dy = (int) (progressBarTop.getTop() - distanceY - DisplayUtil.dpToPx(getResources(), 15));
 			int d = (int) (back_duration_max * Math.abs(dy) / (float) headView
 					.getHeight());
 			scroller.startScroll(0, distanceY, 0, dy, d);
@@ -197,7 +197,7 @@ public class RefreshView extends ViewGroup implements OnGestureListener {
 	}
 
 	public void refresh() {
-		scrollTo(0, progressBarTop.getTop() - DisplayUtil.dip2px(15, getResources().getDisplayMetrics().density));
+		scrollTo(0, (int) (progressBarTop.getTop() - DisplayUtil.dpToPx(getResources(), 15)));
 		state = WILL_REFRESH;
 		back();
 	}
@@ -280,7 +280,7 @@ public class RefreshView extends ViewGroup implements OnGestureListener {
 		}
 
 		scrollBy(0, (int) distanceY);
-		int top = progressBarTop.getTop() - DisplayUtil.dip2px(15, getResources().getDisplayMetrics().density);
+		int top = (int) (progressBarTop.getTop() - DisplayUtil.dpToPx(getResources(), 15));
 		if (getScrollY() > top && state == WILL_REFRESH) {
 			doAnimation();
 			state = NORMAL;

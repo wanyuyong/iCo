@@ -58,10 +58,8 @@ public class TileTextView extends View {
 	}
 
 	private void init() {
-		textSize = DisplayUtil.sp2px(textSize, getResources()
-				.getDisplayMetrics().scaledDensity);
-		lineGap = DisplayUtil.dip2px(lineGap, getResources()
-				.getDisplayMetrics().density);
+		textSize = (int) DisplayUtil.spToPx(getResources(), textSize);
+		lineGap = (int) DisplayUtil.dpToPx(getResources(), lineGap);
 		textColor = Color.WHITE;
 
 		mPaint = new Paint();

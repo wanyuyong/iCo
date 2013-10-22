@@ -35,8 +35,7 @@ public class Avatar extends AsyncImageView {
 	}
 
 	private void init() {
-		borderW = DisplayUtil.dip2px(borderW, getResources()
-				.getDisplayMetrics().density);
+		borderW = DisplayUtil.dpToPx(getResources(), borderW);
 		paint_border = new Paint();
 		paint_border.setAntiAlias(true);
 		paint_border.setColor(Color.WHITE);

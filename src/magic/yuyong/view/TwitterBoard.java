@@ -125,8 +125,7 @@ public class TwitterBoard extends ViewGroup implements
 	}
 
 	private void init() {
-		gap_tile = DisplayUtil.dip2px(gap_tile, getResources()
-				.getDisplayMetrics().density);
+		gap_tile = (int) DisplayUtil.dpToPx(getResources(), gap_tile);
 		if (gap_tile % 2 != 0) {
 			gap_tile++;
 		}
