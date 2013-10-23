@@ -5,23 +5,12 @@ package magic.yuyong.activity;
 
 import magic.yuyong.R;
 import magic.yuyong.adapter.ShowPicAdapter;
-import magic.yuyong.app.AppConstant;
-import magic.yuyong.util.Debug;
 import magic.yuyong.view.JazzyViewPager;
 import magic.yuyong.view.JazzyViewPager.TransitionEffect;
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 /**
  * @title:ShowPics.java

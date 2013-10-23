@@ -4,7 +4,6 @@
 package magic.yuyong.adapter;
 
 import magic.yuyong.R;
-import magic.yuyong.util.Debug;
 import magic.yuyong.view.AsyncSubsamplingScaleImageView;
 import magic.yuyong.view.HoloCircularProgressBar;
 import magic.yuyong.view.JazzyViewPager;
@@ -15,7 +14,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.ProgressBar;
 
 /**
  * @title:ShowPicAdapter.java
@@ -85,12 +83,10 @@ public class ShowPicAdapter extends PagerAdapter {
 				mProgressBar.setVisibility(View.VISIBLE);
 				mProgressBar.setProgress(0);
 				mProgressBar.setMarkerProgress(1f);
-				Debug.e("start down....");
 			}
 			
 			@Override
 			public void onImageRequestLoading(float percent) {
-				Debug.e("percent : "+percent);
 				mProgressBar.setProgress(percent);
 			}
 			

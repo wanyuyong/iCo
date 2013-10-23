@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Future;
 
-import magic.yuyong.util.Debug;
 import magic.yuyong.util.GDUtils;
 import magic.yuyong.util.SDCardUtils;
 import android.content.Context;
