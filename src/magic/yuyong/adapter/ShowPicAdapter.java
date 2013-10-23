@@ -4,6 +4,7 @@
 package magic.yuyong.adapter;
 
 import magic.yuyong.R;
+import magic.yuyong.util.Debug;
 import magic.yuyong.view.AsyncSubsamplingScaleImageView;
 import magic.yuyong.view.JazzyViewPager;
 import magic.yuyong.view.OutlineContainer;
@@ -29,11 +30,11 @@ public class ShowPicAdapter extends PagerAdapter {
 
 	private String[] pics;
 
-	public JazzyViewPager getmJazzy() {
+	public JazzyViewPager getJazzy() {
 		return mJazzy;
 	}
 
-	public void setmJazzy(JazzyViewPager mJazzy) {
+	public void setJazzy(JazzyViewPager mJazzy) {
 		this.mJazzy = mJazzy;
 	}
 
@@ -54,7 +55,6 @@ public class ShowPicAdapter extends PagerAdapter {
 		
 		AsyncSubsamplingScaleImageView imgview = (AsyncSubsamplingScaleImageView) view.findViewById(R.id.image);
 		AsyncGifImageView gifview = (AsyncGifImageView) view.findViewById(R.id.gif_image);
-		gifview.setImageBitmap(null);
 		
 		ProgressBar mProgressBar = (ProgressBar) view
 				.findViewById(R.id.progress);

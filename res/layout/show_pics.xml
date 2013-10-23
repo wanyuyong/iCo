@@ -4,4 +4,6 @@
     android:id="@+id/jazzy_pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
+    android:flipInterval="30"
+    android:persistentDrawingCache="animation"
     android:background="@android:color/white"/>

@@ -62,7 +62,7 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 		this.mCallBack = mCallBack;
 	}
 
-	private Handler mHandler = new Handler() {
+	private class ImageHandler extends Handler{
 		@Override
 		public void handleMessage(Message msg) {
 
@@ -130,12 +130,15 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 		}
 
 		cancel();
+		
+		reset();
+		invalidate();
 
 		mUrl = url;
 
 		if (!TextUtils.isEmpty(mUrl)) {
 			GDUtils.getExecutor(getContext()).submit(
-					new ImageFetcher(mUrl, mHandler));
+					new ImageFetcher(mUrl));
 		}
 	}
 
@@ -144,9 +147,9 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 		private String mUrl;
 		private Handler mHandler;
 
-		public ImageFetcher(String url, Handler handler) {
+		public ImageFetcher(String url) {
 			mUrl = url;
-			mHandler = handler;
+			mHandler = new ImageHandler();
 		}
 
 		public void run() {

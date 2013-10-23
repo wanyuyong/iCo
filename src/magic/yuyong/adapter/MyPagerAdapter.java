@@ -2,6 +2,7 @@ package magic.yuyong.adapter;
 
 import java.util.List;
 
+import magic.yuyong.util.Debug;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -40,9 +41,9 @@ public class MyPagerAdapter extends PagerAdapter {
 	}
 
 	@Override
-	public Object instantiateItem(View arg0, int arg1) {
-		((ViewPager) arg0).addView(mListViews.get(arg1), 0);
-		return mListViews.get(arg1);
+	public Object instantiateItem(View arg0, int pos) {
+		((ViewPager) arg0).addView(mListViews.get(pos), 0);
+		return mListViews.get(pos);
 	}
 
 	@Override
