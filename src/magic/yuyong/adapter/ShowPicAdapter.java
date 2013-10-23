@@ -44,11 +44,20 @@ public class ShowPicAdapter extends PagerAdapter {
 	public void setPics(String[] pics) {
 		this.pics = pics;
 	}
+	
+	public class ViewInfo{
+		public int position;
+		public String img_path;
+		public String img_format;
+	}
 
 	@Override
 	public Object instantiateItem(ViewGroup container, final int position) {
 		View view = View.inflate(container.getContext(), R.layout.gallery_pic,
 				null);
+		ViewInfo info = new ViewInfo();
+		info.position = position;
+		view.setTag(info);
 		container.addView(view, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		mJazzy.setObjectForPosition(view, position);
 		
@@ -62,20 +71,22 @@ public class ShowPicAdapter extends PagerAdapter {
 		
 		if(!TextUtils.isEmpty(url)){
 			if(url.endsWith(".gif")){
+				info.img_format = "gif";
 				imgview.setVisibility(View.GONE);
 				gifview.setVisibility(View.VISIBLE);
-				prepareGif(gifview, mProgressBar, url);
+				prepareGif(gifview, mProgressBar, url, info);
 			}else{
+				info.img_format = "jpg";
 				imgview.setVisibility(View.VISIBLE);
 				gifview.setVisibility(View.GONE);
-				prepareImg(imgview, mProgressBar, url);
+				prepareImg(imgview, mProgressBar, url, info);
 			}
 		}
 
 		return view;
 	}
 	
-	private void prepareGif(AsyncGifImageView gifview, final HoloCircularProgressBar mProgressBar, String url){
+	private void prepareGif(AsyncGifImageView gifview, final HoloCircularProgressBar mProgressBar, String url, final ViewInfo info){
 		gifview.setImageLoadingCallback(new AsyncGifImageView.ImageLoadingCallback() {
 			
 			@Override
@@ -98,6 +109,7 @@ public class ShowPicAdapter extends PagerAdapter {
 			@Override
 			public void onImageRequestEnded(String path) {
 				mProgressBar.setVisibility(View.GONE);
+				info.img_path = path;
 			}
 			
 			@Override
@@ -108,7 +120,7 @@ public class ShowPicAdapter extends PagerAdapter {
 		gifview.setUrl(url);
 	}
 	
-	private void prepareImg(AsyncSubsamplingScaleImageView imgview, final HoloCircularProgressBar mProgressBar, String url){
+	private void prepareImg(AsyncSubsamplingScaleImageView imgview, final HoloCircularProgressBar mProgressBar, String url, final ViewInfo info){
 		imgview.setMaxScale(5);
 		
 		imgview.setImageLoadingCallback(new AsyncSubsamplingScaleImageView.ImageLoadingCallback() {
@@ -117,6 +129,7 @@ public class ShowPicAdapter extends PagerAdapter {
 			public void onImageRequestStarted() {
 				mProgressBar.setVisibility(View.VISIBLE);
 				mProgressBar.setProgress(0);
+				mProgressBar.setMarkerProgress(1f);
 			}
 			
 			@Override
@@ -132,6 +145,7 @@ public class ShowPicAdapter extends PagerAdapter {
 			@Override
 			public void onImageRequestEnded(String path) {
 				mProgressBar.setVisibility(View.GONE);
+				info.img_path = path;
 			}
 			
 			@Override

@@ -162,7 +162,7 @@
     <string name="text_search_hint">搜索</string>
     <string name="text_search_prompt">受权限限止，只能提供简单搜索。</string>
     <string name="text_search_no_data">Sorry,搜索能力有限，没有搜索到数据。</string>
-    <string name="text_pic_save_success">图片保存成功。</string>
+    <string name="text_pic_save_success">图片保存成功</string>
     <string name="text_pic_save_faild">图片保存失败。</string>
     <string name="text_sure_to_save_pic">您要保存这张图片吗？</string>
     <string name="text_copy_success">文字已复制到剪切板。</string>

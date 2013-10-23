@@ -164,7 +164,7 @@
     <string name="text_search_hint">Search</string>
     <string name="text_search_prompt">Authorized limit, can only provide simple search.</string>
     <string name="text_search_no_data">Search ability is limited, no data for just search.</string>
-    <string name="text_pic_save_success">Pic save success.</string>
+    <string name="text_pic_save_success">Pic save success</string>
     <string name="text_pic_save_faild">Pic save faild.</string>
     <string name="text_sure_to_save_pic">Are you sure to save this pic？</string>
     <string name="text_copy_success">The text has been copied to the clipboard.</string>

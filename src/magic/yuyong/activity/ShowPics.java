@@ -3,14 +3,29 @@
  */
 package magic.yuyong.activity;
 
+import java.io.File;
+import java.util.Date;
+
 import magic.yuyong.R;
 import magic.yuyong.adapter.ShowPicAdapter;
+import magic.yuyong.adapter.ShowPicAdapter.ViewInfo;
+import magic.yuyong.app.AppConstant;
+import magic.yuyong.util.Debug;
+import magic.yuyong.util.SDCardUtils;
 import magic.yuyong.view.JazzyViewPager;
 import magic.yuyong.view.JazzyViewPager.TransitionEffect;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 /**
  * @title:ShowPics.java
@@ -28,6 +43,29 @@ public class ShowPics extends BaseActivity {
 	private String[] pics;
 	private String url;
 
+	private Handler mHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case AppConstant.MSG_SAVE_PIC_SUCCEED:
+				String path = (String) msg.obj;
+				Toast.makeText(
+						getApplicationContext(),
+						getResources()
+								.getString(R.string.text_pic_save_success)
+								+ " : " + path, Toast.LENGTH_SHORT).show();
+				break;
+
+			case AppConstant.MSG_SAVE_PIC_FAILD:
+				Toast.makeText(getApplicationContext(),
+						R.string.text_pic_save_faild, Toast.LENGTH_SHORT)
+						.show();
+				break;
+			}
+		}
+	};
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -37,7 +75,7 @@ public class ShowPics extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		setContentView(R.layout.show_pics);
@@ -58,51 +96,71 @@ public class ShowPics extends BaseActivity {
 		adapter.setPics(pics);
 		mJazzy.setAdapter(adapter);
 		mJazzy.setPageMargin(30);
+
 	}
-	
-	  @Override
-	    public boolean onCreateOptionsMenu(Menu menu) {
-	        MenuInflater inflater = getMenuInflater();
-	        inflater.inflate(R.menu.show_pic, menu);
-	        return super.onCreateOptionsMenu(menu);
-	    }
-	  
-	  @Override
-	    public boolean onOptionsItemSelected(MenuItem item) {
-	        switch (item.getItemId()) {
-	            case android.R.id.home:
-	                finish();
-	                break;
-	            case R.id.refresh:
-	                break;
-	            case R.id.suitable:
-	                break;
-	            case R.id.save:
-//	                BitmapDrawable bd = (BitmapDrawable) imgview.getDrawable();
-//	                final Bitmap bm = bd.getBitmap();
-//	                if (bm != null) {
-//	                    new Thread(new Runnable() {
-//
-//	                        @Override
-//	                        public void run() {
-//	                            ContentResolver cr = getContentResolver();
-//	                            MediaStore.Images.Media
-//	                                    .insertImage(cr, bm, current, "");
-//	                            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
-//	                                    Uri.parse("file://"
-//	                                            + Environment
-//	                                            .getExternalStorageDirectory())));
-//	                            mHandler.sendEmptyMessage(AppConstant.MSG_SAVE_PIC_SUCCEED);
-//	                        }
-//	                    }).start();
-//	                } else {
-//	                    mHandler.sendEmptyMessage(AppConstant.MSG_SAVE_PIC_FAILD);
-//	                }
-	                break;
-	            case R.id.see_original:
-	                break;
-	        }
-	        return true;
-	    }
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.show_pic, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			break;
+		case R.id.save:
+			int currentIndex = mJazzy.getCurrentItem();
+			ViewInfo info = null;
+			for (int i = 0; i < mJazzy.getChildCount(); i++) {
+				View child = mJazzy.getChildAt(i);
+				ViewInfo temp = (ViewInfo) child.getTag();
+				if (temp.position == currentIndex) {
+					info = temp;
+				}
+			}
+
+			if (!TextUtils.isEmpty(info.img_path)) {
+				final String path = info.img_path;
+				final String format = info.img_format;
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						saveToAlbum(path, format);
+					}
+				}).start();
+			} else {
+				mHandler.sendEmptyMessage(AppConstant.MSG_SAVE_PIC_FAILD);
+			}
+			break;
+		}
+		return true;
+	}
+
+	private void saveToAlbum(String path, String format) {
+		File f = new File(path);
+		File saveDir = new File(SDCardUtils.SDCARD_DIR_SAVE);
+		if (!saveDir.exists()) {
+			saveDir.mkdir();
+		}
+		String name = String.valueOf(new Date().getTime());
+		String newPath = SDCardUtils.SDCARD_DIR_SAVE + name + "." + format;
+		File pic = new File(newPath);
+
+		f.renameTo(pic);
+
+		Intent mediaScanIntent = new Intent(
+				Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+		Uri contentUri = Uri.fromFile(pic);
+		mediaScanIntent.setData(contentUri);
+		sendBroadcast(mediaScanIntent);
+
+		mHandler.sendMessage(mHandler.obtainMessage(
+				AppConstant.MSG_SAVE_PIC_SUCCEED, newPath));
+	}
 
 }

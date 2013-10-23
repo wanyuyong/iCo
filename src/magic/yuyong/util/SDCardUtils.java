@@ -17,6 +17,9 @@ public class SDCardUtils {
 	public final static String SDCARD_DIR = Environment
 			.getExternalStorageDirectory().getPath() + "/iCoCache/";
 	
+	public final static String SDCARD_DIR_SAVE = Environment
+			.getExternalStorageDirectory().getPath() + "/iCoSave/";
+	
 	private final static String NOMEID_FILE = SDCARD_DIR + "nomedia";
 
 	public static boolean hasSDCard() {
