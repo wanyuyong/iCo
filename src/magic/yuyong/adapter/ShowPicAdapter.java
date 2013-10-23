@@ -6,6 +6,7 @@ package magic.yuyong.adapter;
 import magic.yuyong.R;
 import magic.yuyong.util.Debug;
 import magic.yuyong.view.AsyncSubsamplingScaleImageView;
+import magic.yuyong.view.HoloCircularProgressBar;
 import magic.yuyong.view.JazzyViewPager;
 import magic.yuyong.view.OutlineContainer;
 import pl.droidsonroids.gif.AsyncGifImageView;
@@ -56,7 +57,7 @@ public class ShowPicAdapter extends PagerAdapter {
 		AsyncSubsamplingScaleImageView imgview = (AsyncSubsamplingScaleImageView) view.findViewById(R.id.image);
 		AsyncGifImageView gifview = (AsyncGifImageView) view.findViewById(R.id.gif_image);
 		
-		ProgressBar mProgressBar = (ProgressBar) view
+		HoloCircularProgressBar mProgressBar = (HoloCircularProgressBar) view
 				.findViewById(R.id.progress);
 
 		String url = pics[position];
@@ -76,18 +77,21 @@ public class ShowPicAdapter extends PagerAdapter {
 		return view;
 	}
 	
-	private void prepareGif(AsyncGifImageView gifview, final ProgressBar mProgressBar, String url){
+	private void prepareGif(AsyncGifImageView gifview, final HoloCircularProgressBar mProgressBar, String url){
 		gifview.setImageLoadingCallback(new AsyncGifImageView.ImageLoadingCallback() {
 			
 			@Override
 			public void onImageRequestStarted() {
 				mProgressBar.setVisibility(View.VISIBLE);
 				mProgressBar.setProgress(0);
+				mProgressBar.setMarkerProgress(1f);
+				Debug.e("start down....");
 			}
 			
 			@Override
 			public void onImageRequestLoading(float percent) {
-				mProgressBar.setProgress((int) (100 * percent));
+				Debug.e("percent : "+percent);
+				mProgressBar.setProgress(percent);
 			}
 			
 			@Override
@@ -108,7 +112,7 @@ public class ShowPicAdapter extends PagerAdapter {
 		gifview.setUrl(url);
 	}
 	
-	private void prepareImg(AsyncSubsamplingScaleImageView imgview, final ProgressBar mProgressBar, String url){
+	private void prepareImg(AsyncSubsamplingScaleImageView imgview, final HoloCircularProgressBar mProgressBar, String url){
 		imgview.setMaxScale(5);
 		
 		imgview.setImageLoadingCallback(new AsyncSubsamplingScaleImageView.ImageLoadingCallback() {
@@ -121,7 +125,7 @@ public class ShowPicAdapter extends PagerAdapter {
 			
 			@Override
 			public void onImageRequestLoading(float percent) {
-				mProgressBar.setProgress((int) (100 * percent));
+				mProgressBar.setProgress(percent);
 			}
 			
 			@Override

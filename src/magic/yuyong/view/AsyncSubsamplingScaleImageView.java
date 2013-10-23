@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Future;
 
+import magic.yuyong.util.Debug;
 import magic.yuyong.util.GDUtils;
 import magic.yuyong.util.SDCardUtils;
 import android.content.Context;
@@ -62,7 +63,7 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 		this.mCallBack = mCallBack;
 	}
 
-	private class ImageHandler extends Handler{
+	private Handler mHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
 
@@ -121,18 +122,16 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 				mCallBack.onImageRequestCancelled();
 			}
 		}
+		mUrl = null;
 	}
 
 	public void setUrl(String url) {
-
+		
 		if (url != null && url.equals(mUrl)) {
 			return;
 		}
 
 		cancel();
-		
-		reset();
-		invalidate();
 
 		mUrl = url;
 
@@ -145,22 +144,19 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 	private class ImageFetcher implements Runnable {
 
 		private String mUrl;
-		private Handler mHandler;
 
 		public ImageFetcher(String url) {
 			mUrl = url;
-			mHandler = new ImageHandler();
 		}
 
 		public void run() {
 
 			Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 
-			final Handler h = mHandler;
 			Throwable throwable = null;
 			String path = "";
 
-			h.sendMessage(Message.obtain(h, ON_START));
+			mHandler.sendMessage(Message.obtain(mHandler, ON_START));
 
 			try {
 
@@ -183,9 +179,9 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 				if (throwable == null) {
 					throwable = new Exception("Skia image decoding failed");
 				}
-				h.sendMessage(Message.obtain(h, ON_FAIL, throwable));
+				mHandler.sendMessage(Message.obtain(mHandler, ON_FAIL, throwable));
 			} else {
-				h.sendMessage(Message.obtain(h, ON_END, path));
+				mHandler.sendMessage(Message.obtain(mHandler, ON_END, path));
 			}
 		}
 	}
@@ -215,6 +211,8 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 				h.sendMessage(msg);
 			}
 			outputStream.flush();
+			inputStream.close();
+			outputStream.close();
 		} catch (IOException e) {
 			path = "";
 		} finally {
@@ -235,5 +233,5 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 		}
 		return path;
 	}
-
+	
 }

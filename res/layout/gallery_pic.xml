@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:magic="http://schemas.android.com/apk/res/magic.yuyong"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -14,13 +15,13 @@
         android:layout_height="fill_parent" 
         android:visibility="gone"/>
 
-    <ProgressBar
+   <magic.yuyong.view.HoloCircularProgressBar
         android:id="@+id/progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:max="100"
-        android:visibility="gone" />
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        magic:progress_color="@color/theme_color_75"
+        magic:progress_background_color="#FFCCCCCC"
+        magic:stroke_width="5dip"
+        android:layout_gravity="center"/>
 
 </FrameLayout>
