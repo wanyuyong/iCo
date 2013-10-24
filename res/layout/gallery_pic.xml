@@ -23,5 +23,14 @@
         magic:progress_background_color="#FFCCCCCC"
         magic:stroke_width="5dip"
         android:layout_gravity="center"/>
+   
+   <TextView android:id="@+id/but_reload"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="center"
+       android:text="点击刷新"
+       android:textColor="@color/theme_color"
+       android:drawableTop="@drawable/reload_but_bg"
+       android:visibility="gone"/>
 
 </FrameLayout>

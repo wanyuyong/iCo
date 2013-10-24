@@ -25,7 +25,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import java.io.IOException;
@@ -34,9 +33,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
 
-import magic.yuyong.util.Debug;
 
 /**
  * Displays an image subsampled as necessary to avoid loading too much image

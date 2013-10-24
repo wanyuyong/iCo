@@ -143,50 +143,27 @@ public class AsyncGifImageView extends GifImageView {
 		mUrl = url;
 
 		if (!TextUtils.isEmpty(mUrl)) {
-			GDUtils.getExecutor(getContext()).submit(
-					new ImageFetcher(mUrl));
+			mFuture = GDUtils.getExecutor(getContext()).submit(
+					new ImageFetcher());
 		}
 	}
 
 	private class ImageFetcher implements Runnable {
 
-		private String mUrl;
-
-		public ImageFetcher(String url) {
-			mUrl = url;
-		}
-
 		public void run() {
-
 			Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-
-			Throwable throwable = null;
 			String path = "";
-
 			mHandler.sendMessage(Message.obtain(mHandler, ON_START));
-
-			try {
-
-				if (TextUtils.isEmpty(mUrl)) {
-					throw new Exception("The given URL cannot be null or empty");
-				}
-
+			if(!TextUtils.isEmpty(mUrl)){
 				if (SDCardUtils.checkFileExits(mUrl)) {
 					path = SDCardUtils.createFilePath(mUrl);
 				} else {
 					path = downLoadPic(mUrl, mHandler);
 				}
-
-			} catch (Exception e) {
-				// An error occured while retrieving the image
-				throwable = e;
 			}
-
 			if (TextUtils.isEmpty(path)) {
-				if (throwable == null) {
-					throwable = new Exception("Skia image decoding failed");
-				}
-				mHandler.sendMessage(Message.obtain(mHandler, ON_FAIL, throwable));
+				mHandler.sendMessage(Message.obtain(mHandler, ON_FAIL));
+				mUrl = null;
 			} else {
 				mHandler.sendMessage(Message.obtain(mHandler, ON_END, path));
 			}
@@ -198,8 +175,8 @@ public class AsyncGifImageView extends GifImageView {
 		InputStream inputStream = null;
 		FileOutputStream outputStream = null;
 		String path = SDCardUtils.createFilePath(mUrl);
+		File file = new File(path);
 		try {
-			File file = new File(path);
 			URL url = new URL(mUrl);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setConnectTimeout(5 * 1000);
@@ -221,6 +198,9 @@ public class AsyncGifImageView extends GifImageView {
 			inputStream.close();
 			outputStream.close();
 		} catch (IOException e) {
+			if(file.exists()){
+				file.delete();
+			}
 			path = "";
 		} finally {
 			if (null != inputStream) {

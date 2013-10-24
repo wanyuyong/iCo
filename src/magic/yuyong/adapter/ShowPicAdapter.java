@@ -12,8 +12,10 @@ import pl.droidsonroids.gif.AsyncGifImageView;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Toast;
 
 /**
  * @title:ShowPicAdapter.java
@@ -61,39 +63,56 @@ public class ShowPicAdapter extends PagerAdapter {
 		container.addView(view, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		mJazzy.setObjectForPosition(view, position);
 		
-		AsyncSubsamplingScaleImageView imgview = (AsyncSubsamplingScaleImageView) view.findViewById(R.id.image);
-		AsyncGifImageView gifview = (AsyncGifImageView) view.findViewById(R.id.gif_image);
-		
+		final AsyncSubsamplingScaleImageView imgview = (AsyncSubsamplingScaleImageView) view.findViewById(R.id.image);
+		final AsyncGifImageView gifview = (AsyncGifImageView) view.findViewById(R.id.gif_image);
+		View but_reload = view.findViewById(R.id.but_reload);
 		HoloCircularProgressBar mProgressBar = (HoloCircularProgressBar) view
 				.findViewById(R.id.progress);
 
-		String url = pics[position];
+		final String url = pics[position];
 		
 		if(!TextUtils.isEmpty(url)){
 			if(url.endsWith(".gif")){
 				info.img_format = "gif";
 				imgview.setVisibility(View.GONE);
 				gifview.setVisibility(View.VISIBLE);
-				prepareGif(gifview, mProgressBar, url, info);
+				prepareGif(gifview, mProgressBar, but_reload, url, info);
 			}else{
 				info.img_format = "jpg";
 				imgview.setVisibility(View.VISIBLE);
 				gifview.setVisibility(View.GONE);
-				prepareImg(imgview, mProgressBar, url, info);
+				prepareImg(imgview, mProgressBar, but_reload, url, info);
 			}
+			
+			but_reload.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					if(url.endsWith(".gif")){
+						gifview.setUrl(url);	
+					}else{
+						imgview.setUrl(url);
+					}
+				}
+			});
 		}
 
 		return view;
 	}
 	
-	private void prepareGif(AsyncGifImageView gifview, final HoloCircularProgressBar mProgressBar, String url, final ViewInfo info){
+	private void prepareGif(AsyncGifImageView gifview, final HoloCircularProgressBar mProgressBar, final View reloadBut, String url, final ViewInfo info){
 		gifview.setImageLoadingCallback(new AsyncGifImageView.ImageLoadingCallback() {
 			
 			@Override
 			public void onImageRequestStarted() {
-				mProgressBar.setVisibility(View.VISIBLE);
+				if(mProgressBar.getVisibility() != View.VISIBLE){
+					mProgressBar.setVisibility(View.VISIBLE);
+				}
 				mProgressBar.setProgress(0);
 				mProgressBar.setMarkerProgress(1f);
+				if(reloadBut.getVisibility() != View.GONE){
+					reloadBut.setVisibility(View.GONE);
+				}
 			}
 			
 			@Override
@@ -103,33 +122,52 @@ public class ShowPicAdapter extends PagerAdapter {
 			
 			@Override
 			public void onImageRequestFailed() {
-				mProgressBar.setVisibility(View.GONE);
+				if(reloadBut.getVisibility() != View.VISIBLE){
+					reloadBut.setVisibility(View.VISIBLE);
+				}
+				if(mProgressBar.getVisibility() != View.GONE){
+					mProgressBar.setVisibility(View.GONE);
+				}
+				Toast.makeText(mProgressBar.getContext(), R.string.text_down_pic_faild, Toast.LENGTH_SHORT).show();
 			}
 			
 			@Override
 			public void onImageRequestEnded(String path) {
-				mProgressBar.setVisibility(View.GONE);
+				if(mProgressBar.getVisibility() != View.GONE){
+					mProgressBar.setVisibility(View.GONE);
+				}
+				if(reloadBut.getVisibility() != View.GONE){
+					reloadBut.setVisibility(View.GONE);
+				}
 				info.img_path = path;
 			}
 			
 			@Override
 			public void onImageRequestCancelled() {
 				mProgressBar.setVisibility(View.GONE);
+				if(reloadBut.getVisibility() != View.VISIBLE){
+					reloadBut.setVisibility(View.VISIBLE);
+				}
 			}
 		});
 		gifview.setUrl(url);
 	}
 	
-	private void prepareImg(AsyncSubsamplingScaleImageView imgview, final HoloCircularProgressBar mProgressBar, String url, final ViewInfo info){
+	private void prepareImg(AsyncSubsamplingScaleImageView imgview, final HoloCircularProgressBar mProgressBar, final View reloadBut, String url, final ViewInfo info){
 		imgview.setMaxScale(5);
 		
 		imgview.setImageLoadingCallback(new AsyncSubsamplingScaleImageView.ImageLoadingCallback() {
 			
 			@Override
 			public void onImageRequestStarted() {
-				mProgressBar.setVisibility(View.VISIBLE);
+				if(mProgressBar.getVisibility() != View.VISIBLE){
+					mProgressBar.setVisibility(View.VISIBLE);
+				}
 				mProgressBar.setProgress(0);
 				mProgressBar.setMarkerProgress(1f);
+				if(reloadBut.getVisibility() != View.GONE){
+					reloadBut.setVisibility(View.GONE);
+				}
 			}
 			
 			@Override
@@ -139,20 +177,35 @@ public class ShowPicAdapter extends PagerAdapter {
 			
 			@Override
 			public void onImageRequestFailed() {
-				mProgressBar.setVisibility(View.GONE);
+				if(reloadBut.getVisibility() != View.VISIBLE){
+					reloadBut.setVisibility(View.VISIBLE);
+				}
+				if(mProgressBar.getVisibility() != View.GONE){
+					mProgressBar.setVisibility(View.GONE);
+				}
+				Toast.makeText(mProgressBar.getContext(), R.string.text_down_pic_faild, Toast.LENGTH_SHORT).show();
 			}
 			
 			@Override
 			public void onImageRequestEnded(String path) {
-				mProgressBar.setVisibility(View.GONE);
+				if(mProgressBar.getVisibility() != View.GONE){
+					mProgressBar.setVisibility(View.GONE);
+				}
+				if(reloadBut.getVisibility() != View.GONE){
+					reloadBut.setVisibility(View.GONE);
+				}
 				info.img_path = path;
 			}
 			
 			@Override
 			public void onImageRequestCancelled() {
 				mProgressBar.setVisibility(View.GONE);
+				if(reloadBut.getVisibility() != View.VISIBLE){
+					reloadBut.setVisibility(View.VISIBLE);
+				}
 			}
 		});
+		
 		imgview.setUrl(url);
 	}
 
