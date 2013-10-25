@@ -76,6 +76,7 @@
     <string name="but_img">Album</string>
     <string name="but_face">Face</string>
     <string name="but_at">\@Friend</string>
+    <string name="but_down_pic_faild">Pic download faild, click to reload</string>
 
     <!-- Title -->
     <string name="title_channels">Channels</string>
@@ -171,7 +172,6 @@
     <string name="text_also_repost">Also repost</string>
     <string name="text_also_comment">Also comment</string>
     <string name="text_feedback_topic">#iCo Feedback#</string>
-    <string name="text_down_pic_faild">pic download faild</string>
 
     <!-- Other -->
     <string name="img_content_description">Image</string>

@@ -76,6 +76,7 @@
     <string name="but_img">图库</string>
     <string name="but_face">表情</string>
     <string name="but_at">\@好友</string>
+    <string name="but_down_pic_faild">图片下载失败,点击刷新</string>
 
     <!-- Label -->
     <string name="label_following">关注</string>
@@ -169,7 +170,6 @@
     <string name="text_also_repost">同时转发</string>
     <string name="text_also_comment">同时评论</string>
     <string name="text_feedback_topic">#iCo微博 反馈#</string>
-    <string name="text_down_pic_faild">图片下载失败</string>
 
     <!-- Other -->
     <string name="img_content_description">图片</string>

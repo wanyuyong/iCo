@@ -128,7 +128,6 @@ public class ShowPicAdapter extends PagerAdapter {
 				if(mProgressBar.getVisibility() != View.GONE){
 					mProgressBar.setVisibility(View.GONE);
 				}
-				Toast.makeText(mProgressBar.getContext(), R.string.text_down_pic_faild, Toast.LENGTH_SHORT).show();
 			}
 			
 			@Override
@@ -183,7 +182,6 @@ public class ShowPicAdapter extends PagerAdapter {
 				if(mProgressBar.getVisibility() != View.GONE){
 					mProgressBar.setVisibility(View.GONE);
 				}
-				Toast.makeText(mProgressBar.getContext(), R.string.text_down_pic_faild, Toast.LENGTH_SHORT).show();
 			}
 			
 			@Override
