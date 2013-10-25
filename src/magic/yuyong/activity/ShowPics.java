@@ -10,7 +10,6 @@ import magic.yuyong.R;
 import magic.yuyong.adapter.ShowPicAdapter;
 import magic.yuyong.adapter.ShowPicAdapter.ViewInfo;
 import magic.yuyong.app.AppConstant;
-import magic.yuyong.util.Debug;
 import magic.yuyong.util.SDCardUtils;
 import magic.yuyong.view.JazzyViewPager;
 import magic.yuyong.view.JazzyViewPager.TransitionEffect;
@@ -19,12 +18,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -38,6 +38,8 @@ import android.widget.Toast;
 public class ShowPics extends BaseActivity {
 
 	private JazzyViewPager mJazzy;
+	
+	private TextView pageIndicator;
 
 	private ShowPicAdapter adapter;
 	private String[] pics;
@@ -77,6 +79,10 @@ public class ShowPics extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayShowCustomEnabled(true);
+		actionBar.setCustomView(R.layout.page_indicator);
+		
+		pageIndicator = (TextView) actionBar.getCustomView().findViewById(R.id.page_indicator);
 
 		setContentView(R.layout.show_pics);
 		mJazzy = (JazzyViewPager) findViewById(R.id.jazzy_pager);
@@ -96,7 +102,25 @@ public class ShowPics extends BaseActivity {
 		adapter.setPics(pics);
 		mJazzy.setAdapter(adapter);
 		mJazzy.setPageMargin(30);
+		pageIndicator.setText(1+"/"+adapter.getCount());
 
+		mJazzy.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int pos) {
+				pageIndicator.setText((pos+1)+"/"+adapter.getCount());
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				
+			}
+		});
 	}
 
 	@Override
