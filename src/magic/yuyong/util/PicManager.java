@@ -1,6 +1,8 @@
 package magic.yuyong.util;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -107,6 +109,26 @@ public class PicManager {
 		options.inJustDecodeBounds = true;
 		BitmapFactory.decodeStream(in, null, options);
 		return new int[] { options.outWidth, options.outHeight };
+	}
+	
+	public static int[] sizeOfBitmap(String path){
+		InputStream in = null;
+		int[] size = new int[]{0, 0};
+		try {
+			in = new FileInputStream(path);
+			size = sizeOfBitmap(in);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}finally{
+			if(in != null){
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return size;
 	}
 
 	public static Bitmap prepareBitmap(byte[] data, Bitmap.Config config) {
