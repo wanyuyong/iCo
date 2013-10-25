@@ -88,6 +88,7 @@
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name=".activity.ShowPics"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_show_pic"
             android:theme="@style/Theme.Magic_style"
             android:uiOptions="splitActionBarWhenNarrow" />
