@@ -4,6 +4,7 @@
 package magic.yuyong.adapter;
 
 import magic.yuyong.R;
+import magic.yuyong.util.Debug;
 import magic.yuyong.view.AsyncSubsamplingScaleImageView;
 import magic.yuyong.view.HoloCircularProgressBar;
 import magic.yuyong.view.JazzyViewPager;

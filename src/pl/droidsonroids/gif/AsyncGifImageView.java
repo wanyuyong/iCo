@@ -195,13 +195,11 @@ public class AsyncGifImageView extends GifImageView {
 				h.sendMessage(msg);
 			}
 			outputStream.flush();
-			inputStream.close();
-			outputStream.close();
+			return path;
 		} catch (IOException e) {
 			if(file.exists()){
 				file.delete();
 			}
-			path = "";
 		} finally {
 			if (null != inputStream) {
 				try {
@@ -218,7 +216,7 @@ public class AsyncGifImageView extends GifImageView {
 				}
 			}
 		}
-		return path;
+		return null;
 	}
 
 }

@@ -187,13 +187,11 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 				h.sendMessage(msg);
 			}
 			outputStream.flush();
-			inputStream.close();
-			outputStream.close();
+			return path;
 		} catch (IOException e) {
 			if(file.exists()){
 				file.delete();
 			}
-			path = "";
 		} finally {
 			if (null != inputStream) {
 				try {
@@ -210,7 +208,7 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 				}
 			}
 		}
-		return path;
+		return null;
 	}
 
 }
