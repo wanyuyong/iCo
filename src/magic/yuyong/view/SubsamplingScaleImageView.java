@@ -182,7 +182,7 @@ public class SubsamplingScaleImageView extends View implements OnTouchListener {
 		scale = 0f;
 		scaleStart = 0f;
 		vTranslate = null;
-		vTranslateStart = null;
+		vTranslateStart = new PointF();
 		pendingScale = 0f;
 		sPendingCenter = null;
 		sWidth = 0;

@@ -9,12 +9,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 import java.util.concurrent.Future;
 
 import magic.yuyong.util.Debug;
 import magic.yuyong.util.GDUtils;
 import magic.yuyong.util.SDCardUtils;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
@@ -167,6 +169,8 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 		InputStream inputStream = null;
 		FileOutputStream outputStream = null;
 		String path = SDCardUtils.createFilePath(mUrl);
+		String tempPath = SDCardUtils.createTempPath();
+		File tempFile = new File(tempPath);
 		File file = new File(path);
 		try {
 			URL url = new URL(mUrl);
@@ -178,7 +182,7 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 			byte[] buffer = new byte[1024];
 			int len = 0;
 			int sum = 0;
-			outputStream = new FileOutputStream(file);
+			outputStream = new FileOutputStream(tempFile);
 			while ((len = inputStream.read(buffer)) != -1) {
 				outputStream.write(buffer, 0, len);
 				sum += len;
@@ -187,8 +191,14 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 				h.sendMessage(msg);
 			}
 			outputStream.flush();
-			return path;
+			boolean success = tempFile.renameTo(file);
+			if(success){
+				return path;
+			}
 		} catch (IOException e) {
+			if(tempFile.exists()){
+				tempFile.delete();
+			}
 			if(file.exists()){
 				file.delete();
 			}

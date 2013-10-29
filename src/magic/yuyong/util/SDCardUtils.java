@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -223,6 +224,10 @@ public class SDCardUtils {
 		String filename = MD5.toMd5(url.getBytes());
 		String path = SDCARD_DIR + filename;
 		return path;
+	}
+	
+	public static String createTempPath() {
+		return SDCARD_DIR + new Date().getTime();
 	}
 	
 	public static Uri getFileURI(String url){

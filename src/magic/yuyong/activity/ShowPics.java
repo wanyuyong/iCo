@@ -86,7 +86,7 @@ public class ShowPics extends BaseActivity {
 
 		setContentView(R.layout.show_pics);
 		mJazzy = (JazzyViewPager) findViewById(R.id.jazzy_pager);
-		mJazzy.setTransitionEffect(TransitionEffect.Tablet);
+		mJazzy.setTransitionEffect(TransitionEffect.Standard);
 		mJazzy.setOffscreenPageLimit(2);
 		adapter = new ShowPicAdapter();
 		adapter.setJazzy(mJazzy);
