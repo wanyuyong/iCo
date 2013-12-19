@@ -684,7 +684,7 @@ public class SubsamplingScaleImageView extends View implements OnTouchListener {
 		private final WeakReference<Context> contextRef;
 		private final String source;
 		private final boolean sourceIsAsset;
-		private WeakReference<BitmapRegionDecoder> decoderRef;
+		private BitmapRegionDecoder decoder;
 
 		public BitmapInitTask(SubsamplingScaleImageView view, Context context,
 				String source, boolean sourceIsAsset) {
@@ -700,7 +700,6 @@ public class SubsamplingScaleImageView extends View implements OnTouchListener {
 				if (viewRef != null && contextRef != null) {
 					Context context = contextRef.get();
 					if (context != null) {
-						BitmapRegionDecoder decoder;
 						if (sourceIsAsset) {
 							decoder = BitmapRegionDecoder.newInstance(
 									context.getAssets().open(source,
@@ -709,8 +708,6 @@ public class SubsamplingScaleImageView extends View implements OnTouchListener {
 							decoder = BitmapRegionDecoder.newInstance(source,
 									true);
 						}
-						decoderRef = new WeakReference<BitmapRegionDecoder>(
-								decoder);
 						return new Point(decoder.getWidth(),
 								decoder.getHeight());
 					}
@@ -723,14 +720,15 @@ public class SubsamplingScaleImageView extends View implements OnTouchListener {
 
 		@Override
 		protected void onPostExecute(Point point) {
-			if (viewRef != null && decoderRef != null) {
+			if (viewRef != null) {
 				final SubsamplingScaleImageView subsamplingScaleImageView = viewRef
 						.get();
-				final BitmapRegionDecoder decoder = decoderRef.get();
 				if (subsamplingScaleImageView != null && decoder != null
 						&& point != null) {
 					subsamplingScaleImageView.onImageInited(decoder, point.x,
 							point.y);
+				}else{
+					Log.e(TAG, "Failed to initialise bitmap decoder subsamplingScaleImageView == null ? "+(subsamplingScaleImageView == null)+", decoder == null ? "+(decoder == null));
 				}
 			}
 		}

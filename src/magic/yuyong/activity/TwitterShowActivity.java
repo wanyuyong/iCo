@@ -283,6 +283,8 @@ public class TwitterShowActivity extends BaseActivity implements
 		adapter = new CommentOrRepostAdapter(this);
 		listView.setAdapter(adapter);
 		setListScrollListener(listView);
+		
+		View view = getWindow().findViewById(16909285);
 
 		// init button
 		comment_but = (TextView) header.findViewById(R.id.comment_but);
