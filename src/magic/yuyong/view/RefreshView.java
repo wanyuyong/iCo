@@ -36,7 +36,7 @@ public class RefreshView extends ViewGroup implements OnGestureListener {
 	private int shadowH = 5;
 	private int back_duration_max = 1000;
 	private int back_duration_min = 500;
-	private int animation_duration = 250;
+	private int animation_duration = 80;
 	private float lastY;
 	private int ignore_y = 5;
 	private boolean firstDraw = true;
@@ -150,7 +150,7 @@ public class RefreshView extends ViewGroup implements OnGestureListener {
 		}
 		if (state == WILL_REFRESH) {
 			state = REFRESHING;
-			int dy = (int) (progressBarTop.getTop() - distanceY - DisplayUtil.dpToPx(getResources(), 15));
+			int dy = (int) (progressBarTop.getTop() - distanceY - DisplayUtil.dpToPx(getResources(), 8));
 			int d = (int) (back_duration_max * Math.abs(dy) / (float) headView
 					.getHeight());
 			scroller.startScroll(0, distanceY, 0, dy, d);
@@ -197,7 +197,7 @@ public class RefreshView extends ViewGroup implements OnGestureListener {
 	}
 
 	public void refresh() {
-		scrollTo(0, (int) (progressBarTop.getTop() - DisplayUtil.dpToPx(getResources(), 15)));
+		scrollTo(0, (int) (progressBarTop.getTop() - DisplayUtil.dpToPx(getResources(), 8)));
 		state = WILL_REFRESH;
 		back();
 	}
@@ -280,7 +280,7 @@ public class RefreshView extends ViewGroup implements OnGestureListener {
 		}
 
 		scrollBy(0, (int) distanceY);
-		int top = (int) (progressBarTop.getTop() - DisplayUtil.dpToPx(getResources(), 15));
+		int top = (int) (progressBarTop.getTop() - DisplayUtil.dpToPx(getResources(), 8));
 		if (getScrollY() > top && state == WILL_REFRESH) {
 			doAnimation();
 			state = NORMAL;
