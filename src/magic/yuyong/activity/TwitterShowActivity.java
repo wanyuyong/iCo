@@ -14,7 +14,6 @@ import magic.yuyong.model.Repost;
 import magic.yuyong.model.Twitter;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
-import magic.yuyong.util.Debug;
 import magic.yuyong.util.StringUtil;
 import magic.yuyong.view.AsyncImageView;
 import magic.yuyong.view.TwitterContent;
@@ -64,7 +63,7 @@ public class TwitterShowActivity extends BaseActivity implements
 	private TwitterContent twitter_text;
 	private AsyncImageView twitter_img;
 
-	private LinearLayout origin_layout;
+	private View origin_layout;
 	private AsyncImageView origin_user_avatar;
 	private TextView origin_user_name;
 	private TextView origin_time;
@@ -304,7 +303,7 @@ public class TwitterShowActivity extends BaseActivity implements
 		twitter_img = (AsyncImageView) header.findViewById(R.id.twitter_img);
 
 		// init Origin Twitter Layout
-		origin_layout = (LinearLayout) header.findViewById(R.id.origin_layout);
+		origin_layout = header.findViewById(R.id.origin_layout);
 		origin_user_avatar = (AsyncImageView) header
 				.findViewById(R.id.origin_user_avatar);
 		origin_user_avatar.setDefaultImageResource(R.drawable.avatar);

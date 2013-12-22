@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="right_bar_w">100dip</dimen>
-    <dimen name="avatar">35dip</dimen>
+    <dimen name="avatar">42dip</dimen>
     <dimen name="progress_bar_w">32dp</dimen>
 </resources>

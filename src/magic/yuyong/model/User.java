@@ -77,7 +77,8 @@ public class User implements android.os.Parcelable {
 	}
 
 	public String getProfile_image_url() {
-		return profile_image_url;
+//		return profile_image_url;
+		return avatar_large;
 	}
 
 	public void setProfile_image_url(String profile_image_url) {
@@ -220,6 +221,7 @@ public class User implements android.os.Parcelable {
 			user.id = source.readLong();
 			user.screen_name = source.readString();
 			user.profile_image_url = source.readString();
+			user.avatar_large = source.readString();
 			user.gender = source.readString();
 			user.location = source.readString();
 			user.description = source.readString();
@@ -249,6 +251,7 @@ public class User implements android.os.Parcelable {
 		dest.writeLong(id);
 		dest.writeString(screen_name);
 		dest.writeString(profile_image_url);
+		dest.writeString(avatar_large);
 		dest.writeString(gender);
 		dest.writeString(location);
 		dest.writeString(description);

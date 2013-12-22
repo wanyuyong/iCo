@@ -65,6 +65,7 @@ public class TileTextView extends View {
 		mPaint = new Paint();
 		mPaint.setColor(textColor);
 		mPaint.setTextSize(textSize);
+		mPaint.setAntiAlias(true);
 
 		FontMetrics fm = mPaint.getFontMetrics();
 		textHeight = (int) Math.ceil(fm.descent - fm.ascent);
