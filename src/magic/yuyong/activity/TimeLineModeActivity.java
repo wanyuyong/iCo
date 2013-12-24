@@ -1,12 +1,10 @@
 package magic.yuyong.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.ClipboardManager;
-import com.umeng.update.UmengUpdateAgent;
-import com.weibo.sdk.android.api.FavoritesAPI;
 import magic.yuyong.R;
 import magic.yuyong.adapter.CommentMeAdapter;
 import magic.yuyong.adapter.MyPagerAdapter;
@@ -25,6 +23,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -49,13 +48,15 @@ import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.api.CommentsAPI;
-import com.weibo.sdk.android.api.StatusesAPI;
-import com.weibo.sdk.android.api.WeiboAPI;
-import com.weibo.sdk.android.api.WeiboAPI.AUTHOR_FILTER;
-import com.weibo.sdk.android.api.WeiboAPI.FEATURE;
-import com.weibo.sdk.android.net.RequestListener;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.legacy.CommentsAPI;
+import com.sina.weibo.sdk.openapi.legacy.FavoritesAPI;
+import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
+import com.sina.weibo.sdk.openapi.legacy.WeiboAPI;
+import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.AUTHOR_FILTER;
+import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.FEATURE;
+import com.umeng.update.UmengUpdateAgent;
 
 public class TimeLineModeActivity extends GetTwitterActivity implements RefreshView.Listener {
 
@@ -126,6 +127,11 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
                 groups.addAll(Group.parseGroup(response));
                 mHandler.sendEmptyMessage(AppConstant.MSG_UPDATA_GROUP);
             }
+
+			@Override
+			public void onComplete4binary(ByteArrayOutputStream responseOS) {
+				
+			}
         });
     }
 
@@ -428,6 +434,11 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
                 }
                 sendBroadcast(new Intent(AppConstant.ACTION_UNREAD_STATE_CHANGE_BROADCAST));
             }
+
+			@Override
+			public void onComplete4binary(ByteArrayOutputStream responseOS) {
+				
+			}
         }, type);
     }
 
@@ -708,6 +719,11 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
                 mHandler.sendMessage(msg);
                 twitter.setFavorited(favorite);
             }
+
+			@Override
+			public void onComplete4binary(ByteArrayOutputStream responseOS) {
+				
+			}
         };
         if (!favorite) {
             favoritesAPI.destroy(twitter.getId(), listener);

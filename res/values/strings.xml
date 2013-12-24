@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">i Co</string>
-    <string name="version">version : 2.5</string>
+    <string name="version">version : 2.6</string>
 
     <string-array name="type_name">
         <item>Entertainment</item>
@@ -122,6 +122,7 @@
     <!-- Text -->
     <string name="text_clean_cache_success">Clean Success.</string>
     <string name="text_login_out_success">Login Out Success.</string>
+    <string name="text_login_out_faild">Login Out Faild.</string>
     <string name="text_token_expired">Token expired, please relogin.</string>
     <string name="text_network_exception">Network connection exception.</string>
     <string name="text_load_more">Loading more</string>

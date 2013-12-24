@@ -1,9 +1,9 @@
 package magic.yuyong.extend;
 
-import com.weibo.sdk.android.Oauth2AccessToken;
-import com.weibo.sdk.android.WeiboParameters;
-import com.weibo.sdk.android.api.FriendshipsAPI;
-import com.weibo.sdk.android.net.RequestListener;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.auth.WeiboParameters;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.legacy.FriendshipsAPI;
 
 public class FriendshipsAPI_E extends FriendshipsAPI {
 	private static final String SERVER_URL_PRIX = API_SERVER + "/friendships";

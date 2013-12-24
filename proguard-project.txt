@@ -19,8 +19,6 @@
 #   public *;
 #}
 
--ignorewarnings
--libraryjars libs/weibo.sdk.android.sso.jar 
 
 #sina
 -keep public class android.webkit.** { public *; }

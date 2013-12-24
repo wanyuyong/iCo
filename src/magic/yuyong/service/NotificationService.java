@@ -1,5 +1,6 @@
 package magic.yuyong.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,8 +18,8 @@ import magic.yuyong.util.JsonUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.net.RequestListener;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -159,11 +160,21 @@ public class NotificationService extends Service implements RequestListener {
 	}
 
 	@Override
+	public void onComplete4binary(ByteArrayOutputStream responseOS) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void onIOException(IOException e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onError(WeiboException e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

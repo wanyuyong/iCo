@@ -1,19 +1,16 @@
 package magic.yuyong.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import magic.yuyong.R;
 import magic.yuyong.app.AppConstant;
-import magic.yuyong.app.MagicApplication;
-import magic.yuyong.persistence.AccessTokenKeeper;
 import magic.yuyong.request.RequestState;
-import magic.yuyong.util.Debug;
-import android.content.Intent;
 import android.os.Handler;
 import android.widget.Toast;
 
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.net.RequestListener;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
 
 public abstract class GetTwitterActivity extends BaseActivity {
 
@@ -35,27 +32,19 @@ public abstract class GetTwitterActivity extends BaseActivity {
 		}
 
 		@Override
-		public void onIOException(IOException e) {
+		public void onComplete4binary(ByteArrayOutputStream responseOS) {
+		}
 
+		@Override
+		public void onIOException(IOException e) {
+			android.os.Message msg = new android.os.Message();
+			msg.what = AppConstant.MSG_NETWORK_EXCEPTION;
+			handler.sendMessage(msg);
 		}
 
 		@Override
 		public void onError(WeiboException e) {
-			Debug.e("WeiboException : code = " + e.getStatusCode()
-					+ " , msg = " + e.getMessage());
-			android.os.Message msg = new android.os.Message();
-			msg.obj = requestState;
-			switch (e.getStatusCode()) {
-			case 40111:
-				msg.what = AppConstant.MSG_TOKEN_EXPIRED;
-				break;
-			default:
-				msg.what = AppConstant.MSG_NETWORK_EXCEPTION;
-				break;
-			}
-			handler.sendMessage(msg);
 		}
-
 	}
 
 	protected Handler handler = new Handler() {
@@ -74,18 +63,6 @@ public abstract class GetTwitterActivity extends BaseActivity {
 								R.string.text_network_exception),
 						Toast.LENGTH_SHORT).show();
 				onError(requestState);
-				break;
-			case AppConstant.MSG_TOKEN_EXPIRED:
-				MagicApplication.getInstance().setAccessToken(null);
-				AccessTokenKeeper.clear(getApplicationContext());
-				Toast.makeText(getApplicationContext(),
-						getResources().getString(R.string.text_token_expired),
-						Toast.LENGTH_SHORT).show();
-				Intent mainIntent = new Intent(getApplicationContext(),
-						MainActivity.class);
-				mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(mainIntent);
-				finish();
 				break;
 			}
 

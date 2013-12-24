@@ -1,10 +1,10 @@
 package magic.yuyong.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import com.umeng.update.UmengUpdateAgent;
-
 import magic.yuyong.R;
+import magic.yuyong.app.AppConstant;
 import magic.yuyong.app.MagicApplication;
 import magic.yuyong.persistence.AccessTokenKeeper;
 import magic.yuyong.persistence.Persistence;
@@ -23,12 +23,14 @@ import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.weibo.sdk.android.Oauth2AccessToken;
-import com.weibo.sdk.android.WeiboAuthListener;
-import com.weibo.sdk.android.WeiboDialogError;
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.api.AccountAPI;
-import com.weibo.sdk.android.net.RequestListener;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.auth.WeiboAuth;
+import com.sina.weibo.sdk.auth.WeiboAuthListener;
+import com.sina.weibo.sdk.auth.sso.SsoHandler;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.legacy.AccountAPI;
+import com.umeng.update.UmengUpdateAgent;
 
 public class MainActivity extends BaseActivity implements OnClickListener,
 		WeiboAuthListener {
@@ -36,6 +38,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	private View content;
 	private View clouds_1, clouds_2, clouds_3, clouds_4, clouds_5;
 	private boolean has_check_update = false;
+	private SsoHandler mSsoHandler;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -140,7 +143,9 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 							.isSessionValid()) {
 				chooseMode();
 			} else {
-				MagicApplication.getInstance().getWeibo().authorize(this, this);
+				WeiboAuth mWeiboAuth = new WeiboAuth(this, AppConstant.CONSUMER_KEY, AppConstant.REDIRECT_URL, AppConstant.SCOPE);
+				mSsoHandler = new SsoHandler(this, mWeiboAuth);
+                mSsoHandler.authorize(this);
 			}
 			break;
 		}
@@ -149,54 +154,68 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	@Override
 	public void onCancel() {
 	}
+	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        // SSO 授权回调
+        // 重要：发起 SSO 登陆的 Activity 必须重写 onActivityResult
+        if (mSsoHandler != null) {
+        	Debug.v("resultCode : "+resultCode);
+            mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
+        }
+    }
 
 	@Override
 	public void onComplete(Bundle values) {
-		String token = values.getString("access_token");
-		String expires_in = values.getString("expires_in");
-		Oauth2AccessToken accessToken = new Oauth2AccessToken(token, expires_in);
-		MagicApplication.getInstance().setAccessToken(accessToken);
-		AccessTokenKeeper.keepAccessToken(getApplicationContext(), accessToken);
-		AccountAPI accountAPI = new AccountAPI(accessToken);
-		accountAPI.getUid(new RequestListener() {
-
-			@Override
-			public void onIOException(IOException arg0) {
-
-			}
-
-			@Override
-			public void onError(WeiboException arg0) {
-
-			}
-
-			@Override
-			public void onComplete(String response) {
-				try {
-					JSONObject obj = new JSONObject(response);
-					long id = obj.getLong("uid");
-					Persistence.setUID(getApplicationContext(), id);
-				} catch (JSONException e) {
-					e.printStackTrace();
+		 // 从 Bundle 中解析 Token
+		Oauth2AccessToken mAccessToken = Oauth2AccessToken.parseAccessToken(values);
+        if (mAccessToken.isSessionValid()) {
+            // 保存 Token 到 SharedPreferences
+            AccessTokenKeeper.writeAccessToken(this, mAccessToken);
+            MagicApplication.getInstance().setAccessToken(mAccessToken);
+            startNotificationService();
+    		chooseMode();
+    		
+    		AccountAPI accountAPI = new AccountAPI(mAccessToken);
+    		accountAPI.getUid(new RequestListener() {
+				
+				@Override
+				public void onIOException(IOException e) {
+					
 				}
-			}
-		});
-
-		startNotificationService();
-		chooseMode();
-	}
-
-	@Override
-	public void onError(WeiboDialogError e) {
-		Toast.makeText(getApplicationContext(),
-				"Auth error : " + e.getMessage(), Toast.LENGTH_LONG).show();
+				
+				@Override
+				public void onError(WeiboException e) {
+					
+				}
+				
+				@Override
+				public void onComplete4binary(ByteArrayOutputStream responseOS) {
+					
+				}
+				
+				@Override
+				public void onComplete(String response) {
+					try {
+						JSONObject obj = new JSONObject(response);
+						long id = obj.getLong("uid");
+						Persistence.setUID(getApplicationContext(), id);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+        } else {
+            Toast.makeText(this, R.string.text_token_expired, Toast.LENGTH_LONG).show();
+        }
 	}
 
 	@Override
 	public void onWeiboException(WeiboException e) {
 		Toast.makeText(
 				getApplicationContext(),
-				"Auth exception : " + e.getStatusCode() + " :  "
-						+ e.getMessage(), Toast.LENGTH_LONG).show();
+				"Auth exception : " + e.getMessage(), Toast.LENGTH_LONG).show();
 	}
 }

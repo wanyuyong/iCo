@@ -1,11 +1,9 @@
 package magic.yuyong.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import magic.yuyong.R;
 import magic.yuyong.adapter.MyPagerAdapter;
@@ -20,6 +18,10 @@ import magic.yuyong.util.Debug;
 import magic.yuyong.util.JsonUtil;
 import magic.yuyong.view.RefreshView;
 import magic.yuyong.view.TitlePageIndicator;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,9 +37,9 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.api.FriendshipsAPI;
-import com.weibo.sdk.android.net.RequestListener;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.legacy.FriendshipsAPI;
 
 public class ShowFriendsActivity extends BaseActivity implements
 		View.OnClickListener, RefreshView.Listener {
@@ -153,6 +155,12 @@ public class ShowFriendsActivity extends BaseActivity implements
 									msg.what = AppConstant.MSG_UPDATE_VIEW;
 									mHandler.sendMessage(msg);
 								}
+
+								@Override
+								public void onComplete4binary(
+										ByteArrayOutputStream responseOS) {
+									
+								}
 							});
 					break;
 				case VIEW_FOLLOWING:
@@ -178,6 +186,12 @@ public class ShowFriendsActivity extends BaseActivity implements
 									msg.obj = requestState;
 									msg.what = AppConstant.MSG_UPDATE_VIEW;
 									mHandler.sendMessage(msg);
+								}
+
+								@Override
+								public void onComplete4binary(
+										ByteArrayOutputStream responseOS) {
+									
 								}
 							});
 					break;
@@ -219,6 +233,11 @@ public class ShowFriendsActivity extends BaseActivity implements
 			public void onComplete(String arg0) {
 				Persistence.setFollower(getApplicationContext(), 0);
 				sendBroadcast(new Intent(AppConstant.ACTION_UNREAD_STATE_CHANGE_BROADCAST));
+			}
+
+			@Override
+			public void onComplete4binary(ByteArrayOutputStream responseOS) {
+				
 			}
 		}, UnReadAPI.TYPE_FOLLOWER);
 	}

@@ -1,6 +1,14 @@
 package magic.yuyong.activity;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.LogoutAPI;
 
 import magic.yuyong.R;
 import magic.yuyong.app.AppConstant;
@@ -9,15 +17,13 @@ import magic.yuyong.app.MagicDialog;
 import magic.yuyong.persistence.AccessTokenKeeper;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.service.NotificationService;
-import magic.yuyong.util.Debug;
-import magic.yuyong.util.SDCardUtils;
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -29,7 +35,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+    	requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         actionBar.setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.setting);
@@ -118,44 +124,64 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 
                     @Override
                     public void onClick(View v) {
-                        exit_dialog.dismiss();
+                    	exit_dialog.dismiss();
+                    	setProgressBarIndeterminateVisibility(true);
+                    	new LogoutAPI(MagicApplication.getInstance().getAccessToken()).logout(new RequestListener() {
+							
+							@Override
+							public void onIOException(IOException e) {
+								 Toast.makeText(
+			                                getApplicationContext(),
+			                                getResources().getString(
+			                                        R.string.text_login_out_faild),
+			                                Toast.LENGTH_SHORT).show();
+								 setProgressBarIndeterminateVisibility(false);
+							}
+							
+							@Override
+							public void onError(WeiboException e) {
+								 Toast.makeText(
+			                                getApplicationContext(),
+			                                getResources().getString(
+			                                        R.string.text_login_out_faild),
+			                                Toast.LENGTH_SHORT).show();
+								 setProgressBarIndeterminateVisibility(false);
+							}
+							
+							@Override
+							public void onComplete4binary(ByteArrayOutputStream responseOS) {
+							}
+							
+							@Override
+							public void onComplete(String response) {
+								  if (!TextUtils.isEmpty(response)) {
+						                try {
+						                    JSONObject obj = new JSONObject(response);
+						                    String value = obj.getString("result");
+						                    if ("true".equalsIgnoreCase(value)) {
+						                        AccessTokenKeeper.clear(getApplicationContext());
+						                        MagicApplication.getInstance().setAccessToken(null);
+						                        Toast.makeText(
+						                                getApplicationContext(),
+						                                getResources().getString(
+						                                        R.string.text_login_out_success),
+						                                Toast.LENGTH_SHORT).show();
+						                        
+						                        //stop service
+						                        Intent service = new Intent(getApplicationContext(),
+						                                NotificationService.class);
+						                        stopService(service);
 
-                        //clean accessToken
-                        AccessTokenKeeper.clear(getApplicationContext());
-                        MagicApplication.getInstance().setAccessToken(null);
-
-                        android.webkit.CookieManager.getInstance().removeAllCookie();
-
-                        String[] databaseNames = getApplication().databaseList();
-                        for(String name : databaseNames){
-                            Debug.v("database name : "+name);
-                            if(name.toLowerCase().startsWith("webview")){
-                                getApplication().deleteDatabase(name);
-                            }
-                        }
-
-                        File cache = getApplication().getCacheDir();
-                        for(File file : cache.listFiles()){
-                            Debug.v("cache name : "+file.getName());
-                            if(file.getName().toLowerCase().startsWith("webview")){
-                                SDCardUtils.deleteDir(file);
-                            }
-                        }
-
-                        Toast.makeText(
-                                getApplicationContext(),
-                                getResources().getString(
-                                        R.string.text_login_out_success),
-                                Toast.LENGTH_SHORT).show();
-
-                        //stop service
-                        Intent service = new Intent(getApplicationContext(),
-                                NotificationService.class);
-                        stopService(service);
-
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        shutDown();
-                        
+						                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+						                        shutDown();
+						                    }
+						                } catch (JSONException e) {
+						                    e.printStackTrace();
+						                }
+						            }
+								  setProgressBarIndeterminateVisibility(false);
+							}
+						});
                     }
                 });
                 exit_dialog.addButton(R.string.but_cancel, new OnClickListener() {

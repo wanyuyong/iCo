@@ -2,21 +2,20 @@ package magic.yuyong.app;
 
 import magic.yuyong.persistence.AccessTokenKeeper;
 
-import com.weibo.sdk.android.Oauth2AccessToken;
-import com.weibo.sdk.android.Weibo;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+
 
 public class MagicApplication extends GDApplication {
 	
     private static MagicApplication instance  = null;
     private Oauth2AccessToken accessToken = null;
-    private Weibo weibo = null;
 
     @Override
 	public void onCreate() {
 		super.onCreate();
 		instance =  this;
 		accessToken = AccessTokenKeeper.readAccessToken(this);
-		weibo = Weibo.getInstance(AppConstant.CONSUMER_KEY, AppConstant.REDIRECT_URL);
+		
 	}
 
 	public static MagicApplication getInstance(){
@@ -31,7 +30,4 @@ public class MagicApplication extends GDApplication {
 		this.accessToken = accessToken;
 	}
 
-	public Weibo getWeibo() {
-		return weibo;
-	}
 }

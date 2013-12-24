@@ -1,5 +1,6 @@
 package magic.yuyong.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +32,12 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.api.FriendshipsAPI;
-import com.weibo.sdk.android.api.SearchAPI;
-import com.weibo.sdk.android.api.WeiboAPI;
-import com.weibo.sdk.android.net.RequestListener;
-
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.legacy.FriendshipsAPI;
+import com.sina.weibo.sdk.openapi.legacy.SearchAPI;
+import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.FRIEND_TYPE;
+import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.RANGE;
 
 public class GetFriendsActivity extends BaseActivity implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
     private ListView friendsList, searchList;
@@ -157,9 +158,10 @@ public class GetFriendsActivity extends BaseActivity implements SearchView.OnQue
         if (!searchState.isRequest) {
             searchState.isRequest = true;
             search_footer.setVisibility(View.VISIBLE);
+            
             SearchAPI searchAPI = new SearchAPI(
                     MagicApplication.getInstance().getAccessToken());
-            searchAPI.atUsers(searchWord, 20, WeiboAPI.FRIEND_TYPE.ATTENTIONS, WeiboAPI.RANGE.ALL, new RequestListener() {
+            searchAPI.atUsers(searchWord, 20, FRIEND_TYPE.ATTENTIONS, RANGE.ALL, new RequestListener() {
 
                 @Override
                 public void onIOException(IOException arg0) {
@@ -181,6 +183,11 @@ public class GetFriendsActivity extends BaseActivity implements SearchView.OnQue
                     msg.what = AppConstant.MSG_UPDATA_SEARCH_FRIENDS;
                     mHandler.sendMessage(msg);
                 }
+
+				@Override
+				public void onComplete4binary(ByteArrayOutputStream responseOS) {
+					
+				}
             });
         }
     }
@@ -219,6 +226,12 @@ public class GetFriendsActivity extends BaseActivity implements SearchView.OnQue
                         msg.what = AppConstant.MSG_UPDATA_FRIENDS;
                         mHandler.sendMessage(msg);
                     }
+
+					@Override
+					public void onComplete4binary(
+							ByteArrayOutputStream responseOS) {
+						
+					}
                 });
             }
         }

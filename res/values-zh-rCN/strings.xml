@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">i Co</string>
-    <string name="version">version : 2.5</string>
+    <string name="version">version : 2.6</string>
 
     <string-array name="type_name">
         <item>娱乐</item>
@@ -122,6 +122,7 @@
     <!-- Text -->
     <string name="text_clean_cache_success">清理成功.</string>
     <string name="text_login_out_success">登出成功.</string>
+    <string name="text_login_out_faild">登出失败.</string>
     <string name="text_token_expired">Token 过期, 请重新登录.</string>
     <string name="text_network_exception">网络连接异常.</string>
     <string name="text_load_more">加载更多</string>

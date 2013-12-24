@@ -1,5 +1,6 @@
 package magic.yuyong.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,11 +43,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.api.CommentsAPI;
-import com.weibo.sdk.android.api.StatusesAPI;
-import com.weibo.sdk.android.api.WeiboAPI;
-import com.weibo.sdk.android.net.RequestListener;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.legacy.CommentsAPI;
+import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
+import com.sina.weibo.sdk.openapi.legacy.WeiboAPI;
 
 public class NewPostActivity extends BaseActivity implements OnClickListener,
 		RequestListener {
@@ -566,6 +567,12 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 							public void onError(WeiboException e) {
 
 							}
+
+							@Override
+							public void onComplete4binary(
+									ByteArrayOutputStream responseOS) {
+								
+							}
 						});
 			}
 
@@ -586,5 +593,10 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 
 	@Override
 	public void onIOException(IOException arg0) {
+	}
+
+	@Override
+	public void onComplete4binary(ByteArrayOutputStream responseOS) {
+		
 	}
 }

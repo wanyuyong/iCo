@@ -1,5 +1,6 @@
 package magic.yuyong.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -44,11 +45,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
+import com.sina.weibo.sdk.openapi.legacy.WeiboAPI;
 import com.umeng.update.UmengUpdateAgent;
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.api.StatusesAPI;
-import com.weibo.sdk.android.api.WeiboAPI;
-import com.weibo.sdk.android.net.RequestListener;
 
 public class TwitterBoardActivity extends GetTwitterActivity implements
 		OnClickListener, TwitterBoard.BoundaryListener {
@@ -342,6 +343,10 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 				groups.addAll(Group.parseGroup(response));
 				mHandler.sendEmptyMessage(AppConstant.MSG_UPDATA_GROUP);
 			}
+
+			@Override
+			public void onComplete4binary(ByteArrayOutputStream responseOS) {
+			}
 		});
 	}
 
@@ -475,6 +480,11 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 								0);
 						sendBroadcast(new Intent(
 								AppConstant.ACTION_UNREAD_STATE_CHANGE_BROADCAST));
+					}
+
+					@Override
+					public void onComplete4binary(
+							ByteArrayOutputStream responseOS) {
 					}
 				}, UnReadAPI.TYPE_MENTION_STATUS);
 			}

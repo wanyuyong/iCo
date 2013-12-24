@@ -1,5 +1,6 @@
 package magic.yuyong.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,19 +36,18 @@ import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.WrapperListAdapter;
 
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.api.CommentsAPI;
-import com.weibo.sdk.android.api.FavoritesAPI;
-import com.weibo.sdk.android.api.StatusesAPI;
-import com.weibo.sdk.android.api.WeiboAPI;
-import com.weibo.sdk.android.net.RequestListener;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.legacy.CommentsAPI;
+import com.sina.weibo.sdk.openapi.legacy.FavoritesAPI;
+import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
+import com.sina.weibo.sdk.openapi.legacy.WeiboAPI;
 
 public class TwitterShowActivity extends BaseActivity implements
 		OnClickListener {
@@ -385,6 +385,11 @@ public class TwitterShowActivity extends BaseActivity implements
 				msg.obj = response;
 				mHandler.sendMessage(msg);
 			}
+
+			@Override
+			public void onComplete4binary(ByteArrayOutputStream responseOS) {
+				
+			}
 		});
 	}
 
@@ -519,6 +524,12 @@ public class TwitterShowActivity extends BaseActivity implements
 									msg.obj = requestState;
 									mHandler.sendMessage(msg);
 								}
+
+								@Override
+								public void onComplete4binary(
+										ByteArrayOutputStream responseOS) {
+									
+								}
 							});
 				} else if (requestState.requestType == CommentOrRepostAdapter.TYPE_REPOSTS) {
 					StatusesAPI statusesAPI = new StatusesAPI(MagicApplication
@@ -543,6 +554,12 @@ public class TwitterShowActivity extends BaseActivity implements
 								@Override
 								public void onError(WeiboException e) {
 									mHandler.sendEmptyMessage(AppConstant.MSG_NETWORK_EXCEPTION);
+								}
+
+								@Override
+								public void onComplete4binary(
+										ByteArrayOutputStream responseOS) {
+									
 								}
 							});
 				}
@@ -679,6 +696,11 @@ public class TwitterShowActivity extends BaseActivity implements
 			public void onComplete(String arg0) {
 				mHandler.sendEmptyMessage(AppConstant.MSG_DELETE_SUCCEED);
 			}
+
+			@Override
+			public void onComplete4binary(ByteArrayOutputStream responseOS) {
+				
+			}
 		});
 	}
 
@@ -707,6 +729,11 @@ public class TwitterShowActivity extends BaseActivity implements
 				msg.what = favorite ? AppConstant.MSG_FAVORITE_SUCCEED
 						: AppConstant.MSG_FAVORITE_CANCEL_SUCCEED;
 				mHandler.sendMessage(msg);
+			}
+
+			@Override
+			public void onComplete4binary(ByteArrayOutputStream responseOS) {
+				
 			}
 		};
 

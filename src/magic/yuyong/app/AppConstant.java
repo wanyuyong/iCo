@@ -71,6 +71,7 @@ public class AppConstant {
 	public static final String CONSUMER_KEY = "577780336";
 	public static final String CONSUMER_SECRET = "534de6e04d0ae028f956b21707bc5dda";
 	public static final String REDIRECT_URL = "http://weibo.com/u/1069103203";
+    public static final String SCOPE =  "all";
 	
 	//domob
 	public static final String DOMOB_KEY = "56OJzndIuMkKkAVNWU";

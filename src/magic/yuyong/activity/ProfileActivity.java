@@ -1,10 +1,10 @@
 package magic.yuyong.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.weibo.sdk.android.api.FavoritesAPI;
 import magic.yuyong.R;
 import magic.yuyong.adapter.TwitterListAdapter;
 import magic.yuyong.app.AppConstant;
@@ -28,24 +28,25 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemClickListener;
 
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.api.FriendshipsAPI;
-import com.weibo.sdk.android.api.StatusesAPI;
-import com.weibo.sdk.android.api.UsersAPI;
-import com.weibo.sdk.android.api.WeiboAPI.FEATURE;
-import com.weibo.sdk.android.net.RequestListener;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.legacy.FavoritesAPI;
+import com.sina.weibo.sdk.openapi.legacy.FriendshipsAPI;
+import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
+import com.sina.weibo.sdk.openapi.legacy.UsersAPI;
+import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.FEATURE;
 
 public class ProfileActivity extends GetTwitterActivity implements OnClickListener, RefreshView.Listener {
 
@@ -309,6 +310,12 @@ public class ProfileActivity extends GetTwitterActivity implements OnClickListen
                             user.setFollowing(false);
                             handler.sendEmptyMessage(AppConstant.MSG_UNFOLLOW_SUCCEED);
                         }
+
+						@Override
+						public void onComplete4binary(
+								ByteArrayOutputStream responseOS) {
+							
+						}
                     });
         } else {
             friendshipsAPI.create(user.getId(), user.getScreen_name(),
@@ -328,6 +335,12 @@ public class ProfileActivity extends GetTwitterActivity implements OnClickListen
                             user.setFollowing(true);
                             handler.sendEmptyMessage(AppConstant.MSG_FOLLOW_SUCCEED);
                         }
+
+						@Override
+						public void onComplete4binary(
+								ByteArrayOutputStream responseOS) {
+							
+						}
                     });
         }
     }
@@ -357,6 +370,11 @@ public class ProfileActivity extends GetTwitterActivity implements OnClickListen
                 msg.obj = response;
                 handler.sendMessage(msg);
             }
+
+			@Override
+			public void onComplete4binary(ByteArrayOutputStream responseOS) {
+				
+			}
         };
         if (uid != 0L) {
             usersAPI.show(uid, listener);
