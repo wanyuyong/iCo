@@ -10,7 +10,7 @@
         android:id="@+id/twitter_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dip" >
+        android:layout_margin="5dip" >
 
         <magic.yuyong.view.Avatar
             android:id="@+id/twitter_user_avatar"
@@ -31,38 +31,33 @@
             android:text="Wanyuyong"
             android:textColor="#FF000000"
             android:textSize="18sp" />
-
-        <RelativeLayout
-            android:id="@+id/from_info"
+        
+        <TextView
+            android:id="@+id/twitter_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/twitter_user_name"
-            android:layout_toRightOf="@id/twitter_user_avatar" >
+            android:layout_toRightOf="@id/twitter_user_avatar"
+            android:text="come from i Co"
+            android:textColor="@color/theme_color"
+            android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/twitter_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="2012-12-22 AM 08:38:43"
-                android:textColor="@color/theme_color"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/twitter_from"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="come from i Co"
-                android:textColor="@color/theme_color"
-                android:textSize="13sp" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/twitter_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/twitter_from"
+            android:layout_toRightOf="@id/twitter_user_avatar"
+            android:text="2012-12-22 AM 08:38:43"
+            android:textColor="@color/theme_color"
+            android:textSize="15sp" />
 
         <magic.yuyong.view.TwitterContent
             android:id="@+id/twitter_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/from_info"
+            android:layout_toRightOf="@id/twitter_user_avatar"
+            android:layout_below="@id/twitter_time"
             magic:textColor="#FF666666"
             magic:textSize="16sp" />
 
@@ -75,15 +70,16 @@
             android:background="@drawable/shadow"
             android:scaleType="fitXY"
             android:visibility="gone" />
+        
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/origin_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dip"
-        android:layout_marginRight="8dip"
-        android:layout_marginBottom="8dip"
+        android:layout_marginBottom="5dip"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
         android:visibility="gone" >
 
         <magic.yuyong.view.Avatar
@@ -106,37 +102,32 @@
             android:textColor="#FF000000"
             android:textSize="18sp" />
 
-        <RelativeLayout
-            android:id="@+id/origin_from_info"
+        <TextView
+            android:id="@+id/origin_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/origin_user_name"
-            android:layout_toRightOf="@id/origin_user_avatar" >
-
-            <TextView
-                android:id="@+id/origin_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="2012-12-22 AM 08:38:43"
-                android:textColor="@color/theme_color"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/origin_from"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="come from i Co"
-                android:textColor="@color/theme_color"
-                android:textSize="13sp" />
-        </RelativeLayout>
+            android:layout_toRightOf="@id/origin_user_avatar"
+            android:text="come from i Co"
+            android:textColor="@color/theme_color"
+            android:textSize="15sp" />
+        
+        <TextView
+            android:id="@+id/origin_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/origin_from"
+            android:layout_toRightOf="@id/origin_user_avatar"
+            android:text="2012-12-22 AM 08:38:43"
+            android:textColor="@color/theme_color"
+            android:textSize="15sp" />
 
         <magic.yuyong.view.TwitterContent
             android:id="@+id/origin_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/origin_from_info"
+            android:layout_toRightOf="@id/origin_user_avatar"
+            android:layout_below="@id/origin_time"
             magic:textColor="#FF666666"
             magic:textSize="16sp" />
 
@@ -149,6 +140,7 @@
             android:background="@drawable/shadow"
             android:scaleType="fitXY"
             android:visibility="gone" />
+        
     </RelativeLayout>
 
     <RelativeLayout

@@ -9,14 +9,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
 import java.util.concurrent.Future;
 
-import magic.yuyong.util.Debug;
 import magic.yuyong.util.GDUtils;
 import magic.yuyong.util.SDCardUtils;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
