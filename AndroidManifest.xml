@@ -92,6 +92,13 @@
             android:label="@string/title_show_pic"
             android:theme="@style/Theme.Magic_style"
             android:uiOptions="splitActionBarWhenNarrow" />
+        
+        <activity
+            android:name=".activity.PlazaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_channels"
+            android:theme="@style/Theme.Magic_style"
+            android:uiOptions="splitActionBarWhenNarrow" />
 
         <service android:name=".service.NotificationService" />
 

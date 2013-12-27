@@ -39,11 +39,16 @@ public abstract class GetTwitterActivity extends BaseActivity {
 		public void onIOException(IOException e) {
 			android.os.Message msg = new android.os.Message();
 			msg.what = AppConstant.MSG_NETWORK_EXCEPTION;
+			msg.obj = requestState;
 			handler.sendMessage(msg);
 		}
 
 		@Override
 		public void onError(WeiboException e) {
+			android.os.Message msg = new android.os.Message();
+			msg.what = AppConstant.MSG_NETWORK_EXCEPTION;
+			msg.obj = requestState;
+			handler.sendMessage(msg);
 		}
 	}
 

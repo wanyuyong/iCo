@@ -806,7 +806,6 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
 
     private void initViewPager() {
         mPager = (ViewPager) findViewById(R.id.vPager);
-        mPager.setBackgroundColor(Color.WHITE);
         mPager.setOffscreenPageLimit(3);
         listViews = new ArrayList<View>();
 

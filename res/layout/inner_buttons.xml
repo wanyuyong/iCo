@@ -6,15 +6,6 @@
     android:orientation="horizontal" >
 
     <ImageView
-        android:id="@+id/home"
-        android:layout_width="0dip"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:contentDescription="@string/img_content_description"
-        android:scaleType="center"
-        android:src="@drawable/home" />
-
-    <ImageView
         android:id="@+id/new_post"
         android:layout_width="0dip"
         android:layout_height="fill_parent"
@@ -85,5 +76,14 @@
         android:contentDescription="@string/img_content_description"
         android:scaleType="center"
         android:src="@drawable/profile" />
+    
+    <ImageView
+        android:id="@+id/plaza"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:contentDescription="@string/img_content_description"
+        android:scaleType="center"
+        android:src="@drawable/plaza" />
 
 </LinearLayout>

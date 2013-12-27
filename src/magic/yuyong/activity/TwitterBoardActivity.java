@@ -12,7 +12,6 @@ import magic.yuyong.app.AppConstant;
 import magic.yuyong.app.MagicApplication;
 import magic.yuyong.drawable.Diagonal;
 import magic.yuyong.extend.FriendshipsAPI_E;
-import magic.yuyong.extend.UnReadAPI;
 import magic.yuyong.model.Group;
 import magic.yuyong.model.Twitter;
 import magic.yuyong.persistence.Persistence;
@@ -73,11 +72,10 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 	private boolean gettingGroup;
 
 	private static final int STATE_HOME = 0;
-	private static final int STATE_AT_ME = 1;
-	private static final int STATE_GROUP = 2;
+	private static final int STATE_GROUP = 1;
 	private RequestState current;
 
-	private RequestState homeState, atMeState, groupState;
+	private RequestState homeState, groupState;
 
 	private BroadcastReceiver unReadReceiver = new BroadcastReceiver() {
 
@@ -177,7 +175,6 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 		timeline.setOnClickListener(this);
 
 		homeState = new RequestState(STATE_HOME);
-		atMeState = new RequestState(STATE_AT_ME);
 		groupState = new RequestState(STATE_GROUP);
 		current = homeState;
 		getTwitter(false);
@@ -222,8 +219,8 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 		innerButtonLay = inflater.inflate(R.layout.inner_buttons, null);
 		innerButtonLay.setBackgroundDrawable(new Diagonal());
-		View homeButton = innerButtonLay.findViewById(R.id.home);
-		homeButton.setOnClickListener(this);
+		View plazaButton = innerButtonLay.findViewById(R.id.plaza);
+		plazaButton.setOnClickListener(this);
 		View postButton = innerButtonLay.findViewById(R.id.new_post);
 		postButton.setOnClickListener(this);
 		View atButton = innerButtonLay.findViewById(R.id.at);
@@ -296,16 +293,6 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 							AppConstant.PAGE_NUM, requestState.page, false,
 							WeiboAPI.FEATURE.ALL, false,
 							new TwitterRequestListener(requestState));
-					break;
-
-				case STATE_AT_ME:
-					StatusesAPI atMeAPI = new StatusesAPI(MagicApplication
-							.getInstance().getAccessToken());
-					atMeAPI.mentions(0, requestState.maxId,
-							AppConstant.PAGE_NUM, requestState.page,
-							WeiboAPI.AUTHOR_FILTER.ALL,
-							WeiboAPI.SRC_FILTER.ALL, WeiboAPI.TYPE_FILTER.ALL,
-							false, new TwitterRequestListener(requestState));
 					break;
 
 				case STATE_GROUP:
@@ -447,10 +434,9 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 					+ (int) DisplayUtil.dpToPx(getResources(), 5), content,
 					innerButtonLay);
 			break;
-		case R.id.home:
-			divide_view.close();
-			current = homeState;
-			getTwitter(true);
+		case R.id.plaza:
+			Intent plazaActivity = new Intent(getApplicationContext(), PlazaActivity.class);
+			startActivity(plazaActivity);
 			break;
 		case R.id.new_post:
 			Intent newPostIntent = new Intent(getApplicationContext(),
@@ -458,36 +444,10 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 			startActivity(newPostIntent);
 			break;
 		case R.id.at:
-			divide_view.close();
-			current = atMeState;
-			getTwitter(true);
-			if (Persistence.getMention_status(getApplicationContext()) != 0) {
-				UnReadAPI unReadAPI = new UnReadAPI(MagicApplication
-						.getInstance().getAccessToken());
-				unReadAPI.clear(new RequestListener() {
-
-					@Override
-					public void onIOException(IOException arg0) {
-					}
-
-					@Override
-					public void onError(WeiboException arg0) {
-					}
-
-					@Override
-					public void onComplete(String arg0) {
-						Persistence.setMention_status(getApplicationContext(),
-								0);
-						sendBroadcast(new Intent(
-								AppConstant.ACTION_UNREAD_STATE_CHANGE_BROADCAST));
-					}
-
-					@Override
-					public void onComplete4binary(
-							ByteArrayOutputStream responseOS) {
-					}
-				}, UnReadAPI.TYPE_MENTION_STATUS);
-			}
+			Intent atMeActivity = new Intent(getApplicationContext(),
+					TimeLineModeActivity.class);
+			atMeActivity.putExtra("pos", TimeLineModeActivity.VIEW_AT_ME);
+			startActivity(atMeActivity);
 			break;
 		case R.id.comment:
 			Intent commentActivity = new Intent(getApplicationContext(),
