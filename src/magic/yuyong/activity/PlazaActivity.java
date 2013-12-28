@@ -429,6 +429,14 @@ public class PlazaActivity extends GetTwitterActivity implements
 				case AppConstant.TYPE_CARS:
 					uids = AppConstant.UIDS_CARS;
 					break;
+					
+				case AppConstant.TYPE_FOOD:
+					uids = AppConstant.UIDS_FOOD;
+					break;
+					
+				case AppConstant.TYPE_MUSIC:
+					uids = AppConstant.UIDS_MUSIC;
+					break;
 				}
 
 				StatusesAPI_E api = new StatusesAPI_E(MagicApplication

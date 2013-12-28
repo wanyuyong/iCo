@@ -12,17 +12,16 @@ public class AppConstant {
 	public static final String SUFFIX_WIDE = "wide";
 	public static final String SUFFIX_NARROW = "narrow";
 
-	// 0：娱乐、1：搞笑、2：美女、3：旅行、4：星座、5：情感、6：时尚、7：名车、8：美食、9：音乐。
+	// 0：娱乐、1：搞笑、2：美女、3：旅行、4：星座、5：情感、6：名车、7：美食、8：音乐。
 	public static final int TYPE_ENTERTAINMENT = 0;
 	public static final int TYPE_FUNNY = 1;
 	public static final int TYPE_BEAUTY = 2;
 	public static final int TYPE_TRAVEL = 3;
 	public static final int TYPE_CONSTELLATION = 4;
 	public static final int TYPE_EMOTION = 5;
-	public static final int TYPE_FASHION = 6;
-	public static final int TYPE_CARS = 7;
-	public static final int TYPE_FOOD = 8;
-	public static final int TYPE_MUSIC = 9;
+	public static final int TYPE_CARS = 6;
+	public static final int TYPE_FOOD = 7;
+	public static final int TYPE_MUSIC = 8;
 
 	/**
 	 * 南都娱乐周刊 id : 1216431741 新浪音乐 id : 1266269835 搜狐娱乐 id : 1843633441 韩流图库 id
@@ -47,10 +46,10 @@ public class AppConstant {
 	 * 中国美女报告 id : 1666559280 中国美腿 id : 2317382462 美腿团 id : 2716523850 全球美女研究 id
 	 * : 1497246097 美女写真照 id : 1669899263 美女热门榜 id : 3858679729 女神阁 id :
 	 * 3075537743 美女美图营 id : 3814895924 全球时尚性感美女 id : 2740378344 校园美女大本营 id :
-	 * 2393383161 厦门校花 id : 2731172954 JK制服馆 id : 2328441837 美女胸 id : 1763276065
-	 * 薇美人__ id : 2757037655
+	 * 2393383161 厦门校花 id : 2731172954  美女胸 id : 1763276065
+	 * 薇美人__ id : 2757037655 模特美女集中营   id : 1925266324
 	 */
-	public static final String UIDS_BEAUTY = "1666559280,2317382462,2716523850,1497246097,1669899263,3858679729,3075537743,3814895924,2740378344,2393383161,2731172954,2328441837,1763276065,2757037655";
+	public static final String UIDS_BEAUTY = "1925266324,1666559280,2317382462,2716523850,1497246097,1669899263,3858679729,3075537743,3814895924,2740378344,2393383161,2731172954,1763276065,2757037655";
 
 	/**
 	 * 雷永辉 id : 1074898101 冰城馨子 id : 1235305362 菜尾蝗-旅游养生禅 id : 1240183873 七月娃娃
@@ -85,6 +84,22 @@ public class AppConstant {
 	 * 1275182592 裴达军 id : 1964158257 GTGT id : 1400806871
 	 */
 	public static final String UIDS_CARS = "1784897432,1731209283,1706146655,2101763120,2460972822,2346365882,1275182592,1964158257,1400806871";
+
+	/**
+	 * 成都美食 id : 1615913053 君之 id : 1246792191 十全菜谱的美食心情 id : 1627572147 上海美食 id
+	 * : 1702872420 文怡 id : 1420174783 美食天下 id : 1642625033 微美食 id : 2300267615
+	 * 大众点评网-上海美食 id : 1853946117 微吃货 id : 2188014311 美食 id : 1828872085
+	 * 菜尾蝗-旅游养生禅 id : 1240183873 京城美食探店 id : 2597465527
+	 */
+	public static final String UIDS_FOOD = "1615913053,1246792191,1627572147,1702872420,1420174783,1642625033,2300267615,1853946117,2188014311,1828872085,1240183873,2597465527";
+
+	/**
+	 * 小柯 id : 1254745922 多米音乐 id : 1779785750 咪咕音乐 id : 1867028705 音乐人 id :
+	 * 1852855013 原创音乐基地 id : 1750294477 MusicRadio音乐之声 id : 1668662863 百威为音乐而创
+	 * id : 3237407213 微博音乐盒 id : 2299824385 高晓松 id : 1191220232 虾米音乐 id :
+	 * 1718436033 微乐迷 id : 2189743085
+	 */
+	public static final String UIDS_MUSIC = "1254745922,1779785750,1867028705,1852855013,1750294477,1668662863,3237407213,2299824385,1191220232,1718436033,2189743085";
 
 	// Post type
 	public static final int TYPE_POST_TEXT = 0;
@@ -122,11 +137,10 @@ public class AppConstant {
 	public static final int MSG_DOWN_END = 26;
 	public static final int MSG_SHOW_REPOSTS = 27;
 	public static final int MSG_SHOW_POST_PIC = 28;
-	
-	//requestCode
+
+	// requestCode
 	public static final int REQUESTCODE_COMMENT = 0;
 	public static final int REQUESTCODE_FORWARD = 1;
-	
 
 	// broadcast
 	public static final String ACTION_REFRESH_COMMENT = "action_refresh_comment";

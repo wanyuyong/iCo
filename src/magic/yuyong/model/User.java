@@ -191,8 +191,6 @@ public class User implements android.os.Parcelable {
 		user.setFollowing(JsonUtil.getBoolean(jsonObj, FOLLOWING));
 		user.setFollow_me(JsonUtil.getBoolean(jsonObj, FOLLOW_ME));
 		
-		Debug.v("name : "+user.getScreen_name()+"   id : "+user.getId());
-		
 		return user;
 	}
 
