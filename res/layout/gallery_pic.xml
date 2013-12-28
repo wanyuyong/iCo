@@ -7,7 +7,8 @@
     <magic.yuyong.view.AsyncSubsamplingScaleImageView
         android:id="@+id/image"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        android:visibility="gone" />
     
     <pl.droidsonroids.gif.AsyncGifImageView
         android:id="@+id/gif_image"

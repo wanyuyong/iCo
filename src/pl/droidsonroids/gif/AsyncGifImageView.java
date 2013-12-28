@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
 import java.util.concurrent.Future;
 
+import magic.yuyong.util.Debug;
 import magic.yuyong.util.GDUtils;
 import magic.yuyong.util.SDCardUtils;
 import android.content.Context;
@@ -20,6 +20,8 @@ import android.os.Message;
 import android.os.Process;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 
 /**
  * @title:AsyncGifImageView.java
@@ -31,19 +33,67 @@ import android.util.AttributeSet;
  */
 public class AsyncGifImageView extends GifImageView {
 
+	private GestureDetector mDetector;
+
+	private OnSingleTapConfirmedListener mOnSingleTapConfirmedListener;
+
+	public void setOnSingleTapConfirmedListener(OnSingleTapConfirmedListener l) {
+		this.mOnSingleTapConfirmedListener = l;
+	}
+	
+	public static interface OnSingleTapConfirmedListener{
+		void onSingleTapConfirmed();
+	}
+	
 	public AsyncGifImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		// TODO Auto-generated constructor stub
+		init();
 	}
 
 	public AsyncGifImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
+		init();
 	}
 
 	public AsyncGifImageView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
+		init();
+	}
+
+	private void init() {
+		mDetector = new GestureDetector(getContext(),
+				new GestureDetector.SimpleOnGestureListener() {
+					@Override
+					public boolean onSingleTapConfirmed(MotionEvent e) {
+						if(mOnSingleTapConfirmedListener != null){
+							mOnSingleTapConfirmedListener.onSingleTapConfirmed();
+						}
+						return true;
+					}
+				});
+	}
+
+	private void requestParentDisallowInterceptTouchEvent(boolean flag) {
+		if (getParent() != null) {
+			getParent().requestDisallowInterceptTouchEvent(flag);
+		}
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (mDetector != null) {
+			mDetector.onTouchEvent(event);
+		}
+		if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			requestParentDisallowInterceptTouchEvent(false);
+		} else {
+			requestParentDisallowInterceptTouchEvent(true);
+			return true;
+		}
+		return super.onTouchEvent(event);
 	}
 
 	public static interface ImageLoadingCallback {
@@ -138,7 +188,7 @@ public class AsyncGifImageView extends GifImageView {
 		}
 
 		cancel();
-		
+
 		setImageDrawable(null);
 
 		mUrl = url;
@@ -155,7 +205,7 @@ public class AsyncGifImageView extends GifImageView {
 			Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 			String path = "";
 			mHandler.sendMessage(Message.obtain(mHandler, ON_START));
-			if(!TextUtils.isEmpty(mUrl)){
+			if (!TextUtils.isEmpty(mUrl)) {
 				if (SDCardUtils.checkFileExits(mUrl)) {
 					path = SDCardUtils.createFilePath(mUrl);
 				} else {
@@ -199,14 +249,14 @@ public class AsyncGifImageView extends GifImageView {
 			}
 			outputStream.flush();
 			boolean success = tempFile.renameTo(file);
-			if(success){
+			if (success) {
 				return path;
 			}
 		} catch (IOException e) {
-			if(tempFile.exists()){
+			if (tempFile.exists()) {
 				tempFile.delete();
 			}
-			if(file.exists()){
+			if (file.exists()) {
 				file.delete();
 			}
 		} finally {

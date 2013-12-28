@@ -109,6 +109,17 @@ public class SubsamplingScaleImageView extends View implements OnTouchListener {
 	private boolean readySent = false;
 
 	private float lastX = -1;
+	
+	private OnSingleTapConfirmedListener mOnSingleTapConfirmedListener;
+	
+	public void setOnSingleTapConfirmedListener(
+			OnSingleTapConfirmedListener l) {
+		this.mOnSingleTapConfirmedListener = l;
+	}
+
+	public static interface OnSingleTapConfirmedListener{
+		void onSingleTapConfirmed();
+	}
 
 	public SubsamplingScaleImageView(Context context, AttributeSet attr) {
 		super(context, attr);
@@ -232,6 +243,16 @@ public class SubsamplingScaleImageView extends View implements OnTouchListener {
 						}
 						return super.onFling(e1, e2, velocityX, velocityY);
 					}
+					
+					@Override
+					public boolean onSingleTapConfirmed(MotionEvent e) {
+						if(mOnSingleTapConfirmedListener != null){
+							mOnSingleTapConfirmedListener.onSingleTapConfirmed();
+							return true;
+						}
+						return false;
+					}
+					
 				});
 	}
 
