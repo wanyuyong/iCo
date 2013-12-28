@@ -122,6 +122,11 @@ public class AppConstant {
 	public static final int MSG_DOWN_END = 26;
 	public static final int MSG_SHOW_REPOSTS = 27;
 	public static final int MSG_SHOW_POST_PIC = 28;
+	
+	//requestCode
+	public static final int REQUESTCODE_COMMENT = 0;
+	public static final int REQUESTCODE_FORWARD = 1;
+	
 
 	// broadcast
 	public static final String ACTION_REFRESH_COMMENT = "action_refresh_comment";

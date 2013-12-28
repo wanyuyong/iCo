@@ -282,8 +282,6 @@ public class TwitterShowActivity extends BaseActivity implements
 		adapter = new CommentOrRepostAdapter(this);
 		listView.setAdapter(adapter);
 		setListScrollListener(listView);
-		
-		View view = getWindow().findViewById(16909285);
 
 		// init button
 		comment_but = (TextView) header.findViewById(R.id.comment_but);
@@ -388,7 +386,7 @@ public class TwitterShowActivity extends BaseActivity implements
 
 			@Override
 			public void onComplete4binary(ByteArrayOutputStream responseOS) {
-				
+
 			}
 		});
 	}
@@ -528,7 +526,7 @@ public class TwitterShowActivity extends BaseActivity implements
 								@Override
 								public void onComplete4binary(
 										ByteArrayOutputStream responseOS) {
-									
+
 								}
 							});
 				} else if (requestState.requestType == CommentOrRepostAdapter.TYPE_REPOSTS) {
@@ -559,10 +557,31 @@ public class TwitterShowActivity extends BaseActivity implements
 								@Override
 								public void onComplete4binary(
 										ByteArrayOutputStream responseOS) {
-									
+
 								}
 							});
 				}
+			}
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+			switch (requestCode) {
+			case AppConstant.REQUESTCODE_COMMENT:
+				if(currentType ==commentState.requestType ){
+					listView.setSelectionAfterHeaderView();
+				}
+				getData(true, commentState);
+				break;
+
+			case AppConstant.REQUESTCODE_FORWARD:
+				if(currentType ==repostState.requestType ){
+					listView.setSelectionAfterHeaderView();
+				}
+				getData(true, repostState);
+				break;
 			}
 		}
 	}
@@ -633,7 +652,9 @@ public class TwitterShowActivity extends BaseActivity implements
 					NewPostActivity.class);
 			commentIntent.putExtra("type", AppConstant.TYPE_COMMENT);
 			commentIntent.putExtra("twitter_id", twitter.getId());
-			startActivity(commentIntent);
+			startActivityForResult(commentIntent,
+					AppConstant.REQUESTCODE_COMMENT);
+
 			break;
 		case R.id.forward:
 			Intent repostIntent = new Intent(getApplicationContext(),
@@ -645,7 +666,8 @@ public class TwitterShowActivity extends BaseActivity implements
 						"//@" + twitter.getUser().getScreen_name() + ":"
 								+ twitter.getText());
 			}
-			startActivity(repostIntent);
+			startActivityForResult(repostIntent,
+					AppConstant.REQUESTCODE_FORWARD);
 			break;
 		case R.id.favorite:
 			favoriteTwitter(!twitter.isFavorited());
@@ -699,7 +721,7 @@ public class TwitterShowActivity extends BaseActivity implements
 
 			@Override
 			public void onComplete4binary(ByteArrayOutputStream responseOS) {
-				
+
 			}
 		});
 	}
@@ -733,7 +755,7 @@ public class TwitterShowActivity extends BaseActivity implements
 
 			@Override
 			public void onComplete4binary(ByteArrayOutputStream responseOS) {
-				
+
 			}
 		};
 

@@ -583,6 +583,7 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 	@Override
 	public void onComplete(String arg0) {
 		mHandler.sendEmptyMessage(AppConstant.MSG_POST_SUCCEED);
+		setResult(RESULT_OK);
 		finish();
 	}
 
