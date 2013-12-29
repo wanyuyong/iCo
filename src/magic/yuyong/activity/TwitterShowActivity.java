@@ -574,14 +574,34 @@ public class TwitterShowActivity extends BaseActivity implements
 			switch (requestCode) {
 			case AppConstant.REQUESTCODE_COMMENT:
 				if (currentType == commentState.requestType) {
-					listView.setSelectionAfterHeaderView();
+					listView.post(new Runnable() {
+
+						@Override
+						public void run() {
+							if (adapter.getCount() != 0) {
+								listView.setSelectionFromTop(1, header
+										.findViewById(R.id.buttons_lay)
+										.getHeight());
+							}
+						}
+					});
 				}
 				getData(true, commentState);
 				break;
 
 			case AppConstant.REQUESTCODE_FORWARD:
 				if (currentType == repostState.requestType) {
-					listView.setSelectionAfterHeaderView();
+					listView.post(new Runnable() {
+
+						@Override
+						public void run() {
+							if (adapter.getCount() != 0) {
+								listView.setSelectionFromTop(1, header
+										.findViewById(R.id.buttons_lay)
+										.getHeight());
+							}
+						}
+					});
 				}
 				getData(true, repostState);
 				break;
@@ -639,12 +659,13 @@ public class TwitterShowActivity extends BaseActivity implements
 		case R.id.refresh:
 			if (currentType == CommentOrRepostAdapter.TYPE_COMMENTS) {
 				getData(true, commentState);
-				
+
 			} else if (currentType == CommentOrRepostAdapter.TYPE_REPOSTS) {
 				getData(true, repostState);
 			}
 			if (adapter.getCount() != 0) {
-				listView.setSelectionFromTop(1, header.findViewById(R.id.buttons_lay).getHeight());
+				listView.setSelectionFromTop(1,
+						header.findViewById(R.id.buttons_lay).getHeight());
 			}
 			break;
 		case R.id.comment:
