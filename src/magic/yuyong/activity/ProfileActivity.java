@@ -16,10 +16,13 @@ import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
 import magic.yuyong.util.Debug;
 import magic.yuyong.view.AsyncImageView;
-import magic.yuyong.view.RefreshView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,12 +51,12 @@ import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
 import com.sina.weibo.sdk.openapi.legacy.UsersAPI;
 import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.FEATURE;
 
-public class ProfileActivity extends GetTwitterActivity implements OnClickListener, RefreshView.Listener {
+public class ProfileActivity extends GetTwitterActivity implements OnClickListener, OnRefreshListener {
 
     private User user;
     private View head;
     private View footer;
-    private RefreshView rv;
+    private PullToRefreshLayout mPullToRefreshLayout;
     private AsyncImageView avatar;
     private TextView user_name;
     private ImageView user_gender;
@@ -156,8 +159,7 @@ public class ProfileActivity extends GetTwitterActivity implements OnClickListen
         favourit_lay = (LinearLayout) head.findViewById(R.id.favourit_lay);
         favourit_lay.setOnClickListener(this);
 
-        rv = (RefreshView) findViewById(R.id.refresh_view);
-        rv.setListener(this);
+        mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
 
         adapter = new TwitterListAdapter(this);
 
@@ -209,6 +211,11 @@ public class ProfileActivity extends GetTwitterActivity implements OnClickListen
 
         getProfile();
         changeType(myTwittersRequest);
+        
+        ActionBarPullToRefresh.from(this)
+                .theseChildrenArePullable(R.id.list_view, android.R.id.empty)
+                .listener(this)
+                .setup(mPullToRefreshLayout);
     }
 
     @Override
@@ -474,13 +481,13 @@ public class ProfileActivity extends GetTwitterActivity implements OnClickListen
             adapter.notifyDataSetChanged();
         }
         footer.setVisibility(View.INVISIBLE);
-        rv.close();
+        mPullToRefreshLayout.setRefreshComplete();
     }
 
     @Override
     protected void onError(RequestState requestState) {
         footer.setVisibility(View.INVISIBLE);
-        rv.close();
+        mPullToRefreshLayout.setRefreshComplete();
     }
 
     @Override
@@ -509,12 +516,12 @@ public class ProfileActivity extends GetTwitterActivity implements OnClickListen
         }
     }
 
-    @Override
-    public void onRefresh() {
-        if (!requestProfile && user == null) {
-            getProfile();
-        }
-        getTwitter(true);
-    }
+	@Override
+	public void onRefreshStarted(View view) {
+		  if (!requestProfile && user == null) {
+	            getProfile();
+	        }
+	        getTwitter(true);
+	}
 
 }

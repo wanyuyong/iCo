@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<magic.yuyong.view.RefreshView
+<uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refresh_view"
+    android:id="@+id/ptr_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="@android:color/white">
+    android:layout_height="match_parent"
+    >
 
     <magic.yuyong.view.TwitterListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFFFFFFF"
         android:cacheColorHint="@android:color/transparent"
         android:divider="#FFCCCCCC"
         android:dividerHeight="1px"
-        android:footerDividersEnabled="false"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dip"
+        android:footerDividersEnabled="false"
         android:listSelector="@android:color/transparent"
         android:scrollbarStyle="outsideOverlay" >
     </magic.yuyong.view.TwitterListView>
 
-</magic.yuyong.view.RefreshView>
+</uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>

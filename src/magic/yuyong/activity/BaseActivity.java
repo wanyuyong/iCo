@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
@@ -69,6 +70,16 @@ public class BaseActivity extends Activity {
 	
 	protected void shutDown(){
 		sendBroadcast(new Intent(AppConstant.ACTION_SHUT_DOWN_BROADCAST));
+	}
+	
+	protected int getActionBaHeight(){
+		int actionBarHeight = 0;
+		TypedValue tv = new TypedValue();
+		if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+		{
+		    actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+		}
+		return actionBarHeight;
 	}
 
 }

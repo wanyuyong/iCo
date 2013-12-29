@@ -10,11 +10,13 @@ import magic.yuyong.adapter.CommentOrRepostAdapter;
 import magic.yuyong.app.AppConstant;
 import magic.yuyong.app.MagicApplication;
 import magic.yuyong.app.MagicDialog;
+import magic.yuyong.listener.ListViewScrollListener;
 import magic.yuyong.model.Comment;
 import magic.yuyong.model.Repost;
 import magic.yuyong.model.Twitter;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
+import magic.yuyong.util.Debug;
 import magic.yuyong.util.StringUtil;
 import magic.yuyong.view.AsyncImageView;
 import magic.yuyong.view.TwitterContent;
@@ -266,7 +268,6 @@ public class TwitterShowActivity extends BaseActivity implements
 			}
 			break;
 		}
-
 	}
 
 	private void initView() {
@@ -328,6 +329,7 @@ public class TwitterShowActivity extends BaseActivity implements
 								: repostState;
 						getData(false, requestState);
 					}
+
 				}
 			}
 
@@ -341,6 +343,7 @@ public class TwitterShowActivity extends BaseActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
 		super.onCreate(savedInstanceState);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -570,14 +573,14 @@ public class TwitterShowActivity extends BaseActivity implements
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
 			case AppConstant.REQUESTCODE_COMMENT:
-				if(currentType ==commentState.requestType ){
+				if (currentType == commentState.requestType) {
 					listView.setSelectionAfterHeaderView();
 				}
 				getData(true, commentState);
 				break;
 
 			case AppConstant.REQUESTCODE_FORWARD:
-				if(currentType ==repostState.requestType ){
+				if (currentType == repostState.requestType) {
 					listView.setSelectionAfterHeaderView();
 				}
 				getData(true, repostState);
@@ -636,16 +639,13 @@ public class TwitterShowActivity extends BaseActivity implements
 		case R.id.refresh:
 			if (currentType == CommentOrRepostAdapter.TYPE_COMMENTS) {
 				getData(true, commentState);
-				if (adapter.getCount() != 0) {
-					listView.setSelection(1);
-				}
+				
 			} else if (currentType == CommentOrRepostAdapter.TYPE_REPOSTS) {
 				getData(true, repostState);
-				if (adapter.getCount() != 0) {
-					listView.setSelection(1);
-				}
 			}
-
+			if (adapter.getCount() != 0) {
+				listView.setSelectionFromTop(1, header.findViewById(R.id.buttons_lay).getHeight());
+			}
 			break;
 		case R.id.comment:
 			Intent commentIntent = new Intent(getApplicationContext(),

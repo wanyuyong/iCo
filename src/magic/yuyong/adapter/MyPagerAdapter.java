@@ -2,7 +2,6 @@ package magic.yuyong.adapter;
 
 import java.util.List;
 
-import magic.yuyong.util.Debug;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;

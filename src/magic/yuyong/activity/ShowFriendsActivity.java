@@ -16,11 +16,14 @@ import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
 import magic.yuyong.util.Debug;
 import magic.yuyong.util.JsonUtil;
-import magic.yuyong.view.RefreshView;
 import magic.yuyong.view.TitlePageIndicator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -42,7 +45,7 @@ import com.sina.weibo.sdk.net.RequestListener;
 import com.sina.weibo.sdk.openapi.legacy.FriendshipsAPI;
 
 public class ShowFriendsActivity extends BaseActivity implements
-		View.OnClickListener, RefreshView.Listener {
+		View.OnClickListener, OnRefreshListener {
 
 	private ViewPager mPager;
 	private TitlePageIndicator mIndicator;
@@ -254,7 +257,7 @@ public class ShowFriendsActivity extends BaseActivity implements
 
 	private void onUpdate(FriendRequestState requestState) {
 		View tagView = listViews.get(requestState.requestType);
-		RefreshView rf = (RefreshView) tagView;
+		PullToRefreshLayout mPullToRefreshLayout = (PullToRefreshLayout) tagView;
 		ListView listView = (ListView) tagView.findViewById(R.id.friends_list);
 		View footView = listView.findViewById(R.id.load_more);
 		HeaderViewListAdapter headAdapter = (HeaderViewListAdapter) listView
@@ -281,16 +284,16 @@ public class ShowFriendsActivity extends BaseActivity implements
 		}
 		datas.addAll(users);
 		adapter.notifyDataSetChanged();
-		rf.close();
 		footView.setVisibility(View.INVISIBLE);
+		mPullToRefreshLayout.setRefreshComplete();
 	}
 
 	private void onError(FriendRequestState requestState) {
 		View tagView = listViews.get(requestState.requestType);
 		ListView listView = (ListView) tagView.findViewById(R.id.friends_list);
 		View footView = listView.findViewById(R.id.load_more);
-		RefreshView rf = (RefreshView) tagView;
-		rf.close();
+		PullToRefreshLayout mPullToRefreshLayout = (PullToRefreshLayout) tagView;
+		mPullToRefreshLayout.setRefreshComplete();
 		footView.setVisibility(View.INVISIBLE);
 		Toast.makeText(
 				getApplicationContext(),
@@ -326,8 +329,11 @@ public class ShowFriendsActivity extends BaseActivity implements
 		list_view.setAdapter(adapter);
 		adapter.addData(new ArrayList<User>());
 
-		RefreshView rf = (RefreshView) view;
-		rf.setListener(this);
+		PullToRefreshLayout mPullToRefreshLayout = (PullToRefreshLayout)view;
+		ActionBarPullToRefresh.from(this)
+        .theseChildrenArePullable(R.id.friends_list, android.R.id.empty)
+        .listener(this)
+        .setup(mPullToRefreshLayout);
 
 		FriendRequestState requestState = new FriendRequestState(view_type);
 		view.setTag(requestState);
@@ -336,7 +342,6 @@ public class ShowFriendsActivity extends BaseActivity implements
 
 	private void initViewPager() {
 		mPager = (ViewPager) findViewById(R.id.vPager);
-		mPager.setBackgroundColor(Color.WHITE);
 		listViews = new ArrayList<View>();
 
 		View followerList = getLayoutInflater().inflate(R.layout.friends, null);
@@ -370,7 +375,7 @@ public class ShowFriendsActivity extends BaseActivity implements
 	}
 
 	@Override
-	public void onRefresh() {
+	public void onRefreshStarted(View view) {
 		getFriends(true);
 	}
 

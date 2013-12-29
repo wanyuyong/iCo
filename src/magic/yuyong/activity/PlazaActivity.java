@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+
 import magic.yuyong.R;
 import magic.yuyong.adapter.TwitterListAdapter;
 import magic.yuyong.app.AppConstant;
@@ -12,7 +16,6 @@ import magic.yuyong.app.MagicApplication;
 import magic.yuyong.extend.StatusesAPI_E;
 import magic.yuyong.model.Twitter;
 import magic.yuyong.request.RequestState;
-import magic.yuyong.view.RefreshView;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.ClipboardManager;
@@ -45,11 +48,11 @@ import com.sina.weibo.sdk.openapi.legacy.FavoritesAPI;
 import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.FEATURE;
 
 public class PlazaActivity extends GetTwitterActivity implements
-		RefreshView.Listener {
+		OnRefreshListener{
 
 	private ListView list_view;
 	private View foot_view;
-	private RefreshView rf;
+	private PullToRefreshLayout mPullToRefreshLayout;
 	private TwitterListAdapter adapter;
 	private RequestState requestState;
 
@@ -99,7 +102,7 @@ public class PlazaActivity extends GetTwitterActivity implements
 						if(adapter.getCount() == 0){
 							getTwitter(false);
 						}else{
-							rf.refresh();
+							mPullToRefreshLayout.startRefresh();
 						}
 						return true;
 					}
@@ -358,8 +361,11 @@ public class PlazaActivity extends GetTwitterActivity implements
 			}
 		});
 
-		rf = (RefreshView) findViewById(R.id.refresh_view);
-		rf.setListener(this);
+		mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
+		ActionBarPullToRefresh.from(this)
+        .theseChildrenArePullable(R.id.list_view, android.R.id.empty)
+        .listener(this)
+        .setup(mPullToRefreshLayout);
 
 		RequestState requestState = new RequestState(type);
 		setListScrollListener(list_view, requestState);
@@ -450,11 +456,6 @@ public class PlazaActivity extends GetTwitterActivity implements
 	}
 
 	@Override
-	public void onRefresh() {
-		getTwitter(true);
-	}
-
-	@Override
 	protected void onUpdate(RequestState requestState) {
 		List<Twitter> datas = adapter.getData();
 		if (requestState.isRefresh) {
@@ -477,13 +478,18 @@ public class PlazaActivity extends GetTwitterActivity implements
 			requestState.page++;
 		}
 		adapter.notifyDataSetChanged();
-		rf.close();
+		mPullToRefreshLayout.setRefreshComplete();
 		foot_view.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
 	protected void onError(RequestState requestState) {
-		rf.close();
 		foot_view.setVisibility(View.INVISIBLE);
+		mPullToRefreshLayout.setRefreshComplete();
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		getTwitter(true);
 	}
 }

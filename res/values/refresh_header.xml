@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="progress_bar_color">#ff99ff</color>
+    <dimen name="progress_bar_stroke_width">2dip</dimen>
+    <color name="refresh_header_bg">#FF0099cc</color>
+</resources>

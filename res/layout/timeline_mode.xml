@@ -4,4 +4,5 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:flipInterval="30"
-    android:persistentDrawingCache="animation" />
+    android:persistentDrawingCache="animation" 
+    android:background="@android:color/white"/>

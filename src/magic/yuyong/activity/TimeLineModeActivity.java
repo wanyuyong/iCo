@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
+
 import magic.yuyong.R;
 import magic.yuyong.adapter.CommentMeAdapter;
 import magic.yuyong.adapter.MyPagerAdapter;
@@ -18,14 +22,12 @@ import magic.yuyong.model.Group;
 import magic.yuyong.model.Twitter;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
-import magic.yuyong.view.RefreshView;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -58,7 +60,7 @@ import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.AUTHOR_FILTER;
 import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.FEATURE;
 import com.umeng.update.UmengUpdateAgent;
 
-public class TimeLineModeActivity extends GetTwitterActivity implements RefreshView.Listener {
+public class TimeLineModeActivity extends GetTwitterActivity implements OnRefreshListener {
 
     private ViewPager mPager;
     private List<View> listViews;
@@ -262,8 +264,8 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
                 startActivity(postIntent);
                 break;
             case R.id.refresh:
-                RefreshView rf = (RefreshView) listViews.get(current.requestType);
-                rf.refresh();
+            	PullToRefreshLayout mPullToRefreshLayout = (PullToRefreshLayout)listViews.get(current.requestType);
+            	mPullToRefreshLayout.startRefresh();
                 break;
             case R.id.profile:
                 Intent profileIntent = new Intent(getApplicationContext(),
@@ -285,8 +287,8 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
         }
 
         if (item.getGroupId() == R.id.sort) {
-            RefreshView rf = (RefreshView) listViews.get(current.requestType);
-            ListView listView = (ListView) rf.findViewById(R.id.list_view);
+        	PullToRefreshLayout mPullToRefreshLayout = (PullToRefreshLayout)listViews.get(current.requestType);
+            ListView listView = (ListView) mPullToRefreshLayout.findViewById(R.id.list_view);
             if (current.requestType == VIEW_COMMENT) {
                 HeaderViewListAdapter headAdapter = (HeaderViewListAdapter) listView
                         .getAdapter();
@@ -337,7 +339,8 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
                     }
                     break;
             }
-            rf.refresh();
+            
+            mPullToRefreshLayout.startRefresh();
         }
 
         return super.onOptionsItemSelected(item);
@@ -401,13 +404,13 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
         }
 
         if (current.requestType == pos) {
-            RefreshView rf = (RefreshView) listViews.get(pos);
-            rf.refresh();
+            PullToRefreshLayout mPullToRefreshLayout = (PullToRefreshLayout)listViews.get(pos);
+            mPullToRefreshLayout.startRefresh();
         } else {
             current = (RequestState) listViews.get(pos).getTag();
             if (!current.isFirstTime) {
-                RefreshView rf = (RefreshView) listViews.get(pos);
-                rf.refresh();
+            	 PullToRefreshLayout mPullToRefreshLayout = (PullToRefreshLayout)listViews.get(pos);
+                 mPullToRefreshLayout.startRefresh();
             }
             mPager.setCurrentItem(pos);
         }
@@ -472,7 +475,6 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
     @Override
     protected void onUpdate(RequestState requestState) {
         View tagView = listViews.get(requestState.requestType);
-        RefreshView rf = (RefreshView) tagView;
         ListView listView = (ListView) tagView.findViewById(R.id.list_view);
         View footView = listView.findViewById(R.id.load_more);
         if (requestState.requestType == VIEW_COMMENT) {
@@ -530,8 +532,9 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
             }
             adapter.notifyDataSetChanged();
         }
-        rf.close();
         footView.setVisibility(View.INVISIBLE);
+        PullToRefreshLayout mPullToRefreshLayout = (PullToRefreshLayout)tagView;
+        mPullToRefreshLayout.setRefreshComplete();
     }
 
     @Override
@@ -539,8 +542,8 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
         View tagView = listViews.get(requestState.requestType);
         ListView listView = (ListView) tagView.findViewById(R.id.list_view);
         View footView = listView.findViewById(R.id.load_more);
-        RefreshView rf = (RefreshView) tagView;
-        rf.close();
+        PullToRefreshLayout mPullToRefreshLayout = (PullToRefreshLayout)tagView;
+        mPullToRefreshLayout.setRefreshComplete();
         footView.setVisibility(View.INVISIBLE);
     }
 
@@ -570,7 +573,7 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
         shareIntent.putExtra(Intent.EXTRA_TEXT, text);
         return shareIntent;
     }
-
+    
     private void prepareView(final View view, int view_type) {
         final ListView list_view = (ListView) view.findViewById(R.id.list_view);
         list_view.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -690,8 +693,11 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
             }
         });
 
-        RefreshView rf = (RefreshView) view;
-        rf.setListener(this);
+        PullToRefreshLayout  mPullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.ptr_layout);
+        ActionBarPullToRefresh.from(this)
+                .theseChildrenArePullable(R.id.list_view, android.R.id.empty)
+                .listener(this)
+                .setup(mPullToRefreshLayout);
 
         RequestState requestState = new RequestState(view_type);
         view.setTag(requestState);
@@ -796,8 +802,11 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
             }
         });
 
-        RefreshView rf = (RefreshView) view;
-        rf.setListener(this);
+        PullToRefreshLayout  mPullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.ptr_layout);
+        ActionBarPullToRefresh.from(this)
+                .theseChildrenArePullable(R.id.list_view, android.R.id.empty)
+                .listener(this)
+                .setup(mPullToRefreshLayout);
 
         RequestState requestState = new RequestState(VIEW_COMMENT);
         view.setTag(requestState);
@@ -837,6 +846,9 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
+        	if(!actionBar.isShowing()){
+        		actionBar.show();
+        	}
         }
 
         @Override
@@ -859,9 +871,9 @@ public class TimeLineModeActivity extends GetTwitterActivity implements RefreshV
         list_view.addFooterView(foot_view);
     }
 
-    @Override
-    public void onRefresh() {
-        getTwitter(true);
-    }
+	@Override
+	public void onRefreshStarted(View view) {
+		getTwitter(true);
+	}
 
 }

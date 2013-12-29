@@ -55,14 +55,14 @@
         <activity
             android:name=".activity.TimeLineModeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/Theme.Magic_style"
+            android:theme="@style/Theme.Holo.CustomPtrHeader"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name=".activity.ProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_profile"
             android:uiOptions="splitActionBarWhenNarrow"
-            android:theme="@style/Theme.Magic_style" />
+            android:theme="@style/Theme.Holo.CustomPtrHeader" />
         <activity
             android:name=".activity.AboutActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -74,7 +74,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:uiOptions="splitActionBarWhenNarrow"
             android:label="@string/title_friends"
-            android:theme="@style/Theme.Magic_style" />
+            android:theme="@style/Theme.Holo.CustomPtrHeader" />
         <activity
             android:name=".activity.SettingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -97,7 +97,7 @@
             android:name=".activity.PlazaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_channels"
-            android:theme="@style/Theme.Magic_style"
+            android:theme="@style/Theme.Holo.CustomPtrHeader"
             android:uiOptions="splitActionBarWhenNarrow" />
 
         <service android:name=".service.NotificationService" />
