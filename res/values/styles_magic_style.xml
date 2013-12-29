@@ -17,13 +17,13 @@
      limitations under the License.
 -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
+    
     <style name="Theme.Holo.CustomPtrHeader" parent="Theme.Magic_style">
         <item name="ptrHeaderStyle">@style/Widget.Custom.PtrHeader</item>
     </style>
 
     <style name="Widget.Custom.PtrHeader" parent="android:Widget">
-        <item name="ptrHeaderBackground">@color/refresh_header_bg</item>
         <item name="ptrHeaderTitleTextAppearance">@style/TextAppearance.Custom.PtrHeader.Title</item>
         <item name="ptrProgressBarStyle">outside</item>
         <item name="ptrProgressBarColor">@color/progress_bar_color</item>
@@ -36,7 +36,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="Theme.Magic_style" parent="@android:style/Theme.Holo">
+    <style name="Theme.Magic_style" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_magic_style</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Magic_style</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Magic_style</item>
@@ -46,13 +46,17 @@
         <item name="android:actionModeBackground">@drawable/cab_background_top_magic_style</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_magic_style</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Magic_style</item>
-
+        
+                <!-- Light.DarkActionBar specific -->
+        <item name="android:actionBarWidgetTheme">@style/Theme.Magic_style.Widget</item>
+        
+        
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
         <item name="android:windowAnimationStyle">@style/Animation.Magic</item>
-        
-    </style>
 
-    <style name="Animation.Magic" parent="@android:style/Animation.Activity">
+    </style>
+    
+     <style name="Animation.Magic" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/activity_open_enter</item>
         <item name="android:activityOpenExitAnimation">@anim/activity_open_exit</item>
         <item name="android:activityCloseEnterAnimation">@anim/activity_close_enter</item>
@@ -67,7 +71,7 @@
         <item name="android:taskToBackExitAnimation">@anim/activity_close_exit</item>
     </style>
 
-    <style name="ActionBar.Solid.Magic_style" parent="@android:style/Widget.Holo.ActionBar.Solid">
+    <style name="ActionBar.Solid.Magic_style" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/ab_solid_magic_style</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_magic_style</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_magic_style</item>
