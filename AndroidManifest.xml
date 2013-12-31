@@ -33,7 +33,7 @@
             android:name=".activity.TwitterShowActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_show_twitter"
-            android:theme="@style/Theme.Magic_style"
+            android:theme="@style/Theme.Holo.CustomPtrHeader"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name=".activity.GetFriendsActivity"

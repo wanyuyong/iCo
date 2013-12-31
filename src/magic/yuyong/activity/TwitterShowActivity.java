@@ -10,7 +10,6 @@ import magic.yuyong.adapter.CommentOrRepostAdapter;
 import magic.yuyong.app.AppConstant;
 import magic.yuyong.app.MagicApplication;
 import magic.yuyong.app.MagicDialog;
-import magic.yuyong.listener.ListViewScrollListener;
 import magic.yuyong.model.Comment;
 import magic.yuyong.model.Repost;
 import magic.yuyong.model.Twitter;
@@ -23,6 +22,10 @@ import magic.yuyong.view.TwitterContent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -52,8 +55,9 @@ import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
 import com.sina.weibo.sdk.openapi.legacy.WeiboAPI;
 
 public class TwitterShowActivity extends BaseActivity implements
-		OnClickListener {
+		OnClickListener, OnRefreshListener{
 
+	private PullToRefreshLayout mPullToRefreshLayout;
 	private View header, footer;
 	private ListView listView;
 	private TextView comment_but, repost_but;
@@ -117,6 +121,7 @@ public class TwitterShowActivity extends BaseActivity implements
 				commentState.isRefresh = false;
 				commentState.response = "";
 				footer.setVisibility(View.INVISIBLE);
+				mPullToRefreshLayout.setRefreshComplete();
 				break;
 			case AppConstant.MSG_SHOW_REPOSTS:
 				List<Repost> repostsList = Repost
@@ -146,6 +151,7 @@ public class TwitterShowActivity extends BaseActivity implements
 				repostState.isRefresh = false;
 				repostState.response = "";
 				footer.setVisibility(View.INVISIBLE);
+				mPullToRefreshLayout.setRefreshComplete();
 				break;
 			case AppConstant.MSG_FAVORITE_SUCCEED:
 				twitter.setFavorited(true);
@@ -272,6 +278,8 @@ public class TwitterShowActivity extends BaseActivity implements
 
 	private void initView() {
 		setContentView(R.layout.twitter_show);
+		mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
+		
 		// init list
 		listView = (ListView) findViewById(R.id.list_view);
 		header = getLayoutInflater().inflate(R.layout.twitter_show_head, null);
@@ -312,6 +320,11 @@ public class TwitterShowActivity extends BaseActivity implements
 		origin_from = (TextView) header.findViewById(R.id.origin_from);
 		origin_text = (TwitterContent) header.findViewById(R.id.origin_text);
 		origin_img = (AsyncImageView) header.findViewById(R.id.origin_img);
+		
+		ActionBarPullToRefresh.from(this)
+        .theseChildrenArePullable(R.id.list_view, android.R.id.empty)
+        .listener(this)
+        .setup(mPullToRefreshLayout);
 	}
 
 	private void setListScrollListener(ListView listView) {
@@ -496,7 +509,6 @@ public class TwitterShowActivity extends BaseActivity implements
 					requestState.isBottom = false;
 					requestState.maxId = 0;
 					requestState.page = 1;
-					setProgressBarIndeterminateVisibility(true);
 				} else {
 					footer.setVisibility(View.VISIBLE);
 				}
@@ -571,41 +583,22 @@ public class TwitterShowActivity extends BaseActivity implements
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
-			switch (requestCode) {
-			case AppConstant.REQUESTCODE_COMMENT:
-				if (currentType == commentState.requestType) {
-					listView.post(new Runnable() {
-
-						@Override
-						public void run() {
-							if (adapter.getCount() != 0) {
-								listView.setSelectionFromTop(1, header
-										.findViewById(R.id.buttons_lay)
-										.getHeight());
-							}
+			boolean needShowRefreshProgress = (requestCode == AppConstant.REQUESTCODE_COMMENT && currentType == commentState.requestType) 
+					|| (requestCode == AppConstant.REQUESTCODE_FORWARD && currentType == repostState.requestType) ;
+			if(needShowRefreshProgress){
+				mPullToRefreshLayout.startRefresh();
+				listView.post(new Runnable() {
+					
+					@Override
+					public void run() {
+						if (adapter.getCount() != 0) {
+							listView.setSelectionFromTop(1,
+									header.findViewById(R.id.buttons_lay).getHeight());
 						}
-					});
-				}
-				getData(true, commentState);
-				break;
-
-			case AppConstant.REQUESTCODE_FORWARD:
-				if (currentType == repostState.requestType) {
-					listView.post(new Runnable() {
-
-						@Override
-						public void run() {
-							if (adapter.getCount() != 0) {
-								listView.setSelectionFromTop(1, header
-										.findViewById(R.id.buttons_lay)
-										.getHeight());
-							}
-						}
-					});
-				}
-				getData(true, repostState);
-				break;
+					}
+				});
 			}
+			refresh();
 		}
 	}
 
@@ -650,6 +643,14 @@ public class TwitterShowActivity extends BaseActivity implements
 		return shareIntent;
 	}
 
+	private void refresh(){
+		if (currentType == CommentOrRepostAdapter.TYPE_COMMENTS) {
+			getData(true, commentState);
+		} else if (currentType == CommentOrRepostAdapter.TYPE_REPOSTS) {
+			getData(true, repostState);
+		}
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -657,12 +658,8 @@ public class TwitterShowActivity extends BaseActivity implements
 			finish();
 			break;
 		case R.id.refresh:
-			if (currentType == CommentOrRepostAdapter.TYPE_COMMENTS) {
-				getData(true, commentState);
-
-			} else if (currentType == CommentOrRepostAdapter.TYPE_REPOSTS) {
-				getData(true, repostState);
-			}
+			mPullToRefreshLayout.startRefresh();
+			refresh();
 			if (adapter.getCount() != 0) {
 				listView.setSelectionFromTop(1,
 						header.findViewById(R.id.buttons_lay).getHeight());
@@ -802,5 +799,10 @@ public class TwitterShowActivity extends BaseActivity implements
 			break;
 
 		}
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		refresh();
 	}
 }

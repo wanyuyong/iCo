@@ -12,19 +12,19 @@
         android:showAsAction="always"
         android:title="@string/but_repost"/>
     <item
-        android:id="@+id/favorite"
-        android:icon="@drawable/rating_not_important"
-        android:showAsAction="always"
-        android:title="@string/but_favorite"/>
+        android:id="@+id/refresh"
+        android:icon="@drawable/navigation_refresh"
+        android:showAsAction="ifRoom"
+        android:title="@string/but_refresh"/>
     <item
         android:icon="@drawable/sort_by"
         android:showAsAction="always">
         <menu>
             <item
-                android:id="@+id/refresh"
-                android:icon="@drawable/navigation_refresh"
-                android:showAsAction="ifRoom"
-                android:title="@string/but_refresh"/>
+                android:id="@+id/favorite"
+                android:icon="@drawable/rating_not_important"
+                android:showAsAction="always"
+                android:title="@string/but_favorite"/>
             <item
                 android:id="@+id/share"
                 android:actionProviderClass="android.widget.ShareActionProvider"
