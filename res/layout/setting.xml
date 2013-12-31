@@ -19,7 +19,7 @@
             android:background="@drawable/round_rect_but_bg"
             android:gravity="center_vertical"
             android:text="@string/but_attention_me"
-            android:textColor="#FF555555"
+            android:textColor="#BF555555"
             android:textSize="15sp"/>
 
         <TextView
@@ -32,7 +32,7 @@
             android:background="@drawable/round_rect_but_bg"
             android:gravity="center_vertical"
             android:text="@string/but_search"
-            android:textColor="#FF555555"
+            android:textColor="#BF555555"
             android:textSize="15sp"/>
 
         <LinearLayout
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/but_timeline_mode"
-                android:textColor="#FF555555"
+                android:textColor="#BF555555"
                 android:textSize="15sp"/>
 
             <CheckBox
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/but_notification"
-                android:textColor="#FF555555"
+                android:textColor="#BF555555"
                 android:textSize="15sp"/>
 
             <CheckBox
@@ -97,7 +97,7 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:text="@string/but_donate"
-            android:textColor="#FF555555"
+            android:textColor="#BF555555"
             android:textSize="15sp"/>
 
         <TextView
@@ -110,7 +110,7 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:text="@string/but_about"
-            android:textColor="#FF555555"
+            android:textColor="#BF555555"
             android:textSize="15sp"/>
 
         <TextView
@@ -123,7 +123,20 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:text="@string/but_feedback"
-            android:textColor="#FF555555"
+            android:textColor="#BF555555"
+            android:textSize="15sp"/>
+        
+        <TextView
+            android:id="@+id/clean_cache_but"
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/round_rect_but_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:text="@string/but_clean_cache"
+            android:textColor="#BF555555"
             android:textSize="15sp"/>
 
         <TextView
@@ -136,7 +149,7 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:text="@string/but_logout"
-            android:textColor="#FF555555"
+            android:textColor="#BF555555"
             android:textSize="15sp"/>
 
     </LinearLayout>

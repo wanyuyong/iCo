@@ -56,6 +56,16 @@ public class SDCardUtils {
 			deleteDir(file);
 		}
 	}
+	
+	public static void cleanCacheDir(){
+		if (hasDIR()) {
+			File file = new File(SDCARD_DIR);
+			File[] children = file.listFiles();
+			for (File child : children) {
+				deleteDir(child);
+			}
+		}
+	}
 
 	public static void deleteSamllPic() {
 		if (hasDIR()) {
@@ -94,7 +104,7 @@ public class SDCardUtils {
 			f.delete();
 		}
 	}
-
+	
 	private static void createCacheDir() {
 		if (!hasDIR()) {
 			File file = new File(SDCARD_DIR);

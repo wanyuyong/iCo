@@ -137,6 +137,7 @@ public class AppConstant {
 	public static final int MSG_DOWN_END = 26;
 	public static final int MSG_SHOW_REPOSTS = 27;
 	public static final int MSG_SHOW_POST_PIC = 28;
+	public static final int MSG_CLEAN_CACHE_SUCCEED = 29;
 
 	// requestCode
 	public static final int REQUESTCODE_COMMENT = 0;

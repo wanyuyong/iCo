@@ -130,6 +130,7 @@
     <string name="text_sure_to_eixt">你确定要退出吗?</string>
     <string name="text_sure_to_logout">你确定要注销当前用户吗?</string>
     <string name="text_sure_to_clean">你确定要清理缓存吗?</string>
+    <string name="text_cleaning">清理缓存中...</string>
     <string name="text_request_error">请求失败.</string>
     <string name="text_comment_hint">请输入您的评论</string>
     <string name="text_post_hint">请输入您要发送的内容</string>

@@ -130,6 +130,7 @@
     <string name="text_sure_to_eixt">Are you sure to exit?</string>
     <string name="text_sure_to_logout">Are you sure to logout?</string>
     <string name="text_sure_to_clean">Are you sure to clean the cache?</string>
+    <string name="text_cleaning">Cleaning...</string>
     <string name="text_request_error">Request error.</string>
     <string name="text_comment_hint">Please enter your comment</string>
     <string name="text_post_hint">Please enter your post</string>
