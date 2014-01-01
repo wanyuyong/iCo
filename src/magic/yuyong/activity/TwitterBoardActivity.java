@@ -16,6 +16,7 @@ import magic.yuyong.model.Group;
 import magic.yuyong.model.Twitter;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
+import magic.yuyong.util.Debug;
 import magic.yuyong.util.DisplayUtil;
 import magic.yuyong.view.DivideView;
 import magic.yuyong.view.LeftSlideView;
@@ -30,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -271,20 +273,26 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 			pb.setVisibility(View.GONE);
 		}
 	}
+	
+	private void requestForTwitters(final RequestState requestState) {
+		new Thread(new Runnable() {
 
-	private void getTwitter(boolean refresh) {
-		final RequestState requestState = current;
-		if (!requestState.isRequest) {
-			if (refresh || !requestState.isBottom) {
-				requestState.isRequest = true;
-				requestState.isRefresh = refresh;
-				if (refresh) {
-					requestState.isBottom = false;
-					requestState.maxId = 0;
-					requestState.page = 1;
+			@Override
+			public void run() {
+				
+				if (requestState.requestType == STATE_HOME && requestState.isFirstTime) {
+					requestState.isFirstTime = false;
+					String data = Persistence.getHomeData(getApplicationContext());
+					if (!TextUtils.isEmpty(data)) {
+						requestState.response = data;
+						Message msg = handler
+								.obtainMessage(AppConstant.MSG_UPDATE_VIEW);
+						msg.obj = requestState;
+						handler.sendMessageDelayed(msg, 300);
+						return;
+					}
 				}
-				pb.setVisibility(View.VISIBLE);
-
+				
 				switch (requestState.requestType) {
 				case STATE_HOME:
 					StatusesAPI homeAPI = new StatusesAPI(MagicApplication
@@ -304,6 +312,24 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 							new TwitterRequestListener(requestState));
 					break;
 				}
+			}
+		}).start();
+	}
+
+	private void getTwitter(boolean refresh) {
+		final RequestState requestState = current;
+		if (!requestState.isRequest) {
+			if (refresh || !requestState.isBottom) {
+				requestState.isRequest = true;
+				requestState.isRefresh = refresh;
+				if (refresh) {
+					requestState.isBottom = false;
+					requestState.maxId = 0;
+					requestState.page = 1;
+				}
+				pb.setVisibility(View.VISIBLE);
+
+				requestForTwitters(requestState);
 			}
 		}
 	}
@@ -476,6 +502,18 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 			break;
 		default:
 			break;
+		}
+	}
+
+	@Override
+	protected void onRequestComplete(RequestState requestState) {
+		if (requestState.requestType != STATE_HOME || TextUtils.isEmpty(requestState.response)) {
+			return;
+		}
+		String data = Persistence.getHomeData(getApplicationContext());
+		if (TextUtils.isEmpty(data) || requestState.isRefresh) {
+			Debug.e("save data.............");
+			Persistence.setHomeData(getApplicationContext(), requestState.response);
 		}
 	}
 

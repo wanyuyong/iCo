@@ -492,4 +492,9 @@ public class PlazaActivity extends GetTwitterActivity implements
 	public void onRefreshStarted(View view) {
 		getTwitter(true);
 	}
+
+	@Override
+	protected void onRequestComplete(RequestState requestState) {
+		
+	}
 }

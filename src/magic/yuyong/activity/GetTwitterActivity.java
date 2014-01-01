@@ -25,6 +25,8 @@ public abstract class GetTwitterActivity extends BaseActivity {
 		@Override
 		public void onComplete(String response) {
 			requestState.response = response;
+			onRequestComplete(requestState);
+			
 			android.os.Message msg = new android.os.Message();
 			msg.what = AppConstant.MSG_UPDATE_VIEW;
 			msg.obj = requestState;
@@ -78,6 +80,8 @@ public abstract class GetTwitterActivity extends BaseActivity {
 	};
 
 	protected abstract void onUpdate(RequestState requestState);
+	
+	protected abstract void onRequestComplete(RequestState requestState);
 
 	protected abstract void onError(RequestState requestState);
 }

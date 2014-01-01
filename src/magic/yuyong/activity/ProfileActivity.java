@@ -524,4 +524,8 @@ public class ProfileActivity extends GetTwitterActivity implements OnClickListen
 	        getTwitter(true);
 	}
 
+	@Override
+	protected void onRequestComplete(RequestState requestState) {
+	}
+
 }

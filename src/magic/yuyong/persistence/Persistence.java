@@ -14,6 +14,11 @@ public class Persistence {
 	private final static String show_time_line = "show_time_line";
 	private final static String time_line_mode = "time_line_mode";
 	private final static String receive_notification = "receive_notification";
+	
+	private final static String bilateral_data = "bilateral_data";
+	private final static String home_data = "home_data";
+	private final static String at_me_data = "at_me_data";
+	private final static String comment_data = "comment_data";
 
 	private static SharedPreferences getPreferences(Context context) {
 		SharedPreferences preferences = context.getSharedPreferences(
@@ -118,5 +123,49 @@ public class Persistence {
 	public static void setReceiveNotification(Context context, boolean isReceiveNotification) {
 		SharedPreferences preferences = getPreferences(context);
 		preferences.edit().putBoolean(receive_notification, isReceiveNotification).commit();
+	}
+	
+	public static String getBilateralData(Context context){
+		SharedPreferences preferences = getPreferences(context);
+		String data = preferences.getString(bilateral_data, "");
+		return data;
+	}
+	
+	public static void setBilateralData(Context context, String data){
+		SharedPreferences preferences = getPreferences(context);
+		preferences.edit().putString(bilateral_data, data).commit();
+	}
+	
+	public static String getHomeData(Context context){
+		SharedPreferences preferences = getPreferences(context);
+		String data = preferences.getString(home_data, "");
+		return data;
+	}
+	
+	public static void setHomeData(Context context, String data){
+		SharedPreferences preferences = getPreferences(context);
+		preferences.edit().putString(home_data, data).commit();
+	}
+	
+	public static String getAtMeData(Context context){
+		SharedPreferences preferences = getPreferences(context);
+		String data = preferences.getString(at_me_data, "");
+		return data;
+	}
+	
+	public static void setAtMeData(Context context, String data){
+		SharedPreferences preferences = getPreferences(context);
+		preferences.edit().putString(at_me_data, data).commit();
+	}
+	
+	public static String getCommentData(Context context){
+		SharedPreferences preferences = getPreferences(context);
+		String data = preferences.getString(comment_data, "");
+		return data;
+	}
+	
+	public static void setCommentData(Context context, String data){
+		SharedPreferences preferences = getPreferences(context);
+		preferences.edit().putString(comment_data, data).commit();
 	}
 }
