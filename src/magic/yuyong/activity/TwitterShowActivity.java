@@ -55,7 +55,7 @@ import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
 import com.sina.weibo.sdk.openapi.legacy.WeiboAPI;
 
 public class TwitterShowActivity extends BaseActivity implements
-		OnClickListener, OnRefreshListener{
+		OnClickListener, OnRefreshListener {
 
 	private PullToRefreshLayout mPullToRefreshLayout;
 	private View header, footer;
@@ -238,7 +238,9 @@ public class TwitterShowActivity extends BaseActivity implements
 							commentIntent.putExtra("cc", cc);
 							commentIntent.putExtra("type",
 									AppConstant.TYPE_REPLY_COMMENT);
-							startActivity(commentIntent);
+
+							startActivityForResult(commentIntent,
+									AppConstant.REQUESTCODE_COMMENT);
 						}
 					}
 				});
@@ -279,7 +281,7 @@ public class TwitterShowActivity extends BaseActivity implements
 	private void initView() {
 		setContentView(R.layout.twitter_show);
 		mPullToRefreshLayout = (PullToRefreshLayout) findViewById(R.id.ptr_layout);
-		
+
 		// init list
 		listView = (ListView) findViewById(R.id.list_view);
 		header = getLayoutInflater().inflate(R.layout.twitter_show_head, null);
@@ -320,11 +322,10 @@ public class TwitterShowActivity extends BaseActivity implements
 		origin_from = (TextView) header.findViewById(R.id.origin_from);
 		origin_text = (TwitterContent) header.findViewById(R.id.origin_text);
 		origin_img = (AsyncImageView) header.findViewById(R.id.origin_img);
-		
+
 		ActionBarPullToRefresh.from(this)
-        .theseChildrenArePullable(R.id.list_view, android.R.id.empty)
-        .listener(this)
-        .setup(mPullToRefreshLayout);
+				.theseChildrenArePullable(R.id.list_view, android.R.id.empty)
+				.listener(this).setup(mPullToRefreshLayout);
 	}
 
 	private void setListScrollListener(ListView listView) {
@@ -582,22 +583,20 @@ public class TwitterShowActivity extends BaseActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
-			boolean needShowRefreshProgress = (requestCode == AppConstant.REQUESTCODE_COMMENT && currentType == commentState.requestType) 
-					|| (requestCode == AppConstant.REQUESTCODE_FORWARD && currentType == repostState.requestType) ;
-			if(needShowRefreshProgress){
-				mPullToRefreshLayout.startRefresh();
-				listView.post(new Runnable() {
-					
-					@Override
-					public void run() {
-						if (adapter.getCount() != 0) {
-							listView.setSelectionFromTop(1,
-									header.findViewById(R.id.buttons_lay).getHeight());
-						}
+		boolean needShowRefreshProgress = (requestCode == AppConstant.REQUESTCODE_COMMENT && currentType == commentState.requestType)
+				|| (requestCode == AppConstant.REQUESTCODE_FORWARD && currentType == repostState.requestType);
+		if (needShowRefreshProgress) {
+			mPullToRefreshLayout.startRefresh();
+			listView.post(new Runnable() {
+
+				@Override
+				public void run() {
+					if (adapter.getCount() != 0) {
+						listView.setSelectionFromTop(1, header
+								.findViewById(R.id.buttons_lay).getHeight());
 					}
-				});
-			}
+				}
+			});
 			refresh();
 		}
 	}
@@ -643,14 +642,14 @@ public class TwitterShowActivity extends BaseActivity implements
 		return shareIntent;
 	}
 
-	private void refresh(){
+	private void refresh() {
 		if (currentType == CommentOrRepostAdapter.TYPE_COMMENTS) {
 			getData(true, commentState);
 		} else if (currentType == CommentOrRepostAdapter.TYPE_REPOSTS) {
 			getData(true, repostState);
 		}
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

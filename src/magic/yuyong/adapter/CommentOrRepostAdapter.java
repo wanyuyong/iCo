@@ -15,7 +15,6 @@ import magic.yuyong.model.Repost;
 import magic.yuyong.view.AsyncImageView;
 import magic.yuyong.view.TwitterContent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommentOrRepostAdapter extends BaseAdapter {
