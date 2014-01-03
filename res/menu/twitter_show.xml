@@ -14,7 +14,7 @@
     <item
         android:id="@+id/refresh"
         android:icon="@drawable/navigation_refresh"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="@string/but_refresh"/>
     <item
         android:icon="@drawable/sort_by"
