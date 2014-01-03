@@ -583,21 +583,23 @@ public class TwitterShowActivity extends BaseActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		boolean needShowRefreshProgress = (requestCode == AppConstant.REQUESTCODE_COMMENT && currentType == commentState.requestType)
-				|| (requestCode == AppConstant.REQUESTCODE_FORWARD && currentType == repostState.requestType);
-		if (needShowRefreshProgress) {
-			mPullToRefreshLayout.startRefresh();
-			listView.post(new Runnable() {
+		if (resultCode == RESULT_OK) {
+			boolean needShowRefreshProgress = (requestCode == AppConstant.REQUESTCODE_COMMENT && currentType == commentState.requestType)
+					|| (requestCode == AppConstant.REQUESTCODE_FORWARD && currentType == repostState.requestType);
+			if (needShowRefreshProgress) {
+				mPullToRefreshLayout.startRefresh();
+				listView.post(new Runnable() {
 
-				@Override
-				public void run() {
-					if (adapter.getCount() != 0) {
-						listView.setSelectionFromTop(1, header
-								.findViewById(R.id.buttons_lay).getHeight());
+					@Override
+					public void run() {
+						if (adapter.getCount() != 0) {
+							listView.setSelectionFromTop(1, header
+									.findViewById(R.id.buttons_lay).getHeight());
+						}
 					}
-				}
-			});
-			refresh();
+				});
+				refresh();
+			}
 		}
 	}
 
