@@ -9,7 +9,7 @@ public class MagicApplication extends GDApplication {
 	
     private static MagicApplication instance  = null;
     private Oauth2AccessToken accessToken = null;
-
+    
     @Override
 	public void onCreate() {
 		super.onCreate();

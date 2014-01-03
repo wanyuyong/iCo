@@ -1,6 +1,7 @@
 package magic.yuyong.app;
 
 public class AppConstant {
+	
 	public static final int PAGE_NUM = 40;
 	public static final int GET_UNREAD_PERIOD = 60 * 1000;
 

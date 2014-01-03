@@ -21,8 +21,8 @@ public class TwitterListView extends ListView {
 	private Paint timeLinePaint;
 	private Paint paint_edge;
 	private int timeLineWidth = 3;
-	private final int PAINT_COLOR = 0X80CCCCCC;
-	private final int PAINT_EDGE_COLOR = 0XF0999999;
+	private final int PAINT_COLOR = 0X20CCCCCC;
+	private final int PAINT_EDGE_COLOR = 0X50999999;
 
 	public TwitterListView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
