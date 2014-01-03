@@ -150,13 +150,13 @@ public class ImageLoader {
 					byte[] data = SDCardUtils.getFile(mUrl);
 					if (data == null || data.length == 0) {
 						data = downLoadPic(mUrl, h);
+						SDCardUtils.saveFile(mUrl, data);
 					}
 					if (data != null && data.length != 0) {
 						bitmap = BitmapFactory
 								.decodeByteArray(data, 0, data.length,
 										(mOptions == null) ? sDefaultOptions
 												: mOptions);
-						SDCardUtils.saveFile(mUrl, data);
 						data = null;
 					}
 				}

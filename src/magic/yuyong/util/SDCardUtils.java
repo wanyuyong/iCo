@@ -174,7 +174,7 @@ public class SDCardUtils {
 	}
 
 	public static void saveFile(String url, byte[] b) {
-		if (!hasSDCard()) {
+		if (b == null || b.length == 0 || !hasSDCard()) {
 			return;
 		}
 		createCacheDir();
