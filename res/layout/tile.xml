@@ -28,11 +28,16 @@
     </LinearLayout>
 
 
-    <magic.yuyong.view.TileTextView
+    <TextView
         android:id="@+id/msg"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:layout_marginTop="5dip"
+        android:maxLines="6"
+        android:lineSpacingExtra="2dip"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/twitter_content_text_size"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

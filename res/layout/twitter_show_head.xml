@@ -30,7 +30,7 @@
             android:singleLine="true"
             android:text="Wanyuyong"
             android:textColor="#FF000000"
-            android:textSize="18sp" />
+            android:textSize="@dimen/user_name_text_size" />
         
         <TextView
             android:id="@+id/twitter_from"
@@ -40,7 +40,7 @@
             android:layout_toRightOf="@id/twitter_user_avatar"
             android:text="come from i Co"
             android:textColor="@color/theme_color"
-            android:textSize="15sp" />
+            android:textSize="@dimen/from_text_size" />
 
         <TextView
             android:id="@+id/twitter_time"
@@ -50,7 +50,7 @@
             android:layout_toRightOf="@id/twitter_user_avatar"
             android:text="2012-12-22 AM 08:38:43"
             android:textColor="@color/theme_color"
-            android:textSize="15sp" />
+            android:textSize="@dimen/time_text_size" />
 
         <magic.yuyong.view.TwitterContent
             android:id="@+id/twitter_text"
@@ -59,7 +59,7 @@
             android:layout_toRightOf="@id/twitter_user_avatar"
             android:layout_below="@id/twitter_time"
             magic:textColor="#FF666666"
-            magic:textSize="16sp" />
+            magic:textSize="@dimen/twitter_content_text_size" />
 
         <magic.yuyong.view.TwitterImageView
             android:id="@+id/twitter_img"
@@ -100,7 +100,7 @@
             android:singleLine="true"
             android:text="Wanyuyong"
             android:textColor="#FF000000"
-            android:textSize="18sp" />
+            android:textSize="@dimen/user_name_text_size" />
 
         <TextView
             android:id="@+id/origin_from"
@@ -110,7 +110,7 @@
             android:layout_toRightOf="@id/origin_user_avatar"
             android:text="come from i Co"
             android:textColor="@color/theme_color"
-            android:textSize="15sp" />
+            android:textSize="@dimen/from_text_size" />
         
         <TextView
             android:id="@+id/origin_time"
@@ -120,7 +120,7 @@
             android:layout_toRightOf="@id/origin_user_avatar"
             android:text="2012-12-22 AM 08:38:43"
             android:textColor="@color/theme_color"
-            android:textSize="15sp" />
+            android:textSize="@dimen/time_text_size" />
 
         <magic.yuyong.view.TwitterContent
             android:id="@+id/origin_text"
@@ -129,7 +129,7 @@
             android:layout_toRightOf="@id/origin_user_avatar"
             android:layout_below="@id/origin_time"
             magic:textColor="#FF666666"
-            magic:textSize="16sp" />
+            magic:textSize="@dimen/twitter_content_text_size" />
 
         <magic.yuyong.view.TwitterImageView
             android:id="@+id/origin_img"

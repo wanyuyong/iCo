@@ -4,6 +4,10 @@
           android:icon="@drawable/social_chat"
           android:showAsAction="always"
           android:title="@string/but_reply_comment" />
+    <item android:id="@+id/copy"
+          android:icon="@drawable/content_copy"
+          android:showAsAction="always"
+          android:title="@string/but_copy" />
     <item android:id="@+id/show"
           android:icon="@drawable/action_search"
           android:showAsAction="always"

@@ -5,7 +5,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/twitter_item_bg"
-    android:padding="5dip">
+    android:paddingLeft="5dip"
+    android:paddingRight="5dip"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -30,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="Wanyuyong"
                 android:textColor="#FF000000"
-                android:textSize="15sp"/>
+                android:textSize="@dimen/user_name_secondary_text_size"/>
 
             <TextView
                 android:id="@+id/time"
@@ -38,14 +41,14 @@
                 android:layout_height="wrap_content"
                 android:text="2012-12-22 AM 08:38:43"
                 android:textColor="@color/theme_color"
-                android:textSize="13sp"/>
+                android:textSize="@dimen/time_text_size"/>
 
             <magic.yuyong.view.TwitterContent
                 android:id="@+id/text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 magic:textColor="#FF666666"
-                magic:textSize="13sp" />
+                magic:textSize="@dimen/twitter_content_secondary_text_size" />
         </LinearLayout>
     </LinearLayout>
 

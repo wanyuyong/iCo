@@ -27,6 +27,7 @@ import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -690,6 +691,18 @@ public class TwitterShowActivity extends BaseActivity implements
 			break;
 		case R.id.favorite:
 			favoriteTwitter(!twitter.isFavorited());
+			break;
+		case R.id.copy:
+			ClipboardManager cmb = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+			String text = twitter.getText();
+			if (twitter.getOrigin() != null) {
+				text = text + "//"
+						+ twitter.getOrigin().getText();
+			}
+			cmb.setText(text);
+			Toast.makeText(getApplicationContext(),
+					R.string.text_copy_success,
+					Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.delete:
 			final MagicDialog del_dialog = new MagicDialog(this,

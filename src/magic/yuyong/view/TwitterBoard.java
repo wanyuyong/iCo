@@ -257,7 +257,7 @@ public class TwitterBoard extends ViewGroup implements
 		Tile tile;
 		Avatar avatar;
 		TextView name;
-		TileTextView msg;
+		TextView msg;
 		ImageView type;
 		View has_pic;
 		TextView comments_count;
@@ -273,7 +273,7 @@ public class TwitterBoard extends ViewGroup implements
 			holder.avatar = (Avatar) view.findViewById(R.id.avatar);
 			holder.avatar.setDefaultImageResource(R.drawable.avatar);
 			holder.name = (TextView) view.findViewById(R.id.user_name);
-			holder.msg = (TileTextView) view.findViewById(R.id.msg);
+			holder.msg = (TextView) view.findViewById(R.id.msg);
 			holder.type = (ImageView) view.findViewById(R.id.type);
 			holder.has_pic = view.findViewById(R.id.has_pic);
 			holder.comments_count = (TextView) view

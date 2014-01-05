@@ -885,6 +885,7 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 							commentIntent.putExtra("type",
 									AppConstant.TYPE_REPLY_COMMENT);
 							startActivity(commentIntent);
+							mode.finish();
 							break;
 						case R.id.show:
 							Intent intent = new Intent(getApplicationContext(),
@@ -892,6 +893,16 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 							Twitter twitter = comment.getTwitter();
 							intent.putExtra("twitter_id", twitter.getId());
 							startActivity(intent);
+							mode.finish();
+							break;
+						case R.id.copy:
+							ClipboardManager cmb = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+							String text = comment.getText();
+							cmb.setText(text);
+							mode.finish();
+							Toast.makeText(getApplicationContext(),
+									R.string.text_copy_success,
+									Toast.LENGTH_SHORT).show();
 							break;
 						}
 						return false;
