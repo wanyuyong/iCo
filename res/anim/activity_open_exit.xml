@@ -6,15 +6,6 @@
         android:fromXDelta="0"
         android:toXDelta="-30%p" />
 
-    <scale
-        android:duration="@integer/anim_duration"
-        android:fromXScale="1.0"
-        android:fromYScale="1.0"
-        android:pivotX="0"
-        android:pivotY="50%p"
-        android:toXScale=".85"
-        android:toYScale=".85" />
-    
-    <alpha android:fromAlpha="1" android:toAlpha=".6" android:duration="@integer/anim_duration" />
+    <alpha android:fromAlpha="1" android:toAlpha=".3" android:duration="@integer/anim_duration" />
 
 </set>

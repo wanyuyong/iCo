@@ -16,13 +16,5 @@
 
 <set xmlns:android="http://schemas.android.com/apk/res/android">
 	<translate android:fromXDelta="-30%p" android:toXDelta="0" android:duration="@integer/anim_duration"/>
-	<scale
-        android:duration="@integer/anim_duration"
-        android:fromXScale=".85"
-        android:fromYScale=".85"
-        android:pivotX="0"
-        android:pivotY="50%p"
-        android:toXScale="1.0"
-        android:toYScale="1.0" />
-	<alpha android:fromAlpha=".6" android:toAlpha="1" android:duration="@integer/anim_duration" />
+	<alpha android:fromAlpha=".3" android:toAlpha="1" android:duration="@integer/anim_duration" />
 </set>

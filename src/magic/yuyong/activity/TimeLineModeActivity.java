@@ -23,6 +23,7 @@ import magic.yuyong.model.Twitter;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
 import magic.yuyong.util.Debug;
+import magic.yuyong.util.SystemUtil;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
@@ -260,16 +261,16 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 					requestState.isBottom = false;
 					requestState.maxId = 0;
 					requestState.page = 1;
+					SystemUtil.stopListViewFling(listView);
 					listView.setSelectionAfterHeaderView();
 				} else {
 					footView.setVisibility(View.VISIBLE);
 				}
-
 				requestForTwitters(requestState);
 			}
 		}
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
