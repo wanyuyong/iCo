@@ -9,6 +9,8 @@ public class RequestState {
 	public long maxId;
 	public int page = 1;
 	public String response;
+	public int next_cursor;
+	public int previous_cursor;
 	
 	public RequestState() {
 		super();

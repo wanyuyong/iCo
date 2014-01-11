@@ -26,7 +26,6 @@ import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -53,27 +52,15 @@ public class ShowFriendsActivity extends BaseActivity implements
 
 	public static final int VIEW_FOLLOWER = 0;
 	public static final int VIEW_FOLLOWING = 1;
-	private FriendRequestState current;
+	private RequestState current;
 
 	private long uid;
 	
-	private class FriendRequestState extends RequestState{
-		
-		public FriendRequestState() {
-			super();
-		}
-		public FriendRequestState(int requestType) {
-			super(requestType);
-		}
-		int next_cursor;
-		int previous_cursor;
-	}
-
 	private Handler mHandler = new Handler() {
 
 		@Override
 		public void handleMessage(Message msg) {
-			FriendRequestState requestState = (FriendRequestState) msg.obj;
+			RequestState requestState = (RequestState) msg.obj;
 			switch (msg.what) {
 			case AppConstant.MSG_UPDATE_VIEW:
 				onUpdate(requestState);
@@ -92,7 +79,7 @@ public class ShowFriendsActivity extends BaseActivity implements
 		@Override
 		public void onPageSelected(int index) {
 			View view = listViews.get(index);
-			current = (FriendRequestState) view.getTag();
+			current = (RequestState) view.getTag();
 			mIndicator.onPageSelected(index);
 			if (current.isFirstTime) {
 				current.isFirstTime = false;
@@ -112,7 +99,7 @@ public class ShowFriendsActivity extends BaseActivity implements
 	};
 
 	private void getFriends(boolean refresh) {
-		final FriendRequestState requestState = current;
+		final RequestState requestState = current;
 		if (!requestState.isRequest) {
 			if (refresh || !requestState.isBottom) {
 				requestState.isRequest = true;
@@ -255,7 +242,7 @@ public class ShowFriendsActivity extends BaseActivity implements
 		return true;
 	}
 
-	private void onUpdate(FriendRequestState requestState) {
+	private void onUpdate(RequestState requestState) {
 		View tagView = listViews.get(requestState.requestType);
 		PullToRefreshLayout mPullToRefreshLayout = (PullToRefreshLayout) tagView;
 		ListView listView = (ListView) tagView.findViewById(R.id.friends_list);
@@ -275,7 +262,6 @@ public class ShowFriendsActivity extends BaseActivity implements
 			JSONObject jsonObj = new JSONObject(requestState.response);
 			requestState.next_cursor = JsonUtil.getInt(jsonObj, "next_cursor");
 			requestState.previous_cursor = JsonUtil.getInt(jsonObj, "previous_cursor");
-			Debug.v("requestState.next_cursor : "+requestState.next_cursor+"  requestState.previous_cursor : "+requestState.previous_cursor);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -288,7 +274,7 @@ public class ShowFriendsActivity extends BaseActivity implements
 		mPullToRefreshLayout.setRefreshComplete();
 	}
 
-	private void onError(FriendRequestState requestState) {
+	private void onError(RequestState requestState) {
 		View tagView = listViews.get(requestState.requestType);
 		ListView listView = (ListView) tagView.findViewById(R.id.friends_list);
 		View footView = listView.findViewById(R.id.load_more);
@@ -335,7 +321,7 @@ public class ShowFriendsActivity extends BaseActivity implements
         .listener(this)
         .setup(mPullToRefreshLayout);
 
-		FriendRequestState requestState = new FriendRequestState(view_type);
+		RequestState requestState = new RequestState(view_type);
 		view.setTag(requestState);
 		setListScrollListener(list_view, requestState);
 	}
