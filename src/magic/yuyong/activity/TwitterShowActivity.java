@@ -111,11 +111,6 @@ public class TwitterShowActivity extends BaseActivity implements
 					comments.addAll(commentList);
 				} else {
 					commentState.isBottom = true;
-					if (comments.size() != 0) {
-						Toast.makeText(getApplicationContext(),
-								R.string.text_nomore_data, Toast.LENGTH_SHORT)
-								.show();
-					}
 				}
 				if (currentType == commentState.requestType) {
 					adapter.notifyDataSetChanged();
@@ -141,11 +136,6 @@ public class TwitterShowActivity extends BaseActivity implements
 					reposts.addAll(repostsList);
 				} else {
 					repostState.isBottom = true;
-					if (reposts.size() != 0) {
-						Toast.makeText(getApplicationContext(),
-								R.string.text_nomore_data, Toast.LENGTH_SHORT)
-								.show();
-					}
 				}
 				if (currentType == repostState.requestType) {
 					adapter.notifyDataSetChanged();

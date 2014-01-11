@@ -62,9 +62,6 @@ public class GetFriendsActivity extends BaseActivity implements SearchView.OnQue
                     if (users.size() == 0) {
                         friendsState.isBottom = true;
                         friends_footer.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(),
-                                getResources().getText(R.string.text_nomore_data),
-                                Toast.LENGTH_SHORT).show();
                     } else {
                         friends.addAll(users);
                         friendsAdapter.notifyDataSetChanged();

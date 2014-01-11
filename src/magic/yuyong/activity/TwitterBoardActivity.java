@@ -254,9 +254,6 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 					.parseTwitter(requestState.response);
 			if (twitters.size() == 0) {
 				requestState.isBottom = true;
-				Toast.makeText(getApplicationContext(),
-						getResources().getText(R.string.text_nomore_data),
-						Toast.LENGTH_SHORT).show();
 			} else {
 				board.addData(twitters);
 				if (requestState.maxId == 0) {

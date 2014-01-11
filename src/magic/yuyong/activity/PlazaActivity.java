@@ -465,9 +465,6 @@ public class PlazaActivity extends GetTwitterActivity implements
 		List<Twitter> twitters = Twitter.parseTwitter(requestState.response);
 		if (twitters.size() == 0) {
 			requestState.isBottom = true;
-			Toast.makeText(this,
-					getResources().getText(R.string.text_nomore_data),
-					Toast.LENGTH_SHORT).show();
 		} else {
 			while (twitters.size() != 0) {
 				Twitter twitter = twitters.remove(0);

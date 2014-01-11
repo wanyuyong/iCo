@@ -415,8 +415,10 @@ public class ProfileActivity extends GetTwitterActivity implements
 				at_taItem.setVisible(true);
 				if (user.isFollowing()) {
 					followItem.setTitle(R.string.but_unfollow);
+					followItem.setIcon(R.drawable.social_remove_person);
 				} else {
 					followItem.setTitle(R.string.but_follow);
+					followItem.setIcon(R.drawable.social_add_person);
 				}
 			}
 		}
@@ -643,9 +645,6 @@ public class ProfileActivity extends GetTwitterActivity implements
 			}
 			if (twitters.size() == 0) {
 				requestState.isBottom = true;
-				Toast.makeText(this,
-						getResources().getText(R.string.text_nomore_data),
-						Toast.LENGTH_SHORT).show();
 			} else {
 				while (twitters.size() != 0) {
 					Twitter twitter = twitters.remove(0);

@@ -125,8 +125,6 @@
     <string name="text_token_expired">Token expired, please relogin.</string>
     <string name="text_network_exception">Network connection exception.</string>
     <string name="text_load_more">Loading more</string>
-    <string name="text_no_data">Has no data.</string>
-    <string name="text_nomore_data">Has no more data.</string>
     <string name="text_sure_to_eixt">Are you sure to exit?</string>
     <string name="text_sure_to_logout">Are you sure to logout?</string>
     <string name="text_sure_to_clean">Are you sure to clean the cache?</string>
