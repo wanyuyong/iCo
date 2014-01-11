@@ -127,19 +127,6 @@
             android:textSize="15sp"/>
         
         <TextView
-            android:id="@+id/clean_cache_but"
-            android:layout_width="fill_parent"
-            android:layout_height="48dip"
-            android:layout_marginTop="10dip"
-            android:background="@drawable/round_rect_but_bg"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:text="@string/but_clean_cache"
-            android:textColor="#BF555555"
-            android:textSize="15sp"/>
-
-        <TextView
             android:id="@+id/exit_but"
             android:layout_width="fill_parent"
             android:layout_height="48dip"

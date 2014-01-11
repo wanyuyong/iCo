@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="8dip">
 
-    <magic.yuyong.view.Avatar
+    <ImageView
         android:id="@+id/user_avatar"
         android:layout_width="@dimen/avatar"
         android:layout_height="@dimen/avatar"

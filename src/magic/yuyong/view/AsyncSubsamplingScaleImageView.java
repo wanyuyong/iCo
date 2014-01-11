@@ -4,15 +4,14 @@
 package magic.yuyong.view;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Future;
 
-import magic.yuyong.util.GDUtils;
-import magic.yuyong.util.SDCardUtils;
+import magic.yuyong.util.Cache;
+import magic.yuyong.util.MagicExecutorService;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -125,7 +124,7 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 	}
 
 	public void setUrl(String url) {
-		
+
 		if (url != null && url.equals(mUrl)) {
 			return;
 		}
@@ -135,7 +134,7 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 		mUrl = url;
 
 		if (!TextUtils.isEmpty(mUrl)) {
-			mFuture = GDUtils.getExecutor(getContext()).submit(
+			mFuture = MagicExecutorService.getExecutor().submit(
 					new ImageFetcher());
 		}
 	}
@@ -146,12 +145,13 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 			Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 			String path = "";
 			mHandler.sendMessage(Message.obtain(mHandler, ON_START));
-			if (!TextUtils.isEmpty(mUrl)) {
-				if (SDCardUtils.checkFileExits(mUrl)) {
-					path = SDCardUtils.createFilePath(mUrl);
-				} else {
-					path = downLoadPic(mUrl, mHandler);
-				}
+			String cacheFilePath = Cache.getPicassoCacheFilePath(mUrl,
+					getContext());
+			File cacheFile = new File(cacheFilePath);
+			if (cacheFile.exists()) {
+				path = cacheFilePath;
+			} else if (!TextUtils.isEmpty(mUrl)) {
+				path = downLoadPic(mUrl, mHandler);
 			}
 			if (TextUtils.isEmpty(path)) {
 				mHandler.sendMessage(Message.obtain(mHandler, ON_FAIL));
@@ -164,14 +164,10 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 
 	private String downLoadPic(String mUrl, Handler h) {
 		InputStream inputStream = null;
-		FileOutputStream outputStream = null;
-		String path = SDCardUtils.createFilePath(mUrl);
-		String tempPath = SDCardUtils.createTempPath();
-		File tempFile = new File(tempPath);
-		File file = new File(path);
+		HttpURLConnection conn = null;
 		try {
 			URL url = new URL(mUrl);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn = (HttpURLConnection) url.openConnection();
 			conn.setConnectTimeout(5 * 1000);
 			conn.setReadTimeout(10 * 1000);
 			inputStream = conn.getInputStream();
@@ -179,26 +175,16 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 			byte[] buffer = new byte[1024];
 			int len = 0;
 			int sum = 0;
-			outputStream = new FileOutputStream(tempFile);
 			while ((len = inputStream.read(buffer)) != -1) {
-				outputStream.write(buffer, 0, len);
 				sum += len;
 				Message msg = Message.obtain(h, ON_LOADING);
 				msg.obj = sum / size;
 				h.sendMessage(msg);
 			}
-			outputStream.flush();
-			boolean success = tempFile.renameTo(file);
-			if(success){
-				return path;
-			}
+			String path = Cache.getPicassoCacheFilePath(mUrl, getContext());
+			return path;
 		} catch (IOException e) {
-			if(tempFile.exists()){
-				tempFile.delete();
-			}
-			if(file.exists()){
-				file.delete();
-			}
+
 		} finally {
 			if (null != inputStream) {
 				try {
@@ -207,12 +193,8 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 					e.printStackTrace();
 				}
 			}
-			if (outputStream != null) {
-				try {
-					outputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			if (null != conn) {
+				conn.disconnect();
 			}
 		}
 		return null;

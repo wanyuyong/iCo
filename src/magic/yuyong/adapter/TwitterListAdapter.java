@@ -6,9 +6,8 @@ import magic.yuyong.R;
 import magic.yuyong.activity.ProfileActivity;
 import magic.yuyong.activity.ShowPics;
 import magic.yuyong.model.Twitter;
-import magic.yuyong.util.Debug;
+import magic.yuyong.transformation.CircleTransformation;
 import magic.yuyong.util.StringUtil;
-import magic.yuyong.view.AsyncImageView;
 import magic.yuyong.view.TwitterContent;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +16,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 public class TwitterListAdapter extends BaseAdapter {
 	private List<Twitter> twitters;
@@ -70,15 +72,15 @@ public class TwitterListAdapter extends BaseAdapter {
 
 	public static class ViewHolder {
 		public View container;
-		public AsyncImageView user_avatar;
+		public ImageView user_avatar;
 		public TextView user_name;
 		public TextView time;
 		public TwitterContent content;
-		public AsyncImageView pic;
+		public ImageView pic;
 		public View divider;
 		public TextView origin_user_name;
 		public TwitterContent origin_content;
-		public AsyncImageView origin_pic;
+		public ImageView origin_pic;
 		public TextView from;
 		public TextView repost_num;
 		public TextView comment_num;
@@ -93,21 +95,20 @@ public class TwitterListAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.twitter_list_item, null);
 			holder = new ViewHolder();
 			holder.container = convertView.findViewById(R.id.container);
-			holder.user_avatar = (AsyncImageView) convertView
+			holder.user_avatar = (ImageView) convertView
 					.findViewById(R.id.user_avatar);
-			holder.user_avatar.setDefaultImageResource(R.drawable.avatar);
 			holder.user_name = (TextView) convertView
 					.findViewById(R.id.user_name);
 			holder.time = (TextView) convertView.findViewById(R.id.time);
 			holder.content = (TwitterContent) convertView
 					.findViewById(R.id.content);
-			holder.pic = (AsyncImageView) convertView.findViewById(R.id.pic);
+			holder.pic = (ImageView) convertView.findViewById(R.id.pic);
 			holder.divider = convertView.findViewById(R.id.divider);
 			holder.origin_user_name = (TextView) convertView
 					.findViewById(R.id.origin_user_name);
 			holder.origin_content = (TwitterContent) convertView
 					.findViewById(R.id.origin_content);
-			holder.origin_pic = (AsyncImageView) convertView
+			holder.origin_pic = (ImageView) convertView
 					.findViewById(R.id.origin_pic);
 			holder.from = (TextView) convertView.findViewById(R.id.from);
 			holder.repost_num = (TextView) convertView
@@ -127,7 +128,7 @@ public class TwitterListAdapter extends BaseAdapter {
 		}
 
 		String avatar_url = twitter.getUser().getProfile_image_url();
-		holder.user_avatar.setUrl(avatar_url);
+		Picasso.with(mContext).load(avatar_url).placeholder(R.drawable.avatar).transform(new CircleTransformation()).into(holder.user_avatar);
 		holder.user_avatar.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -152,7 +153,7 @@ public class TwitterListAdapter extends BaseAdapter {
 							twitter.getOriginal_pic(), twitter.getPic_urls());
 				}
 			});
-			holder.pic.setUrl(pic_url);
+			Picasso.with(mContext).load(pic_url).into(holder.pic);
 		}
 		holder.origin_content.setVisibility(View.GONE);
 		holder.divider.setVisibility(View.GONE);
@@ -183,7 +184,7 @@ public class TwitterListAdapter extends BaseAdapter {
 								.getOrigin().getPic_urls());
 					}
 				});
-				holder.origin_pic.setUrl(origin_pic_url);
+				Picasso.with(mContext).load(origin_pic_url).into(holder.origin_pic);
 			}
 		}
 

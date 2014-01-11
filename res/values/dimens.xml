@@ -4,6 +4,7 @@
     <dimen name="right_bar_w">100dip</dimen>
     <dimen name="avatar">46dip</dimen>
     <dimen name="progress_bar_w">32dp</dimen>
+    <dimen name="post_pic_w">60dip</dimen>
     
     <dimen name="twitter_content_text_size">16sp</dimen>
     <dimen name="twitter_content_secondary_text_size">15sp</dimen>

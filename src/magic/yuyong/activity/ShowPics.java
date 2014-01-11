@@ -3,18 +3,14 @@
  */
 package magic.yuyong.activity;
 
-import java.io.File;
-import java.util.Date;
 
 import magic.yuyong.R;
 import magic.yuyong.adapter.ShowPicAdapter;
 import magic.yuyong.adapter.ShowPicAdapter.ViewInfo;
 import magic.yuyong.app.AppConstant;
-import magic.yuyong.util.SDCardUtils;
+import magic.yuyong.util.ICoDir;
 import magic.yuyong.view.JazzyViewPager;
 import magic.yuyong.view.JazzyViewPager.TransitionEffect;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -166,23 +162,7 @@ public class ShowPics extends BaseActivity {
 	}
 
 	private void saveToAlbum(String path, String format) {
-		File f = new File(path);
-		File saveDir = new File(SDCardUtils.SDCARD_DIR_SAVE);
-		if (!saveDir.exists()) {
-			saveDir.mkdir();
-		}
-		String name = String.valueOf(new Date().getTime());
-		String newPath = SDCardUtils.SDCARD_DIR_SAVE + name + "." + format;
-		File pic = new File(newPath);
-
-		f.renameTo(pic);
-
-		Intent mediaScanIntent = new Intent(
-				Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-		Uri contentUri = Uri.fromFile(pic);
-		mediaScanIntent.setData(contentUri);
-		sendBroadcast(mediaScanIntent);
-
+		String newPath = ICoDir.saveToAlbum(path, format, getApplicationContext());
 		mHandler.sendMessage(mHandler.obtainMessage(
 				AppConstant.MSG_SAVE_PIC_SUCCEED, newPath));
 	}

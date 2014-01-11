@@ -5,7 +5,7 @@ import java.util.List;
 import magic.yuyong.R;
 import magic.yuyong.activity.ProfileActivity;
 import magic.yuyong.model.User;
-import magic.yuyong.view.AsyncImageView;
+import magic.yuyong.transformation.CircleTransformation;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,7 +13,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 public class ShowFriendsAdapter extends BaseAdapter{
 	private List<User> friends;
@@ -56,7 +59,7 @@ public class ShowFriendsAdapter extends BaseAdapter{
 	}
 	
 	private class ViewHolder{
-		AsyncImageView user_avatar;
+		ImageView user_avatar;
 		TextView user_name;
 	}
 
@@ -67,15 +70,14 @@ public class ShowFriendsAdapter extends BaseAdapter{
 		if(convertView == null){
 			convertView = inflater.inflate(R.layout.friend_item, null);
 			holder = new ViewHolder();
-			holder.user_avatar = (AsyncImageView) convertView.findViewById(R.id.user_avatar);
-			holder.user_avatar.setDefaultImageResource(R.drawable.avatar);
+			holder.user_avatar = (ImageView) convertView.findViewById(R.id.user_avatar);
 			holder.user_name = (TextView)convertView.findViewById(R.id.user_name);
 			convertView.setTag(holder);
 		}else{
 			holder = (ViewHolder) convertView.getTag();
 		}
 		String avatar_url = friend.getProfile_image_url();
-		holder.user_avatar.setUrl(avatar_url);
+		Picasso.with(mContext).load(avatar_url).placeholder(R.drawable.avatar).transform(new CircleTransformation()).into(holder.user_avatar);
 		holder.user_name.setText(friend.getScreen_name());
 		convertView.setOnClickListener(new OnClickListener() {
 			

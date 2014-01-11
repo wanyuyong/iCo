@@ -11,7 +11,7 @@
     android:paddingBottom="10dip" 
     android:background="@drawable/twitter_item_bg">
 
-    <magic.yuyong.view.Avatar
+    <ImageView
         android:id="@+id/user_avatar"
         android:layout_width="@dimen/avatar"
         android:layout_height="@dimen/avatar"
@@ -49,7 +49,7 @@
             magic:textGap="1sp"
             magic:textSize="@dimen/twitter_content_text_size"/>
 
-        <magic.yuyong.view.AsyncImageView
+        <ImageView
             android:id="@+id/pic"
             android:layout_marginTop="5dip"
             style="@style/ThumbnailPic"/>
@@ -78,7 +78,7 @@
             magic:textGap="1sp"
             magic:textSize="@dimen/twitter_content_secondary_text_size"/>
 
-        <magic.yuyong.view.AsyncImageView
+        <ImageView
             android:id="@+id/origin_pic"
             android:layout_marginTop="5dip"
             style="@style/ThumbnailPic"/>

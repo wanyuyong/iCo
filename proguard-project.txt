@@ -19,7 +19,6 @@
 #   public *;
 #}
 
-
 #sina
 -keep public class android.webkit.** { public *; }
 -keep public class com.weibo.net.** { public *; }

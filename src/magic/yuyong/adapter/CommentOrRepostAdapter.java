@@ -1,5 +1,13 @@
 package magic.yuyong.adapter;
 
+import java.util.List;
+
+import magic.yuyong.R;
+import magic.yuyong.activity.ProfileActivity;
+import magic.yuyong.model.Comment;
+import magic.yuyong.model.Repost;
+import magic.yuyong.transformation.CircleTransformation;
+import magic.yuyong.view.TwitterContent;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -7,15 +15,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
-import magic.yuyong.R;
-import magic.yuyong.activity.ProfileActivity;
-import magic.yuyong.model.Comment;
-import magic.yuyong.model.Repost;
-import magic.yuyong.view.AsyncImageView;
-import magic.yuyong.view.TwitterContent;
 
-import java.util.List;
+import com.squareup.picasso.Picasso;
 
 public class CommentOrRepostAdapter extends BaseAdapter {
 	private List<Object> items;
@@ -67,7 +70,7 @@ public class CommentOrRepostAdapter extends BaseAdapter {
 	}
 
 	private class ViewHolder {
-		AsyncImageView user_avatar;
+		ImageView user_avatar;
 		TextView user_name;
 		TextView time;
 		TwitterContent text;
@@ -80,9 +83,8 @@ public class CommentOrRepostAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.comment_item, null);
 			holder = new ViewHolder();
-			holder.user_avatar = (AsyncImageView) convertView
+			holder.user_avatar = (ImageView) convertView
 					.findViewById(R.id.user_avatar);
-			holder.user_avatar.setDefaultImageResource(R.drawable.avatar);
 			holder.user_name = (TextView) convertView
 					.findViewById(R.id.user_name);
 			holder.time = (TextView) convertView.findViewById(R.id.time);
@@ -94,7 +96,7 @@ public class CommentOrRepostAdapter extends BaseAdapter {
 
         if(object instanceof Comment){
             final Comment comment = (Comment)object;
-            holder.user_avatar.setUrl(comment.getUser().getProfile_image_url());
+            Picasso.with(mContext).load(comment.getUser().getProfile_image_url()).placeholder(R.drawable.avatar).transform(new CircleTransformation()).into(holder.user_avatar);
             holder.user_avatar.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -109,7 +111,7 @@ public class CommentOrRepostAdapter extends BaseAdapter {
             holder.text.setData(comment.getText());
         }else if(object instanceof Repost){
             final Repost repost = (Repost)object;
-            holder.user_avatar.setUrl(repost.getUser().getProfile_image_url());
+            Picasso.with(mContext).load(repost.getUser().getProfile_image_url()).placeholder(R.drawable.avatar).transform(new CircleTransformation()).into(holder.user_avatar);
             holder.user_avatar.setOnClickListener(new OnClickListener() {
 
                 @Override

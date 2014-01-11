@@ -2,7 +2,6 @@ package magic.yuyong.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 
@@ -10,8 +9,11 @@ import magic.yuyong.R;
 import magic.yuyong.app.AppConstant;
 import magic.yuyong.app.MagicApplication;
 import magic.yuyong.app.MagicDialog;
+import magic.yuyong.transformation.CircleTransformation;
+import magic.yuyong.util.Debug;
+import magic.yuyong.util.FaceUtil;
+import magic.yuyong.util.ICoDir;
 import magic.yuyong.util.PicManager;
-import magic.yuyong.util.SDCardUtils;
 import magic.yuyong.util.StringUtil;
 import magic.yuyong.util.SystemUtil;
 import magic.yuyong.view.FaceView;
@@ -19,15 +21,14 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,6 +41,7 @@ import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +50,7 @@ import com.sina.weibo.sdk.net.RequestListener;
 import com.sina.weibo.sdk.openapi.legacy.CommentsAPI;
 import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
 import com.sina.weibo.sdk.openapi.legacy.WeiboAPI;
+import com.squareup.picasso.Picasso;
 
 public class NewPostActivity extends BaseActivity implements OnClickListener,
 		RequestListener {
@@ -62,14 +65,13 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 	private ImageView pic;
 	private TextView text_num;
 	private CheckBox check_box;
+	private View post_lay;
 
 	private long twitter_id;
 	private long cid;
 	private String cu;
 	private String cc;
-	private Uri uri;
-	private String picPath, cameraPicPath;
-	private boolean resizeFaceView = true;
+	private String picPath, cameraPath;
 
 	private int type;
 
@@ -91,8 +93,12 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 						Toast.LENGTH_SHORT).show();
 				break;
 			case AppConstant.MSG_SHOW_POST_PIC:
-				Bitmap bitmap = (Bitmap) msg.obj;
-				pic.setImageBitmap(bitmap);
+				int[] size = (int[]) msg.obj;
+				float w = getResources().getDimension(R.dimen.post_pic_w);
+				float h = w * size[1] / size[0];
+				Picasso.with(getApplicationContext()).load(new File(picPath))
+						.resize((int) w, (int) h)
+						.transform(new CircleTransformation()).into(pic);
 				pic.setVisibility(View.VISIBLE);
 				break;
 			}
@@ -110,17 +116,16 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 		setProgressBarIndeterminateVisibility(false);
 
 		setContentView(R.layout.new_post);
+		post_lay = findViewById(R.id.post_lay);
 		text_num = (TextView) findViewById(R.id.text_num);
 		post_text = (EditText) findViewById(R.id.post_text);
 		faceView = (FaceView) findViewById(R.id.face_view);
 		faceView.setTagView(post_text);
 		post_text.setOnTouchListener(new OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if (faceView.getVisibility() != View.GONE) {
-					faceView.setVisibility(View.GONE);
-				}
+				editMode(false);
 				return false;
 			}
 		});
@@ -159,7 +164,7 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 		String initText = getIntent().getStringExtra("initText");
 		if (initText != null && !"".equals(initText)) {
 			post_text.setText(initText);
-			faceView.refreshTagContent();
+			FaceUtil.refreshTagContent(post_text, initText, initText.length());
 			post_text.setSelection(0);
 		}
 		twitter_id = getIntent().getLongExtra("twitter_id", 0l);
@@ -182,33 +187,33 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 		} else {
 			actionBar.setTitle(R.string.title_new_post);
 		}
-
-		resizeFaceView = true;
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		picPath = savedInstanceState.getString("picPath");
-		cameraPicPath = savedInstanceState.getString("cameraPicPath");
+		cameraPath = savedInstanceState.getString("cameraPath");
 		type = savedInstanceState.getInt("type");
 		String text = savedInstanceState.getString("text");
 		if (!StringUtil.isEmpty(text)) {
 			post_text.setText(text);
-			faceView.refreshTagContent();
+			FaceUtil.refreshTagContent(post_text, text, text.length());
 		}
 		if (!StringUtil.isEmpty(picPath)) {
 			showPic();
 		}
+		Debug.v("onRestoreInstanceState....cameraPath : " + cameraPath);
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putString("picPath", picPath);
-		outState.putString("cameraPicPath", cameraPicPath);
+		outState.putString("cameraPath", cameraPath);
 		outState.putInt("type", type);
 		outState.putString("text", post_text.getText().toString());
 		super.onSaveInstanceState(outState);
+		Debug.v("onSaveInstanceState....");
 	}
 
 	@Override
@@ -219,9 +224,15 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		resizeFaceView = true;
+		editMode(true);
+	}
+	
+	@Override
+	public void onBackPressed() {
 		if (faceView.getVisibility() != View.GONE) {
-			faceView.setVisibility(View.GONE);
+			editMode(true);
+		} else {
+			super.onBackPressed();
 		}
 	}
 
@@ -237,16 +248,6 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 	}
 
 	@Override
-	public void onBackPressed() {
-		if (faceView.getVisibility() != View.GONE) {
-			faceView.setVisibility(View.GONE);
-			SystemUtil.openKeyBoard(getApplicationContext());
-		} else {
-			super.onBackPressed();
-		}
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
@@ -259,7 +260,7 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 			String text = post_text.getText().toString();
 			int start = post_text.getSelectionStart();
 			text = text.substring(0, start) + "##" + text.substring(start);
-			faceView.refreshTagContent(text, start + 1);
+			FaceUtil.refreshTagContent(post_text, text, start + 1);
 			break;
 		case R.id.img:
 			Intent pickIntent = new Intent(Intent.ACTION_PICK, null);
@@ -269,44 +270,16 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 			break;
 		case R.id.camera:
 			Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			cameraPicPath = makePicPath();
-			uri = Uri.fromFile(new File(cameraPicPath));
+			cameraPath = makePicPath();
+			Uri uri = Uri.fromFile(new File(cameraPath));
 			captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 			startActivityForResult(captureIntent, PHOTOGRAPH);
 			break;
 		case R.id.face:
-			if (faceView.getVisibility() != View.GONE) {
-				faceView.setVisibility(View.GONE);
-				SystemUtil.openKeyBoard(getApplicationContext());
-			} else {
-				if (resizeFaceView) {
-					Rect outRect1 = new Rect();
-					getWindow().getDecorView().getWindowVisibleDisplayFrame(
-							outRect1);
-					int statusBarHeight = outRect1.top;
-
-					Rect outRect2 = new Rect();
-					getWindow().getWindowManager().getDefaultDisplay()
-							.getRectSize(outRect2);
-					boolean isPortrait = outRect2.width() < outRect2.height();
-					int faceViewHeight = 0;
-					if (isPortrait) {
-						faceViewHeight = outRect2.height() - statusBarHeight
-								- outRect1.height();
-					} else {
-						faceViewHeight = outRect1.height() / 2;
-					}
-					faceView.getLayoutParams().height = faceViewHeight;
-					resizeFaceView = false;
-				}
-				SystemUtil.closeKeyBoard(post_text);
-				faceView.postDelayed(new Runnable() {
-
-					@Override
-					public void run() {
-						faceView.setVisibility(View.VISIBLE);
-					}
-				}, 200);
+			if(faceView.getVisibility() == View.GONE){
+				faceMode();
+			}else{
+				editMode(true);
 			}
 			break;
 		case R.id.at:
@@ -322,14 +295,6 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-		if (faceView.getVisibility() != View.GONE) {
-			faceView.setVisibility(View.GONE);
-		}
-	}
-
-	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.pic:
@@ -341,8 +306,7 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 
 	private String makePicPath() {
 		Date now = new Date();
-		return Environment.getExternalStorageDirectory().getPath() + "/"
-				+ now.getTime() + ".jpeg";
+		return ICoDir.SDCARD_ICO_DIR + File.separator + now.getTime() + ".jpeg";
 	}
 
 	private void popDel() {
@@ -369,41 +333,56 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 		dialog.show();
 	}
 
+	private void faceMode() {
+		int h = post_lay.getHeight();
+		LayoutParams lp = (LayoutParams) post_lay.getLayoutParams();
+		lp.weight = 0;
+		
+		Configuration config = getResources().getConfiguration();   
+	    if (config.orientation == Configuration.ORIENTATION_LANDSCAPE){   
+	    	lp.height = h/2;
+	     }else if(config.orientation == Configuration.ORIENTATION_PORTRAIT){   
+	    	 lp.height = h;
+	     }
+
+		faceView.setVisibility(View.VISIBLE);
+		SystemUtil.closeKeyBoard(post_text);
+	}
+	
+	private void editMode(boolean callKeyBoard){
+		LayoutParams lp = (LayoutParams) post_lay.getLayoutParams();
+		lp.weight = 1;
+		lp.height = 0;
+		if (faceView.getVisibility() != View.GONE) {
+			faceView.setVisibility(View.GONE);
+		}
+		if(callKeyBoard){
+			SystemUtil.openKeyBoard(getApplicationContext());
+		}
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		Debug.v("onActivityResult...cameraPath : " + cameraPath);
 		if (resultCode == RESULT_OK) {
 			if (requestCode == GET_PIC) {
-				uri = data.getData();
+				Uri uri = data.getData();
 				String path = getAbsoluteImagePath(uri);
 				preparePic(path);
 			} else if (requestCode == PHOTOGRAPH) {
-				savePic(cameraPicPath);
-				preparePic(cameraPicPath);
+				saveToAlbum(cameraPath);
+				preparePic(cameraPath);
 			} else if (requestCode == PREPARE_PIC) {
-				// uri = data.getData();
-				// picPath = uri.getPath();
-				// new Thread(new Runnable() {
-				//
-				// @Override
-				// public void run() {
-				// showPic();
-				// savePic(picPath);
-				// }
-				// }).start();
-				// Bundle extra = data.getExtras();
-				// if (null != extra) {
-				// // image was changed by the user?
-				// boolean changed = extra
-				// .getBoolean(Constants.EXTRA_OUT_BITMAP_CHANGED);
-				// }
+
 			} else if (requestCode == GET_FRIENDS_REQUEST) {
 				String choose = data.getStringExtra("@");
 				String text = post_text.getText().toString();
 				int start = post_text.getSelectionStart();
 				text = text.substring(0, start) + choose
 						+ text.substring(start);
-				faceView.refreshTagContent(text, start + choose.length());
+				FaceUtil.refreshTagContent(post_text, text,
+						start + choose.length());
 			}
 		}
 	}
@@ -433,12 +412,13 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 					bitmap.recycle();
 
 					picPath = makePicPath();
-					SDCardUtils.saveBitmapByPath(picPath, temp);
+					ICoDir.saveBitmapByPath(picPath, temp);
 					temp.recycle();
+
+					ICoDir.deleteFile(path);
 				} else {
 					picPath = path;
 				}
-
 				showPic();
 			}
 		}).start();
@@ -446,49 +426,28 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 	}
 
 	private void showPic() {
-		Bitmap bitmap = PicManager.getRectBitmap(picPath, (int) getResources()
-				.getDimension(R.dimen.avatar));
-		mHandler.sendMessage(mHandler.obtainMessage(
-				AppConstant.MSG_SHOW_POST_PIC, bitmap));
-		type = AppConstant.TYPE_POST_TEXT_IMG;
-	}
-
-	// private void feather() {
-	// Intent newIntent = new Intent(this, FeatherActivity.class);
-	// newIntent.setData(uri);
-	// newIntent.putExtra(Constants.EXTRA_OUTPUT,
-	// Uri.parse("file://" + makePicPath()));
-	// newIntent.putExtra(Constants.EXTRA_OUTPUT_FORMAT,
-	// Bitmap.CompressFormat.JPEG.name());
-	// newIntent.putExtra(Constants.EXTRA_OUTPUT_QUALITY, 90);
-	// newIntent.putExtra(Constants.EXTRA_TOOLS_LIST, new String[] {
-	// "SHARPNESS", "BRIGHTNESS", "CONTRAST", "SATURATION", "EFFECTS",
-	// "RED_EYE", "CROP", "WHITEN", "DRAWING", "TEXT", "BLEMISH",
-	// "MEME", "ADJUST", "ENHANCE", "COLORTEMP", "COLOR_SPLASH",
-	// "TILT_SHIFT" });
-	// newIntent.putExtra(Constants.EXTRA_EFFECTS_ENABLE_FAST_PREVIEW, true);
-	// newIntent.putExtra(Constants.EXTRA_HIDE_EXIT_UNSAVE_CONFIRMATION, true);
-	// newIntent.putExtra(Constants.EXTRA_TOOLS_DISABLE_VIBRATION, true);
-	// newIntent.putExtra(Constants.EXTRA_IN_SAVE_ON_NO_CHANGES, false);
-	// newIntent
-	// .putExtra(Constants.EXTRA_EFFECTS_ENABLE_EXTERNAL_PACKS, false);
-	// newIntent.putExtra(Constants.EXTRA_FRAMES_ENABLE_EXTERNAL_PACKS, false);
-	// startActivityForResult(newIntent, PREPARE_PIC);
-	// }
-
-	private void savePic(final String path) {
+		Debug.v("show Pic....");
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				try {
-					MediaStore.Images.Media.insertImage(getContentResolver(),
-							path, "", "");
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
+				int[] size = PicManager.sizeOfBitmap(picPath);
+				Debug.v("bitmap size : " + size[0] + ", " + size[1]);
+				mHandler.sendMessage(mHandler.obtainMessage(
+						AppConstant.MSG_SHOW_POST_PIC, size));
+				type = AppConstant.TYPE_POST_TEXT_IMG;
 			}
 		}).start();
+	}
+
+	private void saveToAlbum(final String path) {
+		if (!TextUtils.isEmpty(path)) {
+			Intent mediaScanIntent = new Intent(
+					Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+			Uri contentUri = Uri.fromFile(new File(path));
+			mediaScanIntent.setData(contentUri);
+			sendBroadcast(mediaScanIntent);
+		}
 	}
 
 	private String getAbsoluteImagePath(Uri uri) {
@@ -571,7 +530,7 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 							@Override
 							public void onComplete4binary(
 									ByteArrayOutputStream responseOS) {
-								
+
 							}
 						});
 			}
@@ -598,6 +557,6 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 
 	@Override
 	public void onComplete4binary(ByteArrayOutputStream responseOS) {
-		
+
 	}
 }

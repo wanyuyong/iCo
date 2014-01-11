@@ -85,11 +85,11 @@ public class User implements android.os.Parcelable {
 		this.profile_image_url = profile_image_url;
 	}
 
-	public String getAvatar_large() {
+	public String getImageView_large() {
 		return avatar_large;
 	}
 
-	public void setAvatar_large(String avatar_large) {
+	public void setImageView_large(String avatar_large) {
 		this.avatar_large = avatar_large;
 	}
 
@@ -179,7 +179,7 @@ public class User implements android.os.Parcelable {
 		user.setScreen_name(JsonUtil.getString(jsonObj, SCREEN_NAME));
 		user.setProfile_image_url(JsonUtil
 				.getString(jsonObj, PROFILE_IMAGE_URL));
-		user.setAvatar_large(JsonUtil
+		user.setImageView_large(JsonUtil
 				.getString(jsonObj, AVATAR_LARGE));
 		user.setGender(JsonUtil.getString(jsonObj, GENDER));
 		user.setLocation(JsonUtil.getString(jsonObj, LOCATION));

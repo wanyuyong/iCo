@@ -10,7 +10,7 @@
     android:paddingBottom="10dip" 
     android:background="@drawable/twitter_item_bg">
 
-    <magic.yuyong.view.Avatar
+    <ImageView
         android:id="@+id/user_avatar"
         android:layout_width="@dimen/avatar"
         android:layout_height="@dimen/avatar"

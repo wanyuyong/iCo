@@ -1,11 +1,12 @@
 package magic.yuyong.app;
 
 import magic.yuyong.persistence.AccessTokenKeeper;
+import android.app.Application;
 
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 
 
-public class MagicApplication extends GDApplication {
+public class MagicApplication extends Application {
 	
     private static MagicApplication instance  = null;
     private Oauth2AccessToken accessToken = null;
@@ -15,7 +16,6 @@ public class MagicApplication extends GDApplication {
 		super.onCreate();
 		instance =  this;
 		accessToken = AccessTokenKeeper.readAccessToken(this);
-		
 	}
 
 	public static MagicApplication getInstance(){

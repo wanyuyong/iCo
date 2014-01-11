@@ -151,11 +151,6 @@ public class PicManager {
 		return BitmapFactory.decodeStream(is, null, options);
 	}
 
-	public static Bitmap getBitmapFormFile(String url) {
-		byte[] data = SDCardUtils.getFile(url);
-		return prepareBitmap(data, Bitmap.Config.ALPHA_8);
-	}
-
 	public static int getPictureDegree(String path) {
 		int degree = ExifInterface.ORIENTATION_NORMAL;
 		try {

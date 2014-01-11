@@ -3,26 +3,29 @@ package magic.yuyong.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.*;
-import android.view.animation.*;
 import magic.yuyong.R;
 import magic.yuyong.activity.TwitterShowActivity;
 import magic.yuyong.model.Twitter;
+import magic.yuyong.transformation.CircleTransformation;
 import magic.yuyong.util.ColorUtil;
 import magic.yuyong.util.DisplayUtil;
 import magic.yuyong.util.StringUtil;
 import magic.yuyong.view.TwitterBoardScrollView.TwitterBoardScrollListener;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * @author wanyuyong
@@ -255,7 +258,7 @@ public class TwitterBoard extends ViewGroup implements
 
 	class ViewHolder {
 		Tile tile;
-		Avatar avatar;
+		ImageView avatar;
 		TextView name;
 		TextView msg;
 		ImageView type;
@@ -270,8 +273,7 @@ public class TwitterBoard extends ViewGroup implements
 			reuse[0] = false;
 			view = inflate(getContext(), R.layout.tile, null);
 			holder = new ViewHolder();
-			holder.avatar = (Avatar) view.findViewById(R.id.avatar);
-			holder.avatar.setDefaultImageResource(R.drawable.avatar);
+			holder.avatar = (ImageView) view.findViewById(R.id.avatar);
 			holder.name = (TextView) view.findViewById(R.id.user_name);
 			holder.msg = (TextView) view.findViewById(R.id.msg);
 			holder.type = (ImageView) view.findViewById(R.id.type);
@@ -304,7 +306,7 @@ public class TwitterBoard extends ViewGroup implements
 		if (tile.type == TYPE_AVATAR_TEXT) {
 			holder.avatar.setVisibility(View.VISIBLE);
 			if (!twitter.isDeleted()) {
-				holder.avatar.setUrl(twitter.getUser().getProfile_image_url());
+				Picasso.with(getContext()).load(twitter.getUser().getProfile_image_url()).placeholder(R.drawable.avatar).transform(new CircleTransformation()).into(holder.avatar);
 			}
 		} else if (tile.type == TYPE_ONLY_TEXT) {
 			holder.avatar.setVisibility(View.GONE);

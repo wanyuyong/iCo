@@ -14,7 +14,7 @@ public class AboutActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.about);
-
+		
 		String versionName = "";
 		try {
 			versionName = getPackageManager().getPackageInfo(getPackageName(),

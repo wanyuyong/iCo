@@ -4,7 +4,6 @@
 package magic.yuyong.adapter;
 
 import magic.yuyong.R;
-import magic.yuyong.util.Debug;
 import magic.yuyong.view.AsyncSubsamplingScaleImageView;
 import magic.yuyong.view.HoloCircularProgressBar;
 import magic.yuyong.view.JazzyViewPager;
@@ -15,11 +14,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 

@@ -14,8 +14,8 @@ import magic.yuyong.model.Twitter;
 import magic.yuyong.model.User;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
+import magic.yuyong.transformation.CircleTransformation;
 import magic.yuyong.util.Debug;
-import magic.yuyong.view.AsyncImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +23,6 @@ import org.json.JSONObject;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -55,6 +54,7 @@ import com.sina.weibo.sdk.openapi.legacy.FriendshipsAPI;
 import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
 import com.sina.weibo.sdk.openapi.legacy.UsersAPI;
 import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.FEATURE;
+import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends GetTwitterActivity implements
 		OnClickListener, OnRefreshListener {
@@ -63,7 +63,7 @@ public class ProfileActivity extends GetTwitterActivity implements
 	private View head;
 	private View footer;
 	private PullToRefreshLayout mPullToRefreshLayout;
-	private AsyncImageView avatar;
+	private ImageView avatar;
 	private TextView user_name;
 	private ImageView user_gender;
 	private TextView location;
@@ -117,7 +117,7 @@ public class ProfileActivity extends GetTwitterActivity implements
 				weibo.setText(String.valueOf(user.getStatuses_count()));
 				follower.setText(String.valueOf(user.getFollowers_count()));
 				favourit.setText(String.valueOf(user.getFavourites_count()));
-				avatar.setUrl(user.getAvatar_large());
+				Picasso.with(getApplicationContext()).load(user.getImageView_large()).transform(new CircleTransformation()).into(avatar);
 				break;
 			case AppConstant.MSG_FOLLOW_SUCCEED:
 				invalidateOptionsMenu();
@@ -168,8 +168,7 @@ public class ProfileActivity extends GetTwitterActivity implements
 		setContentView(R.layout.profile);
 		head = getLayoutInflater().inflate(R.layout.profile_head, null);
 
-		avatar = (AsyncImageView) head.findViewById(R.id.user_avatar);
-		avatar.setDefaultImageResource(R.drawable.avatar);
+		avatar = (ImageView) head.findViewById(R.id.user_avatar);
 		user_name = (TextView) head.findViewById(R.id.name);
 		user_gender = (ImageView) head.findViewById(R.id.gender);
 		location = (TextView) head.findViewById(R.id.location);

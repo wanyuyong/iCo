@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.squareup.picasso.Picasso;
 import com.umeng.analytics.MobclickAgent;
 
 public class BaseActivity extends Activity {
@@ -45,6 +46,7 @@ public class BaseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		actionBar = getActionBar();
+		
 		registerReceiver(shutDownReceiver, new IntentFilter(AppConstant.ACTION_SHUT_DOWN_BROADCAST));
 	}
 

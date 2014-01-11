@@ -3,22 +3,17 @@ package magic.yuyong.activity;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.sina.weibo.sdk.exception.WeiboException;
-import com.sina.weibo.sdk.net.RequestListener;
-import com.sina.weibo.sdk.openapi.LogoutAPI;
-
 import magic.yuyong.R;
 import magic.yuyong.app.AppConstant;
 import magic.yuyong.app.MagicApplication;
 import magic.yuyong.app.MagicDialog;
 import magic.yuyong.persistence.AccessTokenKeeper;
 import magic.yuyong.persistence.Persistence;
-import magic.yuyong.request.RequestState;
 import magic.yuyong.service.NotificationService;
-import magic.yuyong.util.SDCardUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,10 +22,14 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.Toast;
+
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.net.RequestListener;
+import com.sina.weibo.sdk.openapi.LogoutAPI;
 
 public class SettingActivity extends BaseActivity implements OnClickListener {
 
@@ -65,7 +64,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 		findViewById(R.id.time_line_but).setOnClickListener(this);
 		findViewById(R.id.notification_but).setOnClickListener(this);
 		findViewById(R.id.donate_but).setOnClickListener(this);
-		findViewById(R.id.clean_cache_but).setOnClickListener(this);
 		timeline_mode = (CheckBox) findViewById(R.id.timeline_mode);
 		timeline_mode.setChecked(Persistence
 				.isTimeLineMode(getApplicationContext()));
@@ -89,7 +87,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 
 			@Override
 			public void run() {
-				SDCardUtils.cleanCacheDir();
 				mHandler.sendEmptyMessage(AppConstant.MSG_CLEAN_CACHE_SUCCEED);
 			}
 		}).start();
@@ -133,34 +130,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 			feedbackIntent.putExtra("#",
 					getResources().getString(R.string.text_feedback_topic));
 			startActivity(feedbackIntent);
-			break;
-		case R.id.clean_cache_but:
-			final MagicDialog clean_cache_dialog = new MagicDialog(this,
-					R.style.magic_dialog);
-			clean_cache_dialog.setMessage(
-					getResources().getString(R.string.title_clean),
-					getResources().getString(R.string.text_sure_to_clean));
-			clean_cache_dialog.addButton(R.string.but_clean,
-					new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							clean_cache_dialog.dismiss();
-							Toast.makeText(getApplicationContext(),
-									R.string.text_cleaning, Toast.LENGTH_SHORT);
-							setProgressBarIndeterminateVisibility(true);
-							cleanCache();
-						}
-					});
-			clean_cache_dialog.addButton(R.string.but_cancel,
-					new OnClickListener() {
-
-						@Override
-						public void onClick(View arg0) {
-							clean_cache_dialog.dismiss();
-						}
-					});
-			clean_cache_dialog.show();
 			break;
 		case R.id.notification_but:
 			boolean receive = !notification.isChecked();

@@ -15,9 +15,10 @@ import magic.yuyong.model.Repost;
 import magic.yuyong.model.Twitter;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
+import magic.yuyong.transformation.CircleTransformation;
+import magic.yuyong.transformation.MaxHeightTransformation;
 import magic.yuyong.util.Debug;
 import magic.yuyong.util.StringUtil;
-import magic.yuyong.view.AsyncImageView;
 import magic.yuyong.view.TwitterContent;
 
 import org.json.JSONException;
@@ -54,6 +55,8 @@ import com.sina.weibo.sdk.openapi.legacy.CommentsAPI;
 import com.sina.weibo.sdk.openapi.legacy.FavoritesAPI;
 import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
 import com.sina.weibo.sdk.openapi.legacy.WeiboAPI;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 public class TwitterShowActivity extends BaseActivity implements
 		OnClickListener, OnRefreshListener {
@@ -63,20 +66,20 @@ public class TwitterShowActivity extends BaseActivity implements
 	private ListView listView;
 	private TextView comment_but, repost_but;
 
-	private AsyncImageView twitter_user_avatar;
+	private ImageView twitter_user_avatar;
 	private TextView twitter_user_name;
 	private TextView twitter_time;
 	private TextView twitter_from;
 	private TwitterContent twitter_text;
-	private AsyncImageView twitter_img;
+	private ImageView twitter_img;
 
 	private View origin_layout;
-	private AsyncImageView origin_user_avatar;
+	private ImageView origin_user_avatar;
 	private TextView origin_user_name;
 	private TextView origin_time;
 	private TextView origin_from;
 	private TwitterContent origin_text;
-	private AsyncImageView origin_img;
+	private ImageView origin_img;
 
 	private CommentOrRepostAdapter adapter;
 	private List<Object> comments = new ArrayList<Object>();
@@ -302,27 +305,27 @@ public class TwitterShowActivity extends BaseActivity implements
 		repost_but.setOnClickListener(this);
 
 		// init Twitter Layout
-		twitter_user_avatar = (AsyncImageView) header
+		twitter_user_avatar = (ImageView) header
 				.findViewById(R.id.twitter_user_avatar);
-		twitter_user_avatar.setDefaultImageResource(R.drawable.avatar);
+		twitter_user_avatar.setImageResource(R.drawable.avatar);
 		twitter_user_name = (TextView) header
 				.findViewById(R.id.twitter_user_name);
 		twitter_time = (TextView) header.findViewById(R.id.twitter_time);
 		twitter_from = (TextView) header.findViewById(R.id.twitter_from);
 		twitter_text = (TwitterContent) header.findViewById(R.id.twitter_text);
-		twitter_img = (AsyncImageView) header.findViewById(R.id.twitter_img);
+		twitter_img = (ImageView) header.findViewById(R.id.twitter_img);
 
 		// init Origin Twitter Layout
 		origin_layout = header.findViewById(R.id.origin_layout);
-		origin_user_avatar = (AsyncImageView) header
+		origin_user_avatar = (ImageView) header
 				.findViewById(R.id.origin_user_avatar);
-		origin_user_avatar.setDefaultImageResource(R.drawable.avatar);
+		origin_user_avatar.setImageResource(R.drawable.avatar);
 		origin_user_name = (TextView) header
 				.findViewById(R.id.origin_user_name);
 		origin_time = (TextView) header.findViewById(R.id.origin_time);
 		origin_from = (TextView) header.findViewById(R.id.origin_from);
 		origin_text = (TwitterContent) header.findViewById(R.id.origin_text);
-		origin_img = (AsyncImageView) header.findViewById(R.id.origin_img);
+		origin_img = (ImageView) header.findViewById(R.id.origin_img);
 
 		ActionBarPullToRefresh.from(this)
 				.theseChildrenArePullable(R.id.list_view, android.R.id.empty)
@@ -419,13 +422,14 @@ public class TwitterShowActivity extends BaseActivity implements
 			twitter_from.setText(getResources().getString(R.string.text_source)
 					+ twitter.getSource());
 			String avatar_url = twitter.getUser().getProfile_image_url();
-			twitter_user_avatar.setUrl(avatar_url);
+			Picasso.with(getApplicationContext()).load(avatar_url).placeholder(R.drawable.avatar).transform(new CircleTransformation()).into(twitter_user_avatar);
+			
 			long uid = twitter.getUser().getId();
-			setAvatarOnClickListener(twitter_user_avatar, uid);
+			setImageViewOnClickListener(twitter_user_avatar, uid);
 			String bmiddle_pic_url = twitter.getBmiddle_pic();
 			if (!StringUtil.isEmpty(bmiddle_pic_url)) {
 				twitter_img.setVisibility(View.VISIBLE);
-				twitter_img.setUrl(bmiddle_pic_url);
+				Picasso.with(getApplicationContext()).load(bmiddle_pic_url).transform(new MaxHeightTransformation()).into(twitter_img);
 				setImgOnClickListener(twitter_img, twitter,
 						twitter.getPic_urls());
 			}
@@ -451,13 +455,13 @@ public class TwitterShowActivity extends BaseActivity implements
 						R.string.text_source)
 						+ origin.getSource());
 				String avatar_url = origin.getUser().getProfile_image_url();
-				origin_user_avatar.setUrl(avatar_url);
+				Picasso.with(getApplicationContext()).load(avatar_url).placeholder(R.drawable.avatar).transform(new CircleTransformation()).into(origin_user_avatar);
 				long origin_uid = origin.getUser().getId();
-				setAvatarOnClickListener(origin_user_avatar, origin_uid);
+				setImageViewOnClickListener(origin_user_avatar, origin_uid);
 				String origin_bmiddle_pic_url = origin.getBmiddle_pic();
 				if (!StringUtil.isEmpty(origin_bmiddle_pic_url)) {
 					origin_img.setVisibility(View.VISIBLE);
-					origin_img.setUrl(origin_bmiddle_pic_url);
+					Picasso.with(getApplicationContext()).load(origin_bmiddle_pic_url).transform(new MaxHeightTransformation()).into(origin_img);
 					setImgOnClickListener(origin_img, origin,
 							origin.getPic_urls());
 				}
@@ -471,7 +475,7 @@ public class TwitterShowActivity extends BaseActivity implements
 		changeType(CommentOrRepostAdapter.TYPE_COMMENTS);
 	}
 
-	private void setAvatarOnClickListener(View avatar, final long uid) {
+	private void setImageViewOnClickListener(View avatar, final long uid) {
 		avatar.setOnClickListener(new OnClickListener() {
 
 			@Override
