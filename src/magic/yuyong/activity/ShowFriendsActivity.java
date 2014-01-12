@@ -14,9 +14,7 @@ import magic.yuyong.extend.UnReadAPI;
 import magic.yuyong.model.User;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
-import magic.yuyong.util.Debug;
 import magic.yuyong.util.JsonUtil;
-import magic.yuyong.view.TitlePageIndicator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,13 +22,14 @@ import org.json.JSONObject;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
@@ -47,7 +46,6 @@ public class ShowFriendsActivity extends BaseActivity implements
 		View.OnClickListener, OnRefreshListener {
 
 	private ViewPager mPager;
-	private TitlePageIndicator mIndicator;
 	private List<View> listViews;
 
 	public static final int VIEW_FOLLOWER = 0;
@@ -80,21 +78,25 @@ public class ShowFriendsActivity extends BaseActivity implements
 		public void onPageSelected(int index) {
 			View view = listViews.get(index);
 			current = (RequestState) view.getTag();
-			mIndicator.onPageSelected(index);
+			
 			if (current.isFirstTime) {
 				current.isFirstTime = false;
 				getFriends(false);
+			}
+			
+			if(current.requestType == VIEW_FOLLOWING){
+				actionBar.setTitle(R.string.label_following);
+			}else if(current.requestType == VIEW_FOLLOWER){
+				actionBar.setTitle(R.string.label_follower);
 			}
 		}
 		
 		@Override
 		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-			mIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels);
 		}
 		
 		@Override
 		public void onPageScrollStateChanged(int state) {
-			mIndicator.onPageScrollStateChanged(state);
 		}
 	};
 
@@ -194,6 +196,7 @@ public class ShowFriendsActivity extends BaseActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
 		setContentView(R.layout.show_friends);
 		uid = getIntent().getLongExtra("uid", -1L);
 		initViewPager();
@@ -205,6 +208,7 @@ public class ShowFriendsActivity extends BaseActivity implements
 		
 		mPager.setCurrentItem(pos);
 		mOnPageChangeListener.onPageSelected(pos);
+		
 	}
 	
 	private void clearFollowerState(){
@@ -233,12 +237,28 @@ public class ShowFriendsActivity extends BaseActivity implements
 	}
 	
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.friends, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			finish();
 			break;
+			
+		case R.id.follower:
+			mPager.setCurrentItem(0);
+			break;
+			
+		case R.id.following:
+			mPager.setCurrentItem(1);
+			break;
 		}
+		
 		return true;
 	}
 
@@ -340,11 +360,8 @@ public class ShowFriendsActivity extends BaseActivity implements
 		listViews.add(followingList);
 		
 		MyPagerAdapter adapter = new MyPagerAdapter(listViews);
-		adapter.setTitles(new String[]{getResources().getString(R.string.label_follower), getResources().getString(R.string.label_following)});
 		mPager.setAdapter(adapter);
 		
-		mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
-        mIndicator.setViewPager(mPager);
 		mPager.setOnPageChangeListener(mOnPageChangeListener);
 	}
 

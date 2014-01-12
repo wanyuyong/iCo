@@ -1,29 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <magic.yuyong.view.TitlePageIndicator
-        android:id="@+id/indicator"
-        android:padding="10dip"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:background="#FF333333"
-        android:textColor="#A0FFFFFF"
-        app:footerColor="@color/theme_color"
-        app:footerLineHeight="1dp"
-        app:footerIndicatorHeight="3dp"
-        app:footerIndicatorStyle="underline"
-        app:selectedColor="#FFFFFFFF"
-        app:selectedBold="true" />
-
-    <android.support.v4.view.ViewPager
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/vPager"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:flipInterval="30"
         android:persistentDrawingCache="animation" />
-
-</LinearLayout>

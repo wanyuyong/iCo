@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Holo.CustomPtrHeader" parent="Theme.Magic_style">
+        <item name="ptrHeaderStyle">@style/Widget.Custom.PtrHeader</item>
+    </style>
+
+    <style name="Widget.Custom.PtrHeader" parent="android:Widget">
+        <item name="ptrHeaderTitleTextAppearance">@style/TextAppearance.Custom.PtrHeader.Title</item>
+        <item name="ptrProgressBarStyle">outside</item>
+        <item name="ptrProgressBarColor">@color/progress_bar_color</item>
+        <item name="ptrProgressBarHeight">@dimen/progress_bar_stroke_width</item>
+    </style>
+
+    <style name="TextAppearance.Custom.PtrHeader.Title" parent="android:TextAppearance.Large.Inverse">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+</resources>

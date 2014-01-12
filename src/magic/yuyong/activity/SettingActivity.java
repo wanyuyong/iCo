@@ -11,15 +11,11 @@ import magic.yuyong.persistence.AccessTokenKeeper;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.service.NotificationService;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,21 +30,6 @@ import com.sina.weibo.sdk.openapi.LogoutAPI;
 public class SettingActivity extends BaseActivity implements OnClickListener {
 
 	private CheckBox timeline_mode, notification;
-
-	private Handler mHandler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case AppConstant.MSG_CLEAN_CACHE_SUCCEED:
-				setProgressBarIndeterminateVisibility(false);
-				Toast.makeText(getApplicationContext(),
-						R.string.text_clean_cache_success, Toast.LENGTH_SHORT)
-						.show();
-				break;
-			}
-		}
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,16 +61,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 			break;
 		}
 		return true;
-	}
-
-	private void cleanCache() {
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				mHandler.sendEmptyMessage(AppConstant.MSG_CLEAN_CACHE_SUCCEED);
-			}
-		}).start();
 	}
 
 	private void cleanPersistenceData() {
@@ -166,21 +137,13 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 
 						@Override
 						public void onIOException(IOException e) {
-							Toast.makeText(
-									getApplicationContext(),
-									getResources().getString(
-											R.string.text_login_out_faild),
-									Toast.LENGTH_SHORT).show();
+							exit();
 							setProgressBarIndeterminateVisibility(false);
 						}
 
 						@Override
 						public void onError(WeiboException e) {
-							Toast.makeText(
-									getApplicationContext(),
-									getResources().getString(
-											R.string.text_login_out_faild),
-									Toast.LENGTH_SHORT).show();
+							exit();
 							setProgressBarIndeterminateVisibility(false);
 						}
 
@@ -191,39 +154,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 
 						@Override
 						public void onComplete(String response) {
-							if (!TextUtils.isEmpty(response)) {
-								try {
-									JSONObject obj = new JSONObject(response);
-									String value = obj.getString("result");
-									if ("true".equalsIgnoreCase(value)) {
-										AccessTokenKeeper
-												.clear(getApplicationContext());
-										MagicApplication.getInstance()
-												.setAccessToken(null);
-										cleanPersistenceData();
-										
-										Toast.makeText(
-												getApplicationContext(),
-												getResources()
-														.getString(
-																R.string.text_login_out_success),
-												Toast.LENGTH_SHORT).show();
-
-										// stop service
-										Intent service = new Intent(
-												getApplicationContext(),
-												NotificationService.class);
-										stopService(service);
-
-										startActivity(new Intent(
-												getApplicationContext(),
-												MainActivity.class));
-										shutDown();
-									}
-								} catch (JSONException e) {
-									e.printStackTrace();
-								}
-							}
+							exit();
 							setProgressBarIndeterminateVisibility(false);
 						}
 					});
@@ -239,5 +170,31 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 			exit_dialog.show();
 			break;
 		}
+	}
+	
+	private void exit(){
+		AccessTokenKeeper
+				.clear(getApplicationContext());
+		MagicApplication.getInstance()
+				.setAccessToken(null);
+		cleanPersistenceData();
+		
+		Toast.makeText(
+				getApplicationContext(),
+				getResources()
+						.getString(
+								R.string.text_login_out_success),
+				Toast.LENGTH_SHORT).show();
+
+		// stop service
+		Intent service = new Intent(
+				getApplicationContext(),
+				NotificationService.class);
+		stopService(service);
+
+		startActivity(new Intent(
+				getApplicationContext(),
+				MainActivity.class));
+		shutDown();
 	}
 }

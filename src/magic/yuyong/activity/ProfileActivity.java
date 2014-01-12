@@ -164,7 +164,6 @@ public class ProfileActivity extends GetTwitterActivity implements
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-
 		setContentView(R.layout.profile);
 		head = getLayoutInflater().inflate(R.layout.profile_head, null);
 

@@ -87,7 +87,7 @@ public class PlazaActivity extends GetTwitterActivity implements
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-
+		
 		actionBar.setListNavigationCallbacks(new TabAdapter(),
 				new OnNavigationListener() {
 

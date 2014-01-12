@@ -72,7 +72,7 @@
         <activity
             android:name=".activity.ShowFriendsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:uiOptions="splitActionBarWhenNarrow"
+             android:uiOptions="splitActionBarWhenNarrow"
             android:label="@string/title_friends"
             android:theme="@style/Theme.Holo.CustomPtrHeader" />
         <activity
