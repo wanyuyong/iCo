@@ -42,7 +42,7 @@ public class TwitterBoard extends ViewGroup implements
 	private static final int TYPE_AVATAR_TEXT = 1;
 
 	private final float scale_wide_w = .95f;
-	private final float scale_top = .16f;
+	private final float scale_top = .1f;
 	private final float scale_bottom = .088f;
 
 	private int tile_h;

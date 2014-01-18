@@ -5,10 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-
 import magic.yuyong.R;
 import magic.yuyong.adapter.CommentMeAdapter;
 import magic.yuyong.adapter.MyPagerAdapter;
@@ -24,6 +20,9 @@ import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
 import magic.yuyong.util.Debug;
 import magic.yuyong.util.SystemUtil;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
@@ -43,6 +42,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -51,6 +53,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.ShareActionProvider;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sina.weibo.sdk.exception.WeiboException;
@@ -67,6 +70,7 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 		OnRefreshListener {
 
 	private ViewPager mPager;
+	private TextView alertText;
 	private List<View> listViews;
 	private List<Group> groups = new ArrayList<Group>();
 	private boolean gettingGroups;
@@ -156,7 +160,7 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 
 			@Override
 			public void run() {
-				
+
 				if (requestState.isFirstTime && !requestState.localDataDirty) {
 					String data = getPersistenceData(requestState);
 					if (!TextUtils.isEmpty(data)) {
@@ -168,8 +172,8 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 						return;
 					}
 				}
-				
-				if(requestState.localDataDirty){
+
+				if (requestState.localDataDirty) {
 					requestState.localDataDirty = false;
 					cleanPersistenceData(requestState);
 				}
@@ -270,7 +274,7 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -432,6 +436,7 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 		setContentView(R.layout.timeline_mode);
 		mInflater = getLayoutInflater();
 		initViewPager();
+		alertText = (TextView)findViewById(R.id.alert);
 
 		Tab tabBilateral = actionBar.newTab().setText(R.string.label_bilateral);
 		Tab tabHome = actionBar.newTab().setText(R.string.label_home);
@@ -443,11 +448,13 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 		tabComment.setTabListener(listener);
 
 		int pos = getIntent().getIntExtra("pos", VIEW_HOME);
-		if (pos == VIEW_AT_ME && Persistence.getMention_status(getApplicationContext()) != 0) {
+		if (pos == VIEW_AT_ME
+				&& Persistence.getMention_status(getApplicationContext()) != 0) {
 			MyRequestState state = (MyRequestState) listViews.get(pos).getTag();
 			state.localDataDirty = true;
 			clearState(UnReadAPI.TYPE_MENTION_STATUS);
-		} else if (pos == VIEW_COMMENT && Persistence.getCmt(getApplicationContext()) != 0) {
+		} else if (pos == VIEW_COMMENT
+				&& Persistence.getCmt(getApplicationContext()) != 0) {
 			MyRequestState state = (MyRequestState) listViews.get(pos).getTag();
 			state.localDataDirty = true;
 			clearState(UnReadAPI.TYPE_CMT);
@@ -482,7 +489,7 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 				PullToRefreshLayout mPullToRefreshLayout = (PullToRefreshLayout) listViews
 						.get(pos);
 				mPullToRefreshLayout.startRefresh();
-			}else{
+			} else {
 				current.localDataDirty = true;
 			}
 			mPager.setCurrentItem(pos);
@@ -546,6 +553,90 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 	protected void onDestroy() {
 		super.onDestroy();
 	}
+	
+	private void alert(String text){
+		alertText.setVisibility(View.VISIBLE);
+		alertText.setText(text);
+		final Animation out = new AlphaAnimation(1, 0);
+		out.setDuration(500);
+		out.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation arg0) {
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				alertText.setVisibility(View.GONE);
+			}
+		});
+		Animation in = new AlphaAnimation(0, 1);
+		in.setDuration(500);
+		in.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation arg0) {
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				alertText.postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						alertText.startAnimation(out);
+					}
+				}, 2000);
+			}
+		});
+		alertText.startAnimation(in);
+	}
+
+	private void alertNewTwitterNum(List<Twitter> older, List<Twitter> twitters) {
+		int newTwitterNum = 0;
+		for (Twitter t : twitters) {
+			boolean has = false;
+			for (int i = 0; i < older.size() && i < twitters.size(); i++) {
+				Twitter twitter = older.get(i);
+				if (twitter.getId().longValue() == t.getId().longValue()) {
+					has = true;
+				}
+			}
+			if (!has) {
+				newTwitterNum++;
+			}
+		}
+		if (newTwitterNum != 0) {
+			alert(newTwitterNum+"条新微博");
+		}
+	}
+	
+	private void alertNewCommentNum(List<Comment> older, List<Comment> comments) {
+		int newCommentNum = 0;
+		for (Comment c : comments) {
+			boolean has = false;
+			for (int i = 0; i < older.size() && i < comments.size(); i++) {
+				Comment comment = older.get(i);
+				if (comment.getId().longValue() == c.getId().longValue()) {
+					has = true;
+				}
+			}
+			if (!has) {
+				newCommentNum++;
+			}
+		}
+		if (newCommentNum != 0) {
+			alert(newCommentNum+"条新评论");
+		}
+	}
 
 	@Override
 	protected void onUpdate(RequestState requestState) {
@@ -557,11 +648,14 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 					.getAdapter();
 			CommentMeAdapter adapter = (CommentMeAdapter) headAdapter
 					.getWrappedAdapter();
-			if (requestState.isRefresh) {
-				adapter.getComments().clear();
-			}
 			List<Comment> comments = Comment
 					.parseComment(requestState.response);
+			
+			if (requestState.isRefresh) {
+				alertNewCommentNum(adapter.getComments(), comments);
+				adapter.getComments().clear();
+			}
+			
 			if (comments.size() == 0) {
 				requestState.isBottom = true;
 			} else {
@@ -578,13 +672,14 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 			TwitterListAdapter adapter = (TwitterListAdapter) headAdapter
 					.getWrappedAdapter();
 			List<Twitter> datas = adapter.getData();
+			List<Twitter> twitters = Twitter
+					.parseTwitter(requestState.response);
 
 			if (requestState.isRefresh) {
+				alertNewTwitterNum(datas, twitters);
 				datas.clear();
 			}
 
-			List<Twitter> twitters = Twitter
-					.parseTwitter(requestState.response);
 			if (twitters.size() == 0) {
 				requestState.isBottom = true;
 			} else {
@@ -942,8 +1037,8 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 		mPager.setOnPageChangeListener(new MyOnPageChangeListener());
 		mPager.setAdapter(new MyPagerAdapter(listViews));
 	}
-	
-	private void cleanPersistenceData(RequestState requestState){
+
+	private void cleanPersistenceData(RequestState requestState) {
 
 		switch (requestState.requestType) {
 		case VIEW_BILATERAL:
@@ -962,7 +1057,7 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 			Persistence.setCommentData(getApplicationContext(), null);
 			break;
 		}
-	
+
 	}
 
 	private String getPersistenceData(RequestState requestState) {

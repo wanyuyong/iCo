@@ -55,7 +55,6 @@ import com.sina.weibo.sdk.openapi.legacy.CommentsAPI;
 import com.sina.weibo.sdk.openapi.legacy.FavoritesAPI;
 import com.sina.weibo.sdk.openapi.legacy.StatusesAPI;
 import com.sina.weibo.sdk.openapi.legacy.WeiboAPI;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 public class TwitterShowActivity extends BaseActivity implements

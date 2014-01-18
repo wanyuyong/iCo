@@ -67,15 +67,6 @@
             android:textColor="#FFFFFFFF"
             android:textSize="10sp" />
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/profile"
-        android:layout_width="0dip"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:contentDescription="@string/img_content_description"
-        android:scaleType="center"
-        android:src="@drawable/profile" />
     
     <ImageView
         android:id="@+id/plaza"
@@ -85,5 +76,14 @@
         android:contentDescription="@string/img_content_description"
         android:scaleType="center"
         android:src="@drawable/plaza" />
+    
+     <ImageView
+        android:id="@+id/setting"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:contentDescription="@string/img_content_description"
+        android:scaleType="center"
+        android:src="@drawable/setting" />
 
 </LinearLayout>

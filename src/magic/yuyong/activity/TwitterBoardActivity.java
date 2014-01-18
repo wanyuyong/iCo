@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import magic.yuyong.R;
-import magic.yuyong.animaiton.Rotate3dAnimation;
 import magic.yuyong.app.AppConstant;
 import magic.yuyong.app.MagicApplication;
 import magic.yuyong.drawable.Diagonal;
@@ -19,30 +18,28 @@ import magic.yuyong.request.RequestState;
 import magic.yuyong.util.Debug;
 import magic.yuyong.util.DisplayUtil;
 import magic.yuyong.view.DivideView;
-import magic.yuyong.view.LeftSlideView;
 import magic.yuyong.view.TwitterBoard;
 import magic.yuyong.view.TwitterBoardScrollView;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.HorizontalScrollView;
-import android.widget.LinearLayout;
 import android.widget.OverScroller;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,18 +53,9 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 		OnClickListener, TwitterBoard.BoundaryListener {
 	private TwitterBoard board;
 	private TwitterBoardScrollView scrollView;
-	private LeftSlideView slideView;
-	private View appName;
-	private View rightBar;
-	private LinearLayout groupLay;
-	private TextView all;
-	private View timeline, refresh, setting;
-	private ProgressBar pb;
-	private TextView start;
-	private View more;
 	private DivideView divide_view;
-	private View content;
 	private View innerButtonLay;
+	private View content;
 
 	private List<Group> groups = new ArrayList<Group>();
 	private Long list_id;
@@ -94,32 +82,7 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case AppConstant.MSG_UPDATA_GROUP:
-				for (final Group group : groups) {
-					TextView textView = (TextView) getLayoutInflater().inflate(
-							R.layout.group_but, null);
-					int margin = (int) DisplayUtil.dpToPx(getResources(), 2);
-
-					LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-							LinearLayout.LayoutParams.MATCH_PARENT,
-							LinearLayout.LayoutParams.WRAP_CONTENT);
-					lp.setMargins(margin, margin, margin, margin);
-					textView.setLayoutParams(lp);
-					textView.setText(group.getName());
-
-					groupLay.addView(textView, 0);
-					textView.setOnClickListener(new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							if (list_id == null || list_id != group.getId()) {
-								list_id = group.getId();
-								current = groupState;
-								getTwitter(true);
-							}
-							slideView.slide();
-						}
-					});
-				}
+				invalidateOptionsMenu();
 				break;
 			}
 		}
@@ -134,47 +97,56 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.twitter_board, menu);
+		MenuItem sort = menu.findItem(R.id.sort);
+		SubMenu subMenu = null;
+		if (sort != null) {
+			subMenu = sort.getSubMenu();
+		}
+		if (groups.size() != 0 && subMenu != null) {
+			for (int i = 0; i < groups.size(); i++) {
+				Group group = groups.get(i);
+				subMenu.addSubMenu(R.id.sort, i, i, group.getName());
+			}
+			subMenu.addSubMenu(R.id.sort, R.id.menu_group_all, groups.size(),
+					getResources().getString(R.string.but_all));
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		fullScreen();
+
+		getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		
 		super.onCreate(savedInstanceState);
+
+		Drawable actionBarBg = getResources().getDrawable(
+				R.drawable.translucence);
+		actionBar.setBackgroundDrawable(actionBarBg);
+		actionBar.setSplitBackgroundDrawable(actionBarBg);
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowCustomEnabled(true);
+		actionBar.setCustomView(R.layout.twitter_board_header);
 
 		checkUpdate();
 
 		registerReceiver(unReadReceiver, new IntentFilter(
 				AppConstant.ACTION_UNREAD_STATE_CHANGE_BROADCAST));
 		setContentView(R.layout.twitter_board);
+		content = findViewById(R.id.content);
 		board = (TwitterBoard) findViewById(R.id.twitter_board);
-		pb = (ProgressBar) findViewById(R.id.progress);
 		board.setBoundaryListener(this);
 		scrollView = (TwitterBoardScrollView) findViewById(R.id.twitter_board_scrollview);
 		scrollView.setTwitterBoardScrollListener(board);
 		board.setScrollView(scrollView);
-		pb.setVisibility(View.VISIBLE);
-		appName = findViewById(R.id.app_name);
-		more = findViewById(R.id.more_but);
-		more.setOnClickListener(this);
-		start = (TextView) findViewById(R.id.start_but);
-		start.setOnClickListener(this);
+		View header = actionBar.getCustomView().findViewById(R.id.header);
+		header.setOnClickListener(this);
 		divide_view = (DivideView) findViewById(R.id.divide_view);
-		content = findViewById(R.id.content);
-		slideView = (LeftSlideView) findViewById(R.id.slide_view);
-		slideView.setGesture(false);
-		slideView.setListener(new LeftSlideView.Listener() {
-			@Override
-			public void onStateChange(boolean onRight) {
-				doAnimation(onRight);
-			}
-		});
-		rightBar = findViewById(R.id.right_bar);
-		groupLay = (LinearLayout) rightBar.findViewById(R.id.group_lay);
-		all = (TextView) rightBar.findViewById(R.id.all_but);
-		all.setOnClickListener(this);
-		refresh = rightBar.findViewById(R.id.refresh_but);
-		refresh.setOnClickListener(this);
-		setting = rightBar.findViewById(R.id.setting_but);
-		setting.setOnClickListener(this);
-		timeline = rightBar.findViewById(R.id.timeline_but);
-		timeline.setOnClickListener(this);
 
 		homeState = new RequestState(STATE_HOME);
 		groupState = new RequestState(STATE_GROUP);
@@ -221,16 +193,16 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 		innerButtonLay = inflater.inflate(R.layout.inner_buttons, null);
 		innerButtonLay.setBackgroundDrawable(new Diagonal());
-		View plazaButton = innerButtonLay.findViewById(R.id.plaza);
-		plazaButton.setOnClickListener(this);
 		View postButton = innerButtonLay.findViewById(R.id.new_post);
 		postButton.setOnClickListener(this);
+		View plazaButton = innerButtonLay.findViewById(R.id.plaza);
+		plazaButton.setOnClickListener(this);
+		View settingButton = innerButtonLay.findViewById(R.id.setting);
+		settingButton.setOnClickListener(this);
 		View atButton = innerButtonLay.findViewById(R.id.at);
 		atButton.setOnClickListener(this);
 		View commentButton = innerButtonLay.findViewById(R.id.comment);
 		commentButton.setOnClickListener(this);
-		View profileButton = innerButtonLay.findViewById(R.id.profile);
-		profileButton.setOnClickListener(this);
 	}
 
 	@Override
@@ -246,7 +218,7 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 	@Override
 	protected void onUpdate(RequestState requestState) {
 		if (current == requestState) {
-			pb.setVisibility(View.GONE);
+			setProgressBarIndeterminateVisibility(false);
 			if (requestState.isRefresh) {
 				board.refresh();
 			}
@@ -267,19 +239,21 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 	@Override
 	protected void onError(RequestState requestState) {
 		if (current == requestState) {
-			pb.setVisibility(View.GONE);
+			setProgressBarIndeterminateVisibility(false);
 		}
 	}
-	
+
 	private void requestForTwitters(final RequestState requestState) {
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				
-				if (requestState.requestType == STATE_HOME && requestState.isFirstTime) {
+
+				if (requestState.requestType == STATE_HOME
+						&& requestState.isFirstTime) {
 					requestState.isFirstTime = false;
-					String data = Persistence.getHomeData(getApplicationContext());
+					String data = Persistence
+							.getHomeData(getApplicationContext());
 					if (!TextUtils.isEmpty(data)) {
 						requestState.response = data;
 						Message msg = handler
@@ -289,7 +263,7 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 						return;
 					}
 				}
-				
+
 				switch (requestState.requestType) {
 				case STATE_HOME:
 					StatusesAPI homeAPI = new StatusesAPI(MagicApplication
@@ -324,8 +298,7 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 					requestState.maxId = 0;
 					requestState.page = 1;
 				}
-				pb.setVisibility(View.VISIBLE);
-
+				setProgressBarIndeterminateVisibility(true);
 				requestForTwitters(requestState);
 			}
 		}
@@ -360,27 +333,6 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 		});
 	}
 
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
-		Rect outRect = new Rect();
-		rightBar.getGlobalVisibleRect(outRect);
-		if (slideView.isOpen()
-				&& !outRect.contains((int) ev.getX(), (int) ev.getY())) {
-			slideView.slide();
-			return true;
-		}
-		return super.dispatchTouchEvent(ev);
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && slideView.isOpen()) {
-			slideView.slide();
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-
 	private void stopScroll() {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
 			return;
@@ -396,75 +348,97 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 		}
 	}
 
-	private void doAnimation(boolean open) {
-		float fromDegrees = 0;
-		float toDegrees = 0;
-		float fromX = 0;
-		float toX = 0;
-		float fromAlpha = 0;
-		float toAlpha = 0;
-		if (open) {
-			fromDegrees = 10;
-			toDegrees = 0;
-			fromX = rightBar.getWidth() / 3;
-			toX = 0;
-			fromAlpha = .3f;
-			toAlpha = 1;
-		} else {
-			fromDegrees = 0;
-			toDegrees = 10;
-			fromX = 0;
-			toX = rightBar.getWidth() / 3;
-			fromAlpha = 1;
-			toAlpha = .3f;
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(divide_view.isOpen()){
+			divide_view.close();
+			return true;
 		}
-		Animation animaiont = new Rotate3dAnimation(fromDegrees, toDegrees,
-				fromX, toX, 0, 0, fromAlpha, toAlpha, 0,
-				rightBar.getHeight() / 2);
-		animaiont.setDuration(LeftSlideView.DURATION / 2);
-		rightBar.startAnimation(animaiont);
-	}
+		switch (item.getItemId()) {
+		case R.id.sort:
+			if (!gettingGroup && groups.size() == 0) {
+				getGroup();
+				Toast.makeText(getApplicationContext(),
+						getResources().getString(R.string.text_loading),
+						Toast.LENGTH_SHORT).show();
+			}
+			break;
 
-	private void pandaAnimation() {
-		Animation a = new AlphaAnimation(0, 1);
-		a.setDuration(1000);
-		appName.startAnimation(a);
+		case R.id.refresh:
+			getTwitter(true);
+			break;
+
+		case R.id.timeline:
+			Intent timeLineIntent = new Intent(getApplicationContext(),
+					TimeLineModeActivity.class);
+			startActivity(timeLineIntent);
+			break;
+
+		case R.id.profile:
+			Intent profileIntent = new Intent(getApplicationContext(),
+					ProfileActivity.class);
+			profileIntent.putExtra("uid",
+					Persistence.getUID(getApplicationContext()));
+			startActivity(profileIntent);
+			break;
+		}
+
+		if (item.getGroupId() == R.id.sort) {
+			int id = item.getItemId();
+			if (id == R.id.menu_group_all) {
+				if (current != homeState) {
+					current = homeState;
+					getTwitter(true);
+				}
+			} else {
+				Group g = groups.get(id);
+				if (g.getId() != list_id) {
+					current = groupState;
+					list_id = g.getId();
+					getTwitter(true);
+				}
+			}
+		}
+
+		return true;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if(divide_view.isOpen()){
+			divide_view.close();
+			return;
+		}
+		super.onBackPressed();
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.more_but:
-			slideView.slide();
-			pandaAnimation();
-			if (!gettingGroup && groups.size() == 0) {
-				getGroup();
-			}
+		case R.id.new_post:
+			Intent postIntent = new Intent(getApplicationContext(), NewPostActivity.class);
+			startActivity(postIntent);
 			break;
-		case R.id.refresh_but:
-			getTwitter(true);
-			slideView.slide();
-			break;
-		case R.id.setting_but:
+		case R.id.setting:
 			Intent settingIntent = new Intent(getApplicationContext(),
 					SettingActivity.class);
 			startActivity(settingIntent);
 			break;
-		case R.id.start_but:
-			stopScroll();
-			divide_view.setVisibility(View.VISIBLE);
-			divide_view.divide(0, start.getHeight() + start.getTop()
-					+ (int) DisplayUtil.dpToPx(getResources(), 5), content,
-					innerButtonLay);
+		case R.id.header:
+			if(divide_view.isOpen()){
+				divide_view.close();
+			}else{
+				stopScroll();
+				divide_view.setVisibility(View.VISIBLE);
+				divide_view.divide(0, getActionBaHeight()
+						+ (int) DisplayUtil.dpToPx(getResources(), 5), scrollView,
+						innerButtonLay);
+			}
 			break;
 		case R.id.plaza:
-			Intent plazaActivity = new Intent(getApplicationContext(), PlazaActivity.class);
+			Intent plazaActivity = new Intent(getApplicationContext(),
+					PlazaActivity.class);
 			startActivity(plazaActivity);
-			break;
-		case R.id.new_post:
-			Intent newPostIntent = new Intent(getApplicationContext(),
-					NewPostActivity.class);
-			startActivity(newPostIntent);
 			break;
 		case R.id.at:
 			Intent atMeActivity = new Intent(getApplicationContext(),
@@ -478,39 +452,20 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 			commentActivity.putExtra("pos", TimeLineModeActivity.VIEW_COMMENT);
 			startActivity(commentActivity);
 			break;
-		case R.id.timeline_but:
-			Intent timeLineIntent = new Intent(getApplicationContext(),
-					TimeLineModeActivity.class);
-			startActivity(timeLineIntent);
-			break;
-		case R.id.all_but:
-			if (current != homeState) {
-				current = homeState;
-				getTwitter(true);
-			}
-			slideView.slide();
-			break;
-		case R.id.profile:
-			Intent profileIntent = new Intent(getApplicationContext(),
-					ProfileActivity.class);
-			profileIntent.putExtra("uid",
-					Persistence.getUID(getApplicationContext()));
-			startActivity(profileIntent);
-			break;
-		default:
-			break;
 		}
 	}
 
 	@Override
 	protected void onRequestComplete(RequestState requestState) {
-		if (requestState.requestType != STATE_HOME || TextUtils.isEmpty(requestState.response)) {
+		if (requestState.requestType != STATE_HOME
+				|| TextUtils.isEmpty(requestState.response)) {
 			return;
 		}
 		String data = Persistence.getHomeData(getApplicationContext());
 		if (TextUtils.isEmpty(data) || requestState.isRefresh) {
 			Debug.e("save data.............");
-			Persistence.setHomeData(getApplicationContext(), requestState.response);
+			Persistence.setHomeData(getApplicationContext(),
+					requestState.response);
 		}
 	}
 

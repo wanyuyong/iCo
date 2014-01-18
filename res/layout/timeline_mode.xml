@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/vPager"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:flipInterval="30"
-    android:persistentDrawingCache="animation" 
-    android:background="@android:color/white"/>
+    android:layout_height="fill_parent" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vPager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/white"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+
+    <TextView
+        android:id="@+id/alert"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:padding="5dip" 
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:background="@color/alert"/>
+
+</FrameLayout>

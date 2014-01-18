@@ -1,8 +1,11 @@
 package magic.yuyong.view;
 
-import android.graphics.*;
 import magic.yuyong.util.DisplayUtil;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Region.Op;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
 
@@ -24,7 +28,9 @@ public class DivideView extends ViewGroup implements
 	private GestureDetector mGestureDetector;
     private Paint paint = new Paint();
     private Bitmap bitmap;
-
+    private boolean isOpen;
+    private boolean isAnimationing;
+    
 	private int divideH = 80;
 	private final int animation_time = 380;
 	private int shadow_h = 5;
@@ -93,6 +99,10 @@ public class DivideView extends ViewGroup implements
 	}
 
 	public void divide(int x, int y, View tagView, View showView) {
+		if(isAnimationing){
+			return;
+		}
+		isAnimationing = true;
 		this.showView = showView;
 		this.divideX = x;
 		this.divideY = y;
@@ -113,12 +123,39 @@ public class DivideView extends ViewGroup implements
 		Animation animation = new AlphaAnimation(1, .4f);
 		animation.setDuration(animation_time);
 		animation.setFillAfter(true);
-		topView.startAnimation(animation);
+		animation.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation arg0) {
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				isAnimationing = false;
+			}
+		});
 		
+		topView.startAnimation(animation);
 		bottomView.divide(true);
+		
+		isOpen = true;
+	}
+	
+	public boolean isOpen(){
+		return isOpen;
 	}
 
 	public void close() {
+		if(isAnimationing){
+			return;
+		}
+		isAnimationing = true;
 		bottomView.divide(false);
 		Animation animation = new AlphaAnimation(.4f, 1f);
 		animation.setDuration(animation_time);
@@ -131,8 +168,10 @@ public class DivideView extends ViewGroup implements
 				setVisibility(View.INVISIBLE);
                 bitmap = null;
                 tagView.setDrawingCacheEnabled(false);
+                isAnimationing = false;
 			}
 		}, animation_time);
+		isOpen = false;
 	}
 
 	class DivideBoardBottom extends View {

@@ -7,4 +7,7 @@
 
     <color name="twitter_item_bg_unpressed">#FFFFFFFF</color>
     <color name="twitter_item_bg_pressed">#FFDDDDDD</color>
+    
+    <color name="alert">#C0FF9900</color>
+    
 </resources>

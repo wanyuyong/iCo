@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textColor="#FFFFFFFF"
+            android:textColor="#E0FFFFFF"
             android:textSize="18sp"/>
     </LinearLayout>
 
@@ -36,7 +36,7 @@
         android:layout_marginTop="5dip"
         android:maxLines="6"
         android:lineSpacingExtra="2dip"
-        android:textColor="@android:color/white"
+        android:textColor="#E0FFFFFF"
         android:textSize="@dimen/twitter_content_text_size"/>
 
     <RelativeLayout
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textColor="#FFFFFFFF"
+            android:textColor="#E0FFFFFF"
             android:textSize="15sp"/>
 
     </RelativeLayout>
