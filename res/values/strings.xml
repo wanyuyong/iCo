@@ -171,6 +171,10 @@
     <string name="text_also_repost">Also repost</string>
     <string name="text_also_comment">Also comment</string>
     <string name="text_feedback_topic">#iCo Feedback#</string>
+    <string name="text_alert_new_twitter">new twitters</string>
+    <string name="text_alert_new_comment">new comments</string>
+    <string name="text_alert_no_new_twitter">no new twitter</string>
+    <string name="text_alert_no_new_comment">no new comments</string>
 
     <!-- Other -->
     <string name="img_content_description">Image</string>

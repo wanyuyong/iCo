@@ -45,6 +45,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -558,7 +559,7 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 		alertText.setVisibility(View.VISIBLE);
 		alertText.setText(text);
 		final Animation out = new AlphaAnimation(1, 0);
-		out.setDuration(500);
+		out.setDuration(300);
 		out.setAnimationListener(new AnimationListener() {
 			
 			@Override
@@ -574,8 +575,11 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 				alertText.setVisibility(View.GONE);
 			}
 		});
-		Animation in = new AlphaAnimation(0, 1);
-		in.setDuration(500);
+		Animation in = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, 
+				Animation.RELATIVE_TO_SELF, 0, 
+				Animation.RELATIVE_TO_SELF, -1, 
+				Animation.RELATIVE_TO_SELF, 0);
+		in.setDuration(300);
 		in.setAnimationListener(new AnimationListener() {
 			
 			@Override
@@ -615,7 +619,9 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 			}
 		}
 		if (newTwitterNum != 0) {
-			alert(newTwitterNum+"条新微博");
+			alert(newTwitterNum+getResources().getString(R.string.text_alert_new_twitter));
+		}else{
+			alert(getResources().getString(R.string.text_alert_no_new_twitter));
 		}
 	}
 	
@@ -634,7 +640,9 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 			}
 		}
 		if (newCommentNum != 0) {
-			alert(newCommentNum+"条新评论");
+			alert(newCommentNum+getResources().getString(R.string.text_alert_new_comment));
+		}else{
+			alert(getResources().getString(R.string.text_alert_no_new_comment));
 		}
 	}
 

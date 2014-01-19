@@ -169,6 +169,10 @@
     <string name="text_also_repost">同时转发</string>
     <string name="text_also_comment">同时评论</string>
     <string name="text_feedback_topic">#iCo微博 反馈#</string>
+    <string name="text_alert_new_twitter">条新微博</string>
+    <string name="text_alert_new_comment">条新评论</string>
+    <string name="text_alert_no_new_twitter">木有新微博</string>
+    <string name="text_alert_no_new_comment">木有新评论</string>
 
     <!-- Other -->
     <string name="img_content_description">图片</string>
