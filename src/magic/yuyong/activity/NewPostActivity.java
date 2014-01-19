@@ -305,6 +305,7 @@ public class NewPostActivity extends BaseActivity implements OnClickListener,
 	}
 
 	private String makePicPath() {
+		ICoDir.createCacheDir();
 		Date now = new Date();
 		return ICoDir.SDCARD_ICO_DIR + File.separator + now.getTime() + ".jpeg";
 	}

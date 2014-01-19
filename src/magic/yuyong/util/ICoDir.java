@@ -28,7 +28,7 @@ public class ICoDir {
 		}
 	}
 
-	private static void createCacheDir() {
+	public static void createCacheDir() {
 		if (!hasDIR()) {
 			File file = new File(SDCARD_ICO_DIR);
 			file.mkdir();
