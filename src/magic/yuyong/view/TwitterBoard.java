@@ -33,6 +33,8 @@ import com.squareup.picasso.Picasso;
  */
 public class TwitterBoard extends ViewGroup implements
 		TwitterBoardScrollListener {
+	
+	private boolean aequilate = true;
 
 	private static final int ROWS = 2;
 
@@ -189,7 +191,7 @@ public class TwitterBoard extends ViewGroup implements
 			l += gap_tile;
 			t = top[indicator];
 			b = t + tile_h;
-			if (tile.twitter.getText().length() > NARROW_TEXT_MAX_LEN) {
+			if (aequilate || tile.twitter.getText().length() > NARROW_TEXT_MAX_LEN) {
 				r = l + wide_tile_w;
 			} else {
 				r = l + narrow_tile_w;
