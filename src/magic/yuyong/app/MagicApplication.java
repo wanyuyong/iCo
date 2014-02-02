@@ -29,5 +29,7 @@ public class MagicApplication extends Application {
 	public void setAccessToken(Oauth2AccessToken accessToken) {
 		this.accessToken = accessToken;
 	}
+	
+	
 
 }

@@ -86,9 +86,12 @@ public class ShowFriendsActivity extends BaseActivity implements
 			
 			if(current.requestType == VIEW_FOLLOWING){
 				actionBar.setTitle(R.string.label_following);
+				setSwipeBackEnable(false);
 			}else if(current.requestType == VIEW_FOLLOWER){
 				actionBar.setTitle(R.string.label_follower);
+				setSwipeBackEnable(true);
 			}
+			
 		}
 		
 		@Override

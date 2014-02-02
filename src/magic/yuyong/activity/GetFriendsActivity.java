@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -116,6 +117,7 @@ public class GetFriendsActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.at_friends);
+		
 		friendsList = (ListView) findViewById(R.id.friends_list);
 		searchList = (ListView) findViewById(R.id.search_list);
 		setFooterView();

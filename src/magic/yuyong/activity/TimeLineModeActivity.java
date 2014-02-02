@@ -35,6 +35,7 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -431,7 +432,7 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
+		
 		checkUpdate();
 
 		setContentView(R.layout.timeline_mode);
@@ -1109,6 +1110,12 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 			}
 			if (actionBar.getSelectedNavigationIndex() != pos) {
 				actionBar.setSelectedNavigationItem(pos);
+			}
+			
+			if(pos == 0){
+				setSwipeBackEnable(true);
+			}else{
+				setSwipeBackEnable(false);
 			}
 		}
 	}

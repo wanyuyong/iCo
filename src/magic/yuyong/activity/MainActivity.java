@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setSwipeBackEnable(false);
 		actionBar.hide();
 		actionBar.setSplitBackgroundDrawable(getResources().getDrawable(R.color.theme_color));
 		setContentView(R.layout.main);

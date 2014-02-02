@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
-    
+
     <style name="Theme.Magic_style" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_magic_style</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Magic_style</item>
@@ -12,17 +11,15 @@
         <item name="android:actionModeBackground">@drawable/cab_background_top_magic_style</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_magic_style</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Magic_style</item>
-        
-                <!-- Light.DarkActionBar specific -->
-        <item name="android:actionBarWidgetTheme">@style/Theme.Magic_style.Widget</item>
-        
-        
-        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-        <item name="android:windowAnimationStyle">@style/Animation.Magic</item>
 
+        <!-- Light.DarkActionBar specific -->
+        <item name="android:actionBarWidgetTheme">@style/Theme.Magic_style.Widget</item>
+        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
-    
-     <style name="Animation.Magic" parent="@android:style/Animation.Activity">
+
+    <style name="Animation.Magic" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/activity_open_enter</item>
         <item name="android:activityOpenExitAnimation">@anim/activity_open_exit</item>
         <item name="android:activityCloseEnterAnimation">@anim/activity_close_enter</item>
@@ -50,7 +47,7 @@
     </style>
 
     <style name="PopupMenu.Magic_style" parent="@android:style/Widget.Holo.ListPopupWindow">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_magic_style</item>	
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_magic_style</item>
     </style>
 
     <style name="DropDownListView.Magic_style" parent="@android:style/Widget.Holo.ListView.DropDown">
@@ -66,11 +63,11 @@
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_magic_style</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_magic_style</item>
     </style>
-    
+
     <style name="ProgressBar.Magic_style" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_magic_style</item>
     </style>
-    
+
     <style name="ActionButton.CloseMode.Magic_style" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_magic_style</item>
     </style>

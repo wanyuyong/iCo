@@ -17,7 +17,6 @@ import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
 import magic.yuyong.transformation.CircleTransformation;
 import magic.yuyong.transformation.MaxHeightTransformation;
-import magic.yuyong.util.Debug;
 import magic.yuyong.util.StringUtil;
 import magic.yuyong.view.TwitterContent;
 

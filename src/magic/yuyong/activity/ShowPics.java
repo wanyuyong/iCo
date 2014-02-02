@@ -88,7 +88,7 @@ public class ShowPics extends BaseActivity {
 		adapter.setJazzy(mJazzy);
 
 		pics = getIntent().getStringArrayExtra("pics");
-		url = getIntent().getStringExtra("originalUrl");
+		url = getIntent().getStringExtra("url");
 
 		for (int i = 0; i < pics.length; i++) {
 			pics[i] = url.substring(0, url.lastIndexOf("/"))
@@ -98,13 +98,17 @@ public class ShowPics extends BaseActivity {
 		adapter.setPics(pics);
 		mJazzy.setAdapter(adapter);
 		mJazzy.setPageMargin(30);
-		pageIndicator.setText(1+"/"+adapter.getCount());
-
-		mJazzy.setOnPageChangeListener(new OnPageChangeListener() {
+		
+		OnPageChangeListener listener = new OnPageChangeListener() {
 			
 			@Override
 			public void onPageSelected(int pos) {
 				pageIndicator.setText((pos+1)+"/"+adapter.getCount());
+				if(pos == 0){
+					setSwipeBackEnable(true);
+				}else{
+					setSwipeBackEnable(false);
+				}
 			}
 			
 			@Override
@@ -116,7 +120,10 @@ public class ShowPics extends BaseActivity {
 			public void onPageScrollStateChanged(int arg0) {
 				
 			}
-		});
+		};
+
+		mJazzy.setOnPageChangeListener(listener);
+		listener.onPageSelected(0);
 	}
 
 	@Override

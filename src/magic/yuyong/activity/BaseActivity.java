@@ -1,14 +1,15 @@
 package magic.yuyong.activity;
 
 import magic.yuyong.app.AppConstant;
+import magic.yuyong.swipeback.SwipeBackActivity;
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
@@ -18,10 +19,10 @@ import android.view.WindowManager;
 
 import com.umeng.analytics.MobclickAgent;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends SwipeBackActivity {
 	protected Menu mOptionsMenu;
 	protected ActionBar actionBar;
-
+	
 	private BroadcastReceiver shutDownReceiver = new BroadcastReceiver() {
 
 		@Override
@@ -46,17 +47,17 @@ public class BaseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		actionBar = getActionBar();
-
+		
 		registerReceiver(shutDownReceiver, new IntentFilter(
 				AppConstant.ACTION_SHUT_DOWN_BROADCAST));
 	}
-
+	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(shutDownReceiver);
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		mOptionsMenu = menu;
@@ -91,7 +92,7 @@ public class BaseActivity extends Activity {
 		}
 		return false;
 	}
-
+	
 	protected void hideSmartBar() {
 		if (isMeizu()) {
 			ViewGroup mDecorView = (ViewGroup) getWindow().getDecorView();
@@ -99,5 +100,15 @@ public class BaseActivity extends Activity {
 			vg.getChildAt(vg.getChildCount() - 1).setVisibility(View.GONE);
 		}
 	}
-
+	
+	protected int getScreenWidth(){
+		DisplayMetrics dm = getResources().getDisplayMetrics();  
+		return dm.widthPixels;
+	}
+	
+	protected int getScreenHeight(){
+		DisplayMetrics dm = getResources().getDisplayMetrics();  
+		return dm.heightPixels;
+	}
+	
 }

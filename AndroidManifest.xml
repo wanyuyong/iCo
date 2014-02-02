@@ -23,10 +23,11 @@
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
-            android:uiOptions="splitActionBarWhenNarrow"
-            android:theme="@style/Theme.Magic_style" >
+            android:theme="@style/Theme.Magic_style"
+            android:uiOptions="splitActionBarWhenNarrow" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -34,70 +35,74 @@
             android:name=".activity.TwitterShowActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_show_twitter"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Holo.CustomPtrHeader"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name=".activity.GetFriendsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_get_friends"
-            android:uiOptions="splitActionBarWhenNarrow"
-            android:theme="@style/Theme.Magic_style" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Magic_style"
+            android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name=".activity.NewPostActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Magic_style"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
         <activity
             android:name=".activity.TwitterBoardActivity"
             android:screenOrientation="portrait"
-            android:uiOptions="splitActionBarWhenNarrow"
-            android:theme="@style/Theme.Magic_style"/>
+            android:theme="@style/Theme.Magic_style"
+            android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name=".activity.TimeLineModeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Holo.CustomPtrHeader"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name=".activity.ProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_profile"
-            android:uiOptions="splitActionBarWhenNarrow"
-            android:theme="@style/Theme.Holo.CustomPtrHeader" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Holo.CustomPtrHeader"
+            android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name=".activity.AboutActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:uiOptions="splitActionBarWhenNarrow"
             android:label="@string/title_about"
-            android:theme="@style/Theme.Magic_style" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Magic_style"
+            android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name=".activity.ShowFriendsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-             android:uiOptions="splitActionBarWhenNarrow"
             android:label="@string/title_friends"
-            android:theme="@style/Theme.Holo.CustomPtrHeader" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Holo.CustomPtrHeader"
+            android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name=".activity.SettingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:uiOptions="splitActionBarWhenNarrow"
             android:label="@string/title_setting"
-            android:theme="@style/Theme.Magic_style" />
-        <activity
-            android:name=".activity.PreparePicActivity"
-            android:label="@string/title_prepare_pic"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Magic_style"
             android:uiOptions="splitActionBarWhenNarrow" />
         <activity
             android:name=".activity.ShowPics"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_show_pic"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Magic_style"
             android:uiOptions="splitActionBarWhenNarrow" />
-        
         <activity
             android:name=".activity.PlazaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_channels"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Holo.CustomPtrHeader"
             android:uiOptions="splitActionBarWhenNarrow" />
 

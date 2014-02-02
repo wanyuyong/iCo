@@ -123,7 +123,9 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		
 		super.onCreate(savedInstanceState);
-
+		
+		setSwipeBackEnable(false);
+		
 		Drawable actionBarBg = getResources().getDrawable(
 				R.drawable.translucence);
 		actionBar.setBackgroundDrawable(actionBarBg);

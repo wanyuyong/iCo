@@ -149,6 +149,7 @@ public class AppConstant {
 	public static final String ACTION_REFRESH_CACHE = "action_refresh_cache";
 	public static final String ACTION_UNREAD_STATE_CHANGE_BROADCAST = "action_unread_state_change_broadcast";
 	public static final String ACTION_SHUT_DOWN_BROADCAST = "action_shut_down_broadcast";
+	public static final String ACTION_TOPVIEW_SCROLL = "action_topview_scroll";
 
 	// Sina
 	public static final String CONSUMER_KEY = "577780336";
