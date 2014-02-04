@@ -15,6 +15,7 @@ import magic.yuyong.model.User;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.request.RequestState;
 import magic.yuyong.transformation.CircleTransformation;
+import magic.yuyong.transformation.GlassTransformation;
 import magic.yuyong.util.Debug;
 
 import org.json.JSONException;
@@ -61,11 +62,11 @@ public class ProfileActivity extends GetTwitterActivity implements
 
 	private User user;
 	private View head;
+	private ImageView blur_img;
 	private View footer;
 	private PullToRefreshLayout mPullToRefreshLayout;
 	private ImageView avatar;
 	private TextView user_name;
-	private ImageView user_gender;
 	private TextView location;
 	private TextView description;
 	private TextView following;
@@ -108,16 +109,26 @@ public class ProfileActivity extends GetTwitterActivity implements
 				}
 				invalidateOptionsMenu();
 				user_name.setText(user.getScreen_name());
-				user_gender
-						.setImageResource(user.getGender().equals("m") ? R.drawable.male
-								: R.drawable.female);
+				int drawable_id = user.getGender().equals("m") ? R.drawable.male
+						: R.drawable.female;
+				user_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable_id, 0);
 				location.setText(user.getLocation());
 				description.setText(user.getDescription());
 				following.setText(String.valueOf(user.getFriends_count()));
 				weibo.setText(String.valueOf(user.getStatuses_count()));
 				follower.setText(String.valueOf(user.getFollowers_count()));
 				favourit.setText(String.valueOf(user.getFavourites_count()));
-				Picasso.with(getApplicationContext()).load(user.getImageView_large()).transform(new CircleTransformation()).into(avatar);
+				
+				Picasso.with(getApplicationContext())
+						.load(user.getImageView_large())
+						.transform(new CircleTransformation())
+						.into(avatar);
+				
+				Picasso.with(getApplicationContext())
+				.load(user.getImageView_large())
+				.transform(new GlassTransformation())
+				.into(blur_img);
+				
 				break;
 			case AppConstant.MSG_FOLLOW_SUCCEED:
 				invalidateOptionsMenu();
@@ -166,10 +177,9 @@ public class ProfileActivity extends GetTwitterActivity implements
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.profile);
 		head = getLayoutInflater().inflate(R.layout.profile_head, null);
-
+		blur_img = (ImageView) head.findViewById(R.id.blur_img);
 		avatar = (ImageView) head.findViewById(R.id.user_avatar);
 		user_name = (TextView) head.findViewById(R.id.name);
-		user_gender = (ImageView) head.findViewById(R.id.gender);
 		location = (TextView) head.findViewById(R.id.location);
 		description = (TextView) head.findViewById(R.id.description);
 		following = (TextView) head.findViewById(R.id.following);
@@ -222,13 +232,15 @@ public class ProfileActivity extends GetTwitterActivity implements
 				if (position < listView.getHeaderViewsCount()) {
 					return false;
 				}
-				final Twitter twitter = (Twitter) listView.getAdapter().getItem(position);
+				final Twitter twitter = (Twitter) listView.getAdapter()
+						.getItem(position);
 				HeaderViewListAdapter headAdapter = (HeaderViewListAdapter) listView
 						.getAdapter();
 				final TwitterListAdapter adapter = (TwitterListAdapter) headAdapter
 						.getWrappedAdapter();
-				
-				adapter.setItemOnSelected(position - listView.getHeaderViewsCount());
+
+				adapter.setItemOnSelected(position
+						- listView.getHeaderViewsCount());
 
 				ActionMode.Callback callback = new ActionMode.Callback() {
 

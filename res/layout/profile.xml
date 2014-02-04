@@ -18,7 +18,8 @@
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
         android:listSelector="@android:color/transparent"
-        android:scrollbarStyle="outsideOverlay" >
+        android:scrollbarStyle="outsideOverlay" 
+        android:overScrollMode="never">
     </ListView>
 
 </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
