@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MagicExecutorService{
 
 
-    private static final int CORE_POOL_SIZE = 5;
+    private static final int CORE_POOL_SIZE = 3;
 
     private static final ThreadFactory sThreadFactory = new ThreadFactory() {
         private final AtomicInteger mCount = new AtomicInteger(1);

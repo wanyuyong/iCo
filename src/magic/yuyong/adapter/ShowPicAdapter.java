@@ -3,6 +3,8 @@
  */
 package magic.yuyong.adapter;
 
+import com.squareup.picasso.Picasso;
+
 import magic.yuyong.R;
 import magic.yuyong.view.AsyncSubsamplingScaleImageView;
 import magic.yuyong.view.HoloCircularProgressBar;
@@ -124,7 +126,7 @@ public class ShowPicAdapter extends PagerAdapter {
 				}
 			});
 		}
-
+		
 		return view;
 	}
 
