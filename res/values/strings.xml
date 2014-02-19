@@ -122,7 +122,7 @@
     <string name="text_clean_cache_success">Clean Success.</string>
     <string name="text_login_out_success">Login Out Success.</string>
     <string name="text_login_out_faild">Login Out Faild.</string>
-    <string name="text_token_expired">Token expired, please relogin.</string>
+    <string name="text_token_invalid">Token invalid, please relogin.</string>
     <string name="text_network_exception">Network connection exception.</string>
     <string name="text_load_more">Loading more</string>
     <string name="text_sure_to_eixt">Are you sure to exit?</string>

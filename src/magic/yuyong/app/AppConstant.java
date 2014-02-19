@@ -112,7 +112,7 @@ public class AppConstant {
 	// handler msg
 	public static final int MSG_UPDATE_VIEW = 1;
 	public static final int MSG_NETWORK_EXCEPTION = 2;
-	public static final int MSG_TOKEN_EXPIRED = 3;
+	public static final int MSG_TOKEN_INVALID = 3;
 	public static final int MSG_SHOW_TWITTER = 4;
 	public static final int MSG_FAVORITE_SUCCEED = 5;
 	public static final int MSG_FAVORITE_CANCEL_SUCCEED = 6;

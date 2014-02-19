@@ -182,6 +182,13 @@ public class TwitterShowActivity extends BaseActivity implements
 						getResources().getString(
 								R.string.text_network_exception),
 						Toast.LENGTH_SHORT).show();
+			case AppConstant.MSG_TOKEN_INVALID:
+				Toast.makeText(
+						getApplicationContext(),
+						getResources().getString(
+								R.string.text_token_invalid),
+						Toast.LENGTH_SHORT).show();
+				MagicApplication.getInstance().exit(TwitterShowActivity.this);
 				break;
 			case AppConstant.MSG_SHOW_TWITTER:
 				try {
@@ -382,7 +389,9 @@ public class TwitterShowActivity extends BaseActivity implements
 
 			@Override
 			public void onError(WeiboException arg0) {
-				mHandler.sendEmptyMessage(AppConstant.MSG_NETWORK_EXCEPTION);
+				boolean tokenInvalid = checkTokenInvalid(arg0);
+				mHandler.sendEmptyMessage(tokenInvalid ? AppConstant.MSG_TOKEN_INVALID
+						: AppConstant.MSG_NETWORK_EXCEPTION);
 			}
 
 			@Override
@@ -410,14 +419,19 @@ public class TwitterShowActivity extends BaseActivity implements
 			twitter_from.setText(getResources().getString(R.string.text_source)
 					+ twitter.getSource());
 			String avatar_url = twitter.getUser().getProfile_image_url();
-			Picasso.with(getApplicationContext()).load(avatar_url).placeholder(R.drawable.avatar).transform(new CircleTransformation()).into(twitter_user_avatar);
-			
+			Picasso.with(getApplicationContext()).load(avatar_url)
+					.placeholder(R.drawable.avatar)
+					.transform(new CircleTransformation())
+					.into(twitter_user_avatar);
+
 			long uid = twitter.getUser().getId();
 			setImageViewOnClickListener(twitter_user_avatar, uid);
 			String bmiddle_pic_url = twitter.getBmiddle_pic();
 			if (!StringUtil.isEmpty(bmiddle_pic_url)) {
 				twitter_img.setVisibility(View.VISIBLE);
-				Picasso.with(getApplicationContext()).load(bmiddle_pic_url).transform(new MaxHeightTransformation()).into(twitter_img);
+				Picasso.with(getApplicationContext()).load(bmiddle_pic_url)
+						.transform(new MaxHeightTransformation())
+						.into(twitter_img);
 				setImgOnClickListener(twitter_img, twitter,
 						twitter.getPic_urls());
 			}
@@ -443,13 +457,19 @@ public class TwitterShowActivity extends BaseActivity implements
 						R.string.text_source)
 						+ origin.getSource());
 				String avatar_url = origin.getUser().getProfile_image_url();
-				Picasso.with(getApplicationContext()).load(avatar_url).placeholder(R.drawable.avatar).transform(new CircleTransformation()).into(origin_user_avatar);
+				Picasso.with(getApplicationContext()).load(avatar_url)
+						.placeholder(R.drawable.avatar)
+						.transform(new CircleTransformation())
+						.into(origin_user_avatar);
 				long origin_uid = origin.getUser().getId();
 				setImageViewOnClickListener(origin_user_avatar, origin_uid);
 				String origin_bmiddle_pic_url = origin.getBmiddle_pic();
 				if (!StringUtil.isEmpty(origin_bmiddle_pic_url)) {
 					origin_img.setVisibility(View.VISIBLE);
-					Picasso.with(getApplicationContext()).load(origin_bmiddle_pic_url).transform(new MaxHeightTransformation()).into(origin_img);
+					Picasso.with(getApplicationContext())
+							.load(origin_bmiddle_pic_url)
+							.transform(new MaxHeightTransformation())
+							.into(origin_img);
 					setImgOnClickListener(origin_img, origin,
 							origin.getPic_urls());
 				}
@@ -520,7 +540,9 @@ public class TwitterShowActivity extends BaseActivity implements
 
 								@Override
 								public void onError(WeiboException arg0) {
-									mHandler.sendEmptyMessage(AppConstant.MSG_NETWORK_EXCEPTION);
+									boolean tokenInvalid = checkTokenInvalid(arg0);
+									mHandler.sendEmptyMessage(tokenInvalid ? AppConstant.MSG_TOKEN_INVALID
+											: AppConstant.MSG_NETWORK_EXCEPTION);
 								}
 
 								@Override
@@ -559,8 +581,10 @@ public class TwitterShowActivity extends BaseActivity implements
 								}
 
 								@Override
-								public void onError(WeiboException e) {
-									mHandler.sendEmptyMessage(AppConstant.MSG_NETWORK_EXCEPTION);
+								public void onError(WeiboException arg0) {
+									boolean tokenInvalid = checkTokenInvalid(arg0);
+									mHandler.sendEmptyMessage(tokenInvalid ? AppConstant.MSG_TOKEN_INVALID
+											: AppConstant.MSG_NETWORK_EXCEPTION);
 								}
 
 								@Override
@@ -688,12 +712,10 @@ public class TwitterShowActivity extends BaseActivity implements
 			ClipboardManager cmb = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 			String text = twitter.getText();
 			if (twitter.getOrigin() != null) {
-				text = text + "//"
-						+ twitter.getOrigin().getText();
+				text = text + "//" + twitter.getOrigin().getText();
 			}
 			cmb.setText(text);
-			Toast.makeText(getApplicationContext(),
-					R.string.text_copy_success,
+			Toast.makeText(getApplicationContext(), R.string.text_copy_success,
 					Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.delete:
@@ -735,7 +757,9 @@ public class TwitterShowActivity extends BaseActivity implements
 
 			@Override
 			public void onError(WeiboException arg0) {
-				mHandler.sendEmptyMessage(AppConstant.MSG_DELETE_FAILD);
+				boolean tokenInvalid = checkTokenInvalid(arg0);
+				mHandler.sendEmptyMessage(tokenInvalid ? AppConstant.MSG_TOKEN_INVALID
+						: AppConstant.MSG_DELETE_FAILD);
 			}
 
 			@Override

@@ -104,11 +104,6 @@ public class ShowPics extends BaseActivity {
 			@Override
 			public void onPageSelected(int pos) {
 				pageIndicator.setText((pos+1)+"/"+adapter.getCount());
-				if(pos == 0){
-					setSwipeBackEnable(true);
-				}else{
-					setSwipeBackEnable(false);
-				}
 			}
 			
 			@Override

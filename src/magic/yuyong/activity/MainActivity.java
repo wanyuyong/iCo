@@ -2,6 +2,8 @@ package magic.yuyong.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Date;
 
 import magic.yuyong.R;
 import magic.yuyong.app.AppConstant;
@@ -43,7 +45,6 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setSwipeBackEnable(false);
 		actionBar.hide();
 		actionBar.setSplitBackgroundDrawable(getResources().getDrawable(R.color.theme_color));
 		setContentView(R.layout.main);
@@ -100,10 +101,14 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 	}
 
 	private void checkToken() {
-		Debug.e("token == null ? "+(MagicApplication.getInstance().getAccessToken() == null));
 		if (MagicApplication.getInstance().getAccessToken() != null
 				&& MagicApplication.getInstance().getAccessToken()
 						.isSessionValid()) {
+			
+			Date expiresTime = new Date(MagicApplication.getInstance().getAccessToken().getExpiresTime());
+			String s = DateFormat.getDateInstance().format(expiresTime);  
+			Debug.v(MagicApplication.getInstance().getAccessToken().toString()+" , expiresTime : "+s);
+	        
 			startNotificationService();
 			chooseMode();
 		} else {
@@ -209,7 +214,7 @@ public class MainActivity extends BaseActivity implements OnClickListener,
 				}
 			});
         } else {
-            Toast.makeText(this, R.string.text_token_expired, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.text_token_invalid, Toast.LENGTH_LONG).show();
         }
 	}
 

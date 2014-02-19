@@ -15,8 +15,9 @@
         <!-- Light.DarkActionBar specific -->
         <item name="android:actionBarWidgetTheme">@style/Theme.Magic_style.Widget</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Magic</item>
     </style>
 
     <style name="Animation.Magic" parent="@android:style/Animation.Activity">

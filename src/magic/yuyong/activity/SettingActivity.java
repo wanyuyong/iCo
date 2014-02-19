@@ -14,8 +14,6 @@ import magic.yuyong.service.NotificationService;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -61,13 +59,6 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 			break;
 		}
 		return true;
-	}
-
-	private void cleanPersistenceData() {
-		Persistence.setBilateralData(getApplicationContext(), null);
-		Persistence.setHomeData(getApplicationContext(), null);
-		Persistence.setAtMeData(getApplicationContext(), null);
-		Persistence.setCommentData(getApplicationContext(), null);
 	}
 
 	@Override
@@ -137,13 +128,13 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 
 						@Override
 						public void onIOException(IOException e) {
-							exit();
+							MagicApplication.getInstance().exit(SettingActivity.this);
 							setProgressBarIndeterminateVisibility(false);
 						}
 
 						@Override
 						public void onError(WeiboException e) {
-							exit();
+							MagicApplication.getInstance().exit(SettingActivity.this);
 							setProgressBarIndeterminateVisibility(false);
 						}
 
@@ -154,7 +145,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 
 						@Override
 						public void onComplete(String response) {
-							exit();
+							MagicApplication.getInstance().exit(SettingActivity.this);
 							setProgressBarIndeterminateVisibility(false);
 						}
 					});
@@ -172,29 +163,4 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 	
-	private void exit(){
-		AccessTokenKeeper
-				.clear(getApplicationContext());
-		MagicApplication.getInstance()
-				.setAccessToken(null);
-		cleanPersistenceData();
-		
-		Toast.makeText(
-				getApplicationContext(),
-				getResources()
-						.getString(
-								R.string.text_login_out_success),
-				Toast.LENGTH_SHORT).show();
-
-		// stop service
-		Intent service = new Intent(
-				getApplicationContext(),
-				NotificationService.class);
-		stopService(service);
-
-		startActivity(new Intent(
-				getApplicationContext(),
-				MainActivity.class));
-		shutDown();
-	}
 }

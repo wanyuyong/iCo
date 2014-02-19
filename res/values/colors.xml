@@ -10,4 +10,9 @@
     
     <color name="alert">#C0FF9900</color>
     
+    <color name="twitter_board_startcolor">#FF660066</color>
+    <color name="twitter_board_centercolor">#FFCC6666</color>
+    <color name="twitter_board_endcolor">#FF330033</color>
+    
+    
 </resources>

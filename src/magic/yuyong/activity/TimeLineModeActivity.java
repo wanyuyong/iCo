@@ -1110,12 +1110,6 @@ public class TimeLineModeActivity extends GetTwitterActivity implements
 			if (actionBar.getSelectedNavigationIndex() != pos) {
 				actionBar.setSelectedNavigationItem(pos);
 			}
-			
-			if(pos == 0){
-				setSwipeBackEnable(true);
-			}else{
-				setSwipeBackEnable(false);
-			}
 		}
 	}
 

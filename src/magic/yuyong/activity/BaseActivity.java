@@ -1,8 +1,9 @@
 package magic.yuyong.activity;
 
 import magic.yuyong.app.AppConstant;
-import magic.yuyong.swipeback.SwipeBackActivity;
+import magic.yuyong.app.MagicApplication;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,12 +18,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.sina.weibo.sdk.exception.WeiboException;
 import com.umeng.analytics.MobclickAgent;
 
-public class BaseActivity extends SwipeBackActivity {
+public class BaseActivity extends Activity {
 	protected Menu mOptionsMenu;
 	protected ActionBar actionBar;
-	
+
 	private BroadcastReceiver shutDownReceiver = new BroadcastReceiver() {
 
 		@Override
@@ -47,17 +49,17 @@ public class BaseActivity extends SwipeBackActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		actionBar = getActionBar();
-		
+
 		registerReceiver(shutDownReceiver, new IntentFilter(
 				AppConstant.ACTION_SHUT_DOWN_BROADCAST));
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(shutDownReceiver);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		mOptionsMenu = menu;
@@ -70,10 +72,6 @@ public class BaseActivity extends SwipeBackActivity {
 		/* set it to be full screen */
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-	}
-
-	protected void shutDown() {
-		sendBroadcast(new Intent(AppConstant.ACTION_SHUT_DOWN_BROADCAST));
 	}
 
 	protected int getActionBaHeight() {
@@ -92,7 +90,7 @@ public class BaseActivity extends SwipeBackActivity {
 		}
 		return false;
 	}
-	
+
 	protected void hideSmartBar() {
 		if (isMeizu()) {
 			ViewGroup mDecorView = (ViewGroup) getWindow().getDecorView();
@@ -100,15 +98,24 @@ public class BaseActivity extends SwipeBackActivity {
 			vg.getChildAt(vg.getChildCount() - 1).setVisibility(View.GONE);
 		}
 	}
-	
-	protected int getScreenWidth(){
-		DisplayMetrics dm = getResources().getDisplayMetrics();  
+
+	protected int getScreenWidth() {
+		DisplayMetrics dm = getResources().getDisplayMetrics();
 		return dm.widthPixels;
 	}
-	
-	protected int getScreenHeight(){
-		DisplayMetrics dm = getResources().getDisplayMetrics();  
+
+	protected int getScreenHeight() {
+		DisplayMetrics dm = getResources().getDisplayMetrics();
 		return dm.heightPixels;
 	}
-	
+
+	protected boolean checkTokenInvalid(WeiboException exception) {
+		magic.yuyong.model.Error error = magic.yuyong.model.Error
+				.parseError(exception.getMessage());
+		if (error != null && error.getError_code() == 10006) {
+			return true;
+		}
+		return false;
+	}
+
 }

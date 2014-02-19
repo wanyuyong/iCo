@@ -124,8 +124,6 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 		
 		super.onCreate(savedInstanceState);
 		
-		setSwipeBackEnable(false);
-		
 		Drawable actionBarBg = getResources().getDrawable(
 				R.drawable.translucence);
 		actionBar.setBackgroundDrawable(actionBarBg);
@@ -411,7 +409,7 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 			divide_view.close();
 			return;
 		}
-		super.onBackPressed();
+		finish();
 	}
 
 	@Override
