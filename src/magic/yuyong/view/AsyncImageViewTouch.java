@@ -3,6 +3,8 @@
  */
 package magic.yuyong.view;
 
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,23 +13,28 @@ import java.net.URL;
 import java.util.concurrent.Future;
 
 import magic.yuyong.util.Cache;
+import magic.yuyong.util.DecodeUtils;
 import magic.yuyong.util.MagicExecutorService;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.RectF;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.ViewParent;
 
 /**
- * @title:AsyncSubsamplingScaleImageView.java
  * @description:
  * @company: 美丽说（北京）网络科技有限公司
  * @author wanyuyong
  * @version
  * @created Oct 22, 2013
  */
-public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
+public class AsyncImageViewTouch extends ImageViewTouch {
 
 	public static interface ImageLoadingCallback {
 
@@ -40,6 +47,11 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 		void onImageRequestCancelled();
 
 		void onImageRequestLoading(float percent);
+	}
+
+	private class Tag {
+		Bitmap bitmap;
+		String path;
 	}
 
 	private static final int ON_START = 0x100;
@@ -80,14 +92,11 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 				break;
 
 			case ON_END:
-				String path = (String) msg.obj;
-				try {
-					setImageFile(path);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				Tag tag = (Tag) msg.obj;
+				setImageBitmap(tag.bitmap, new Matrix(), ZOOM_INVALID,
+						ZOOM_INVALID);
 				if (mCallBack != null) {
-					mCallBack.onImageRequestEnded(path);
+					mCallBack.onImageRequestEnded(tag.path);
 				}
 				break;
 
@@ -105,11 +114,49 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 		}
 	};
 
-	public AsyncSubsamplingScaleImageView(Context context, AttributeSet attr) {
+	private float lastX;
+	private ViewParent viewParent;
+
+	public void setViewParent(ViewParent viewParent) {
+		this.viewParent = viewParent;
+	}
+	
+	public boolean onTouchEvent(android.view.MotionEvent event) {
+		float x = event.getX();
+		boolean toRight = x > lastX;
+		lastX = x;
+		RectF rect = getBitmapRect();
+		if(rect == null){
+			return super.onTouchEvent(event);
+		}
+		boolean needParentIntercept = false;
+		if (!toRight && rect.right <= getWidth() + 1) {
+			needParentIntercept = true;
+		}
+		if (toRight && rect.left >= -1) {
+			needParentIntercept = true;
+		}
+		if (event.getPointerCount() > 1) {
+			needParentIntercept = false;
+		}
+		if (needParentIntercept) {
+			if (viewParent != null) {
+				viewParent.requestDisallowInterceptTouchEvent(false);
+			}
+		} else {
+			if (viewParent != null) {
+				viewParent.requestDisallowInterceptTouchEvent(true);
+			}
+		}
+		boolean flag = super.onTouchEvent(event);
+		return flag;
+	};
+
+	public AsyncImageViewTouch(Context context, AttributeSet attr) {
 		super(context, attr);
 	}
 
-	public AsyncSubsamplingScaleImageView(Context context) {
+	public AsyncImageViewTouch(Context context) {
 		super(context);
 	}
 
@@ -157,7 +204,12 @@ public class AsyncSubsamplingScaleImageView extends SubsamplingScaleImageView {
 				mHandler.sendMessage(Message.obtain(mHandler, ON_FAIL));
 				mUrl = null;
 			} else {
-				mHandler.sendMessage(Message.obtain(mHandler, ON_END, path));
+				Bitmap bitmap = DecodeUtils.decode(getContext(),
+						Uri.fromFile(new File(path)), 4096, 4096);
+				Tag tag = new Tag();
+				tag.bitmap = bitmap;
+				tag.path = path;
+				mHandler.sendMessage(Message.obtain(mHandler, ON_END, tag));
 			}
 		}
 	}

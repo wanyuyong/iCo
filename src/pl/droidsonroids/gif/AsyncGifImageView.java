@@ -75,22 +75,10 @@ public class AsyncGifImageView extends GifImageView {
 				});
 	}
 
-	private void requestParentDisallowInterceptTouchEvent(boolean flag) {
-		if (getParent() != null) {
-			getParent().requestDisallowInterceptTouchEvent(flag);
-		}
-	}
-
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (mDetector != null) {
 			mDetector.onTouchEvent(event);
-		}
-		if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			requestParentDisallowInterceptTouchEvent(false);
-		} else {
-			requestParentDisallowInterceptTouchEvent(true);
-			return true;
 		}
 		return super.onTouchEvent(event);
 	}

@@ -20,6 +20,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -229,6 +230,7 @@ public class PlazaActivity extends GetTwitterActivity implements
 	private void init() {
 
 		list_view = (ListView) findViewById(R.id.list_view);
+		list_view.setBackgroundColor(Color.WHITE);
 		list_view.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override

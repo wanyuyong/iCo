@@ -3,15 +3,18 @@
  */
 package magic.yuyong.adapter;
 
-import com.squareup.picasso.Picasso;
-
+import it.sephiroth.android.library.imagezoom.ImageViewTouch.OnImageViewTouchFlingListener;
+import it.sephiroth.android.library.imagezoom.ImageViewTouch.OnImageViewTouchScaleListener;
+import it.sephiroth.android.library.imagezoom.ImageViewTouch.OnImageViewTouchScrollListener;
+import it.sephiroth.android.library.imagezoom.ImageViewTouch.OnImageViewTouchSingleTapListener;
+import it.sephiroth.android.library.imagezoom.ImageViewTouchBase.DisplayType;
 import magic.yuyong.R;
-import magic.yuyong.view.AsyncSubsamplingScaleImageView;
+import magic.yuyong.view.AsyncImageViewTouch;
 import magic.yuyong.view.HoloCircularProgressBar;
 import magic.yuyong.view.JazzyViewPager;
 import magic.yuyong.view.OutlineContainer;
-import magic.yuyong.view.SubsamplingScaleImageView;
 import pl.droidsonroids.gif.AsyncGifImageView;
+import pl.droidsonroids.gif.AsyncGifImageView.OnSingleTapConfirmedListener;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -34,6 +37,8 @@ public class ShowPicAdapter extends PagerAdapter {
 	private JazzyViewPager mJazzy;
 
 	private String[] pics;
+	
+	private long lastTouchDate;
 
 	public JazzyViewPager getJazzy() {
 		return mJazzy;
@@ -50,7 +55,7 @@ public class ShowPicAdapter extends PagerAdapter {
 	public void setPics(String[] pics) {
 		this.pics = pics;
 	}
-	
+
 	public class ViewInfo {
 		public int position;
 		public String img_path;
@@ -75,43 +80,26 @@ public class ShowPicAdapter extends PagerAdapter {
 				LayoutParams.MATCH_PARENT);
 		mJazzy.setObjectForPosition(view, position);
 
-		final AsyncSubsamplingScaleImageView imgview = (AsyncSubsamplingScaleImageView) view
-				.findViewById(R.id.image);
-		imgview.setOnSingleTapConfirmedListener(new SubsamplingScaleImageView.OnSingleTapConfirmedListener() {
-
-			@Override
-			public void onSingleTapConfirmed() {
-				finishActivity(imgview);
-			}
-		});
-		
-		final AsyncGifImageView gifview = (AsyncGifImageView) view
-				.findViewById(R.id.gif_image);
-		gifview.setOnSingleTapConfirmedListener(new AsyncGifImageView.OnSingleTapConfirmedListener() {
-
-			@Override
-			public void onSingleTapConfirmed() {
-				finishActivity(imgview);
-			}
-		});
-		
 		View but_reload = view.findViewById(R.id.but_reload);
 		HoloCircularProgressBar mProgressBar = (HoloCircularProgressBar) view
 				.findViewById(R.id.progress);
+		final AsyncGifImageView gifView = (AsyncGifImageView) view
+				.findViewById(R.id.gif_image);
+		final AsyncImageViewTouch imgView = (AsyncImageViewTouch) view
+				.findViewById(R.id.image);
+		imgView.setViewParent(mJazzy);
 
 		final String url = pics[position];
 
 		if (!TextUtils.isEmpty(url)) {
 			if (url.endsWith(".gif")) {
 				info.img_format = "gif";
-				imgview.setVisibility(View.GONE);
-				gifview.setVisibility(View.VISIBLE);
-				prepareGif(gifview, mProgressBar, but_reload, url, info);
+				gifView.setVisibility(View.VISIBLE);
+				prepareGif(gifView, mProgressBar, but_reload, url, info);
 			} else {
 				info.img_format = "jpg";
-				imgview.setVisibility(View.VISIBLE);
-				gifview.setVisibility(View.GONE);
-				prepareImg(imgview, mProgressBar, but_reload, url, info);
+				imgView.setVisibility(View.VISIBLE);
+				prepareImg(imgView, mProgressBar, but_reload, url, info);
 			}
 
 			but_reload.setOnClickListener(new OnClickListener() {
@@ -119,18 +107,18 @@ public class ShowPicAdapter extends PagerAdapter {
 				@Override
 				public void onClick(View v) {
 					if (url.endsWith(".gif")) {
-						gifview.setUrl(url);
+						gifView.setUrl(url);
 					} else {
-						imgview.setUrl(url);
+						imgView.setUrl(url);
 					}
 				}
 			});
 		}
-		
+
 		return view;
 	}
 
-	private void prepareGif(AsyncGifImageView gifview,
+	private void prepareGif(final AsyncGifImageView gifview,
 			final HoloCircularProgressBar mProgressBar, final View reloadBut,
 			String url, final ViewInfo info) {
 		gifview.setImageLoadingCallback(new AsyncGifImageView.ImageLoadingCallback() {
@@ -181,15 +169,21 @@ public class ShowPicAdapter extends PagerAdapter {
 				}
 			}
 		});
+		gifview.setOnSingleTapConfirmedListener(new OnSingleTapConfirmedListener() {
+
+			@Override
+			public void onSingleTapConfirmed() {
+				finishActivity(gifview);
+			}
+		});
 		gifview.setUrl(url);
 	}
 
-	private void prepareImg(AsyncSubsamplingScaleImageView imgview,
+	private void prepareImg(final AsyncImageViewTouch imgview,
 			final HoloCircularProgressBar mProgressBar, final View reloadBut,
 			String url, final ViewInfo info) {
-		imgview.setMaxScale(5);
-
-		imgview.setImageLoadingCallback(new AsyncSubsamplingScaleImageView.ImageLoadingCallback() {
+		imgview.setDisplayType(DisplayType.FIT_TO_SCREEN);
+		imgview.setImageLoadingCallback(new AsyncImageViewTouch.ImageLoadingCallback() {
 
 			@Override
 			public void onImageRequestStarted() {
@@ -237,7 +231,36 @@ public class ShowPicAdapter extends PagerAdapter {
 				}
 			}
 		});
+		imgview.setScrollListener(new OnImageViewTouchScrollListener() {
+			
+			@Override
+			public void onScroll() {
+				lastTouchDate = System.currentTimeMillis();
+			}
+		});
+		imgview.setFlingListener(new OnImageViewTouchFlingListener() {
+			
+			@Override
+			public void onFling() {
+				lastTouchDate = System.currentTimeMillis();
+			}
+		});
+		imgview.setViewScaleListener(new OnImageViewTouchScaleListener() {
+			
+			@Override
+			public void onScale() {
+				lastTouchDate = System.currentTimeMillis();				
+			}
+		});
+		imgview.setSingleTapListener(new OnImageViewTouchSingleTapListener() {
 
+			@Override
+			public void onSingleTapConfirmed() {
+				if(System.currentTimeMillis() - lastTouchDate > 800){
+					finishActivity(imgview);
+				}
+			}
+		});
 		imgview.setUrl(url);
 	}
 

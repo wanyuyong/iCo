@@ -7,7 +7,6 @@ import magic.yuyong.R;
 import magic.yuyong.app.AppConstant;
 import magic.yuyong.app.MagicApplication;
 import magic.yuyong.app.MagicDialog;
-import magic.yuyong.persistence.AccessTokenKeeper;
 import magic.yuyong.persistence.Persistence;
 import magic.yuyong.service.NotificationService;
 
