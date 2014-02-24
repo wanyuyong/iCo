@@ -14,7 +14,6 @@ import magic.yuyong.view.HoloCircularProgressBar;
 import magic.yuyong.view.JazzyViewPager;
 import magic.yuyong.view.OutlineContainer;
 import pl.droidsonroids.gif.AsyncGifImageView;
-import pl.droidsonroids.gif.AsyncGifImageView.OnSingleTapConfirmedListener;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -169,10 +168,10 @@ public class ShowPicAdapter extends PagerAdapter {
 				}
 			}
 		});
-		gifview.setOnSingleTapConfirmedListener(new OnSingleTapConfirmedListener() {
-
+		gifview.setOnClickListener(new OnClickListener() {
+			
 			@Override
-			public void onSingleTapConfirmed() {
+			public void onClick(View arg0) {
 				finishActivity(gifview);
 			}
 		});

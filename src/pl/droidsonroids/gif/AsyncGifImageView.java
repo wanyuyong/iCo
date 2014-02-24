@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.concurrent.Future;
 
 import magic.yuyong.util.Cache;
+import magic.yuyong.util.Debug;
 import magic.yuyong.util.MagicExecutorService;
 import android.content.Context;
 import android.os.Handler;
@@ -31,56 +32,16 @@ import android.view.MotionEvent;
  */
 public class AsyncGifImageView extends GifImageView {
 
-	private GestureDetector mDetector;
-
-	private OnSingleTapConfirmedListener mOnSingleTapConfirmedListener;
-
-	public void setOnSingleTapConfirmedListener(OnSingleTapConfirmedListener l) {
-		this.mOnSingleTapConfirmedListener = l;
-	}
-
-	public static interface OnSingleTapConfirmedListener {
-		void onSingleTapConfirmed();
-	}
-
 	public AsyncGifImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
-		init();
 	}
 
 	public AsyncGifImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
-		init();
 	}
 
 	public AsyncGifImageView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
-		init();
-	}
-
-	private void init() {
-		mDetector = new GestureDetector(getContext(),
-				new GestureDetector.SimpleOnGestureListener() {
-					@Override
-					public boolean onSingleTapConfirmed(MotionEvent e) {
-						if (mOnSingleTapConfirmedListener != null) {
-							mOnSingleTapConfirmedListener
-									.onSingleTapConfirmed();
-						}
-						return true;
-					}
-				});
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if (mDetector != null) {
-			mDetector.onTouchEvent(event);
-		}
-		return super.onTouchEvent(event);
 	}
 
 	public static interface ImageLoadingCallback {
