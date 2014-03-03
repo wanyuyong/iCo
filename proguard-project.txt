@@ -19,6 +19,9 @@
 #   public *;
 #}
 
+-dontwarn com.squareup.** 
+-keep class com.squareup.** { *; } 
+
 #sina
 -keep public class android.webkit.** { public *; }
 -keep public class com.weibo.net.** { public *; }
@@ -30,3 +33,6 @@
 -keep public class magic.yuyong.R$*{
     public static final int *;
 }
+
+
+

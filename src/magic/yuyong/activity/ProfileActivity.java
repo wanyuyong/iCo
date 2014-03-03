@@ -17,6 +17,7 @@ import magic.yuyong.request.RequestState;
 import magic.yuyong.transformation.CircleTransformation;
 import magic.yuyong.transformation.GlassTransformation;
 import magic.yuyong.util.Debug;
+import magic.yuyong.util.DisplayUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +26,12 @@ import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ActionMode;
@@ -48,6 +54,7 @@ import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nineoldandroids.view.ViewHelper;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.net.RequestListener;
 import com.sina.weibo.sdk.openapi.legacy.FavoritesAPI;
@@ -58,7 +65,7 @@ import com.sina.weibo.sdk.openapi.legacy.WeiboAPI.FEATURE;
 import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends GetTwitterActivity implements
-		OnClickListener, OnRefreshListener {
+		OnClickListener, OnRefreshListener, SensorEventListener {
 
 	private User user;
 	private View head;
@@ -86,6 +93,9 @@ public class ProfileActivity extends GetTwitterActivity implements
 	private long uid;
 	private boolean requestProfile;
 	private String screen_name;
+	
+	private SensorManager mSensorManager;
+	private Sensor mSensor;
 
 	private Handler handler = new Handler() {
 
@@ -169,6 +179,60 @@ public class ProfileActivity extends GetTwitterActivity implements
 			}
 		}
 	};
+	
+	@Override
+	public void onAccuracyChanged(Sensor arg0, int arg1) {
+		
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		int max_offset = (int) DisplayUtil.dpToPx(getResources(), 28);
+		int max_angle = 30;
+		
+		float angle_y = event.values[1];
+		float angle_x = event.values[2];
+		
+		int scrollX = (int) (max_offset*angle_x/max_angle);
+		int scrollY = (int) (max_offset*angle_y/max_angle);
+		
+		if(Math.abs(scrollX) > max_offset){
+			if(scrollX > 0){
+				scrollX = max_offset;
+			}else{
+				scrollX = -max_offset;
+			}
+		}
+		
+		if(Math.abs(scrollY) > max_offset){
+			if(scrollY > 0){
+				scrollY = max_offset;
+			}else{
+				scrollY = -max_offset;
+			}
+		}
+		
+		blur_img.scrollTo(scrollX, scrollY);
+		
+		ViewHelper.setPivotX(avatar, avatar.getMeasuredWidth() / 2);
+		ViewHelper.setPivotY(avatar, avatar.getMeasuredHeight() / 2);
+		ViewHelper.setTranslationX(avatar, (float) (scrollX*.2));
+		ViewHelper.setTranslationY(avatar, (float) (scrollY*.2));
+		
+	}
+	
+	protected void onStart() {
+		super.onStart();
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+		mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
+	};
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		mSensorManager.unregisterListener(this);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

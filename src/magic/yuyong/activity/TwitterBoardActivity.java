@@ -55,8 +55,7 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 	private TwitterBoardScrollView scrollView;
 	private DivideView divide_view;
 	private View innerButtonLay;
-	private View content;
-
+	
 	private List<Group> groups = new ArrayList<Group>();
 	private Long list_id;
 	private boolean gettingGroup;
@@ -115,7 +114,7 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -138,7 +137,6 @@ public class TwitterBoardActivity extends GetTwitterActivity implements
 		registerReceiver(unReadReceiver, new IntentFilter(
 				AppConstant.ACTION_UNREAD_STATE_CHANGE_BROADCAST));
 		setContentView(R.layout.twitter_board);
-		content = findViewById(R.id.content);
 		board = (TwitterBoard) findViewById(R.id.twitter_board);
 		board.setBoundaryListener(this);
 		scrollView = (TwitterBoardScrollView) findViewById(R.id.twitter_board_scrollview);
